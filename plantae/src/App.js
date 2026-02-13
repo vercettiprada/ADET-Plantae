@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './styles/App.css'; // Updated path
+import { plantData } from './data/plants'; // Updated path
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header><h1 style={{ textAlign: 'center', color: '#2d5a27' }}>Plantae</h1></header>
+      <main className="discovery-container">
+        <section className="plant-stack">
+          {plantData.map((plant) => (
+            <div key={plant.id} className="plant-card">
+              <img src={plant.imageUrl} alt={plant.name} className="plant-image" />
+              <div className="card-overlay">
+                <span className="status-badge">{plant.healthStatus}</span>
+                <h2>{plant.name}</h2>
+                <p><i>{plant.species}</i></p>
+              </div>
+            </div>
+          ))}
+        </section>
+      </main>
     </div>
   );
 }
