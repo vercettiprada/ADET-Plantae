@@ -100,3 +100,66 @@ header h1::after {
 .search-input:focus {
   border-color: #2d5a27; /* Turns green when you click it */
 }
+/* Container for the floating effect */
+.search-floating-container {
+  position: sticky; /* Stays at the top while scrolling */
+  top: 20px;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.glass-search-input {
+  width: 100%;
+  max-width: 450px;
+  padding: 15px 25px;
+  font-size: 16px;
+  border-radius: 50px;
+  outline: none;
+  
+  /* THE GLASS EFFECT */
+  background: rgba(255, 255, 255, 0.4); /* Semi-transparent white */
+  backdrop-filter: blur(15px); /* This blurs the plants behind the bar */
+  -webkit-backdrop-filter: blur(15px); /* Safari support */
+  
+  /* Subtle borders and shadows to make it pop */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  
+  color: #2d5a27;
+  transition: all 0.3s ease;
+}
+
+.glass-search-input:focus {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(45, 90, 39, 0.2);
+  transform: scale(1.02); /* Slight pop out effect */
+}
+
+/* Optional: Adding glass effect to your badges too */
+.glass-badge {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.brand-title {
+  text-align: center;
+  color: #2d5a27;
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.footer-text {
+  text-align: center;
+  margin-top: 3rem;
+  padding-bottom: 2rem;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
