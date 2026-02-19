@@ -31,6 +31,12 @@ body { background-color: var(--bg-color); font-family: 'Inter', sans-serif; }
 
 .plant-card:hover { transform: scale(1.02); }
 
+.plant-card:hover .care-prompt {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
 .plant-image { width: 100%; height: 100%; object-fit: cover; }
 
 .card-overlay {
@@ -163,3 +169,98 @@ header h1::after {
   opacity: 0.6;
   font-size: 0.9rem;
 }
+
+
+.search-and-add-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 25px 0;
+}
+.search-wrapper {
+  margin: 0; 
+  display: flex;
+}
+
+/* Glassy Input */
+.glass-search {
+  width: 100%;
+  max-width: 350px;
+  padding: 14px 25px;
+  font-size: 16px;
+  border-radius: 50px;
+  outline: none;
+  color: #2d5a27;
+  
+  /* GLASS PROPERTIES */
+  background: rgba(255, 255, 255, 0.3); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Glassy Add Button */
+.glass-add-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  /* MATCHING GLASS PROPERTIES */
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  
+  color: #2d5a27;
+  font-size: 28px;
+}
+
+.glass-add-btn:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(45, 90, 39, 0.2);
+  border-color: rgba(45, 90, 39, 0.3);
+}
+
+.plus-icon {
+  margin-top: -2px; /* Visual centering adjustment */
+}
+
+
+/* Card Overlay Styling */
+
+
+
+
+
+.species-text {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 15px;
+}
+
+/* Care Guide Prompt */
+.care-prompt {
+  display: inline-block;
+  padding: 8px 15px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+
+
+/* Ensure images don't block clicks */

@@ -10,19 +10,40 @@ function App() {
     plant.healthStatus.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const showCareGuide = (plantName, species) => {
+    alert(`fetching AI Care Guide for: ${plantName} (${species})...`);
+  };
+
+  const triggerUpload = () => {
+    document.getElementById('ai-upload-input').click();
+  };
+
   return (
     <div className="App">
       <header className="main-header">
         <h1 className="brand-title">Plantae</h1>
         
-        {/* Floating Glass Search Container */}
-        <div className="search-floating-container">
+        <div className="search-and-add-row">
+          <div className="search-wrapper">
+            <input 
+              type="text" 
+              placeholder="Search your garden..." 
+              className="glass-search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          <button className="glass-add-btn" onClick={triggerUpload}>
+            <span className="plus-icon">+</span>
+          </button>
+
           <input 
-            type="text" 
-            placeholder="Search your garden..." 
-            className="glass-search-input"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            type="file" 
+            id="ai-upload-input" 
+            style={{ display: 'none' }} 
+            accept="image/*"
+            onChange={(e) => alert("Analyzing image...")}
           />
         </div>
       </header>
@@ -30,21 +51,25 @@ function App() {
       <main className="discovery-container">
         <section className="plant-stack">
           {filteredPlants.map((plant) => (
-            <div key={plant.id} className="plant-card">
+            <div 
+              key={plant.id} 
+              className="plant-card" 
+              onClick={() => showCareGuide(plant.name, plant.species)}
+            >
               <img src={plant.imageUrl} alt={plant.name} className="plant-image" />
               <div className="card-overlay">
-                <span className="status-badge glass-badge">{plant.healthStatus}</span>
-                <h2>{plant.name}</h2>
-                <p><i>{plant.species}</i></p>
+                {/* Removed static badge, made name look clickable */}
+                <h2 className="clickable-name">{plant.name}</h2>
+                <p className="species-text"><i>{plant.species}</i></p>
+                
+                <div className="care-prompt">
+                  <span>Tap for Care Guide →</span>
+                </div>
               </div>
             </div>
           ))}
         </section>
       </main>
-
-      <footer>
-        <p className="footer-text">© 2026 Plantae Discovery System</p>
-      </footer>
     </div>
   );
 }

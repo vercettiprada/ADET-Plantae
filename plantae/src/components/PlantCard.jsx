@@ -7,7 +7,9 @@ const PlantCard = ({ plant }) => {
       <img src={plant.imageUrl} alt={plant.name} className="plant-image" />
       
       <div className="card-overlay">
+
         {/* Dynamic class name based on status could allow for different colors later */}
+        
         <span className={`status-badge ${plant.healthStatus.toLowerCase().replace(' ', '-')}`}>
           {plant.healthStatus}
         </span>
