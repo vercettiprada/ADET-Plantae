@@ -1,20 +1,18 @@
 import React from 'react';
 
-// We pass the 'plant' data as a prop
-const PlantCard = ({ plant }) => {
+const PlantCard = ({ plant, onCardClick }) => {
   return (
-    <div className="plant-card">
+    <div 
+      className="plant-card" 
+      onClick={() => onCardClick(plant)}
+    >
       <img src={plant.imageUrl} alt={plant.name} className="plant-image" />
-      
       <div className="card-overlay">
-
-        {/* Dynamic class name based on status could allow for different colors later */}
-        
-        <span className={`status-badge ${plant.healthStatus.toLowerCase().replace(' ', '-')}`}>
-          {plant.healthStatus}
-        </span>
-        <h2>{plant.name}</h2>
-        <p><i>{plant.species}</i></p>
+        <h2 className="clickable-name">{plant.name}</h2>
+        <p className="species-text"><i>{plant.species}</i></p>
+        <div className="care-prompt">
+          <span>Care Guide</span>
+        </div>
       </div>
     </div>
   );

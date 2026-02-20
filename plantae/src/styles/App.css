@@ -67,6 +67,7 @@ header h1 {
   
   
   background: linear-gradient(135deg, #2d5a27 0%, #4f9a44 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   
@@ -264,3 +265,124 @@ header h1::after {
 
 
 /* Ensure images don't block clicks */
+/* Smooth hover zoom for grid cards */
+.plant-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.plant-card:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+}
+
+/* Square Card Animation */
+.expanded-square-card {
+  background: rgba(255, 255, 255, 0.1);
+  width: 750px;
+  height: 480px;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  padding: 25px;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+/* Mini Card Hover Effect */
+.plant-card-mini {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+}
+
+.plant-card-mini:hover {
+  transform: scale(1.05) translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+/* Modal Backdrop (Clickable away area) */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px); /* Strong blur for focus */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* The Square Expanded Card */
+.expanded-square-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 800px;
+  height: 500px; /* Force a more square/rectangular ratio */
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  animation: cardZoom 0.4s ease-out;
+}
+
+.card-content {
+  display: flex;
+  height: 100%;
+  gap: 30px;
+}
+
+.card-image-side {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.card-image-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-info-side {
+  flex: 1.2;
+  text-align: left;
+  color: white;
+}
+
+.close-x {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+@keyframes cardZoom {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
