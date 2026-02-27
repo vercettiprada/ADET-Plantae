@@ -81,7 +81,7 @@ function App() {
                     <>
                     <h3 className="care-facts-header">Care Facts</h3>
                     
-                    <p className="care-facts-subheader">bla bla bla bla bla bla </p></>
+                    <p className="care-facts-subheader">nigga </p></>
                     
                     
                     }
