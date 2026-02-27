@@ -42,7 +42,7 @@ function App() {
         </section>
       </main>
 
-      {/* Much cleaner modal usage */}
+    
       <PlantModal 
         plant={selectedPlant} 
         onClose={() => setSelectedPlant(null)} 
