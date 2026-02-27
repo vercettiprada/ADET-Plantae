@@ -1,5 +1,5 @@
 :root {
-  --bg-color: #f8faf9;
+  --bg-color: #f1eeee;
   --accent: #2d5a27;
 }
 
@@ -385,4 +385,39 @@ header h1::after {
 @keyframes cardZoom {
   from { transform: scale(0.7); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+/* Center the Header and its children */
+.main-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers title and search row horizontally */
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0;
+}
+
+/* Center the search input and the + button together */
+.header-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centers the row in the middle */
+  gap: 12px;
+  width: 100%;
+}
+
+/* Ensure the search bar itself is centered */
+.glass-search {
+  width: 320px;
+  text-align: center; /* Optional: Centers the placeholder text */
+}
+
+/* Fix the Footer alignment */
+.main-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Standard Flexbox centering */
+  align-items: center;
+  padding: 40px 0;
+  margin-top: auto; /* Pushes it to the bottom if using a flex wrapper */
 }
