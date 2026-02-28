@@ -200,7 +200,7 @@ body {
   margin: 20px 0; }
 
 .care-facts-header {
-  margin-top:80px;
+  margin-top: 0px;
   font-size: 2rem;
   color: #ffffff;
 }
@@ -209,10 +209,11 @@ body {
 
 .secret-fact-box {
   background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 9px;
-  margin-top: 10px;
+  padding: 15px;
+  border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 20px;
+  
 }
 
 .secret-fact-box h4 {
@@ -270,6 +271,21 @@ body {
   opacity: 0.9;
 }
 
+.care-text h4 {
+  right: 100; left: 110;
+  margin: -16px 0 10px;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.care-section {
+ background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+}
 .close-x {
   position: absolute;
   top: 20px; right: 25px;
