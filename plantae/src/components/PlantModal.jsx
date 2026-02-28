@@ -21,8 +21,8 @@ const PlantModal = ({ plant, onClose }) => {
             <div className="care-section">
               <h3 className="care-facts-header">Plant Care & Info</h3>
               <div className="care-facts-grid">
-                <CareFact label="Light" value={plant.light} delay={0.1} />
-                <CareFact label="Water" value={plant.water} delay={0.2} />
+                <CareFact label="Light" value={plant.light}  />
+                <CareFact label="Water" value={plant.water} />
               </div>
             </div>
 
