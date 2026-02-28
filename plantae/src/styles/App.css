@@ -1,4 +1,6 @@
 
+/*BASE STYLES*/
+
 :root {
   --bg-color: #f1eeee;
   --accent: #2d5a27;
@@ -43,6 +45,7 @@ body {
   width: 100%;
 }
 
+  /* 2. SEARCH & ADD CONTROLS */
 .glass-search {
   width: 350px;
   padding: 14px 25px;
@@ -117,6 +120,7 @@ body {
 
 .plant-image { width: 100%; height: 100%; object-fit: cover; }
 
+/* 4. EXPANDED CARD & MODAL */
 .card-overlay {
   position: absolute;
   bottom: 0;
@@ -128,6 +132,8 @@ body {
 }
 
 .species-text { font-size: 0.9rem; opacity: 0.8; margin-bottom: 12px; }
+
+.common-name { font-size: 1.4rem; font-weight: 600; }
 
 .care-prompt {
   display: inline-block;
@@ -198,6 +204,9 @@ body {
   font-size: 2rem;
   color: #ffffff;
 }
+
+/* 4.1 SECRET FACTS */
+
 .secret-fact-box {
   background: rgba(255, 255, 255, 0.1);
   padding: 20px;
