@@ -437,7 +437,7 @@ p.latin-name {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(58, 58, 58, 0.5); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -461,6 +461,7 @@ p.latin-name {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 20px;
+  color: rgb(63, 62, 62);
   
  
   
@@ -549,7 +550,7 @@ p.latin-name {
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 600;
-  background: #4f9a44; /* Plantae Green */
+  background: var(--accent); /* Plantae Green */
   border-color: rgba(255,255,255,0.4);
 }
 
@@ -663,3 +664,4 @@ button.edit-toggle-btn.saving {
   top: 350px;             /* Matches your Pencil position */
   right: 10px;            
 }
+

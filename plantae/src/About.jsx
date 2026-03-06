@@ -6,7 +6,7 @@ const About = ({ onBack }) => {
   return (
     <div className="about-page">
       <div className="about-container">
-        <button className="back-btn" onClick={onBack}>← Back to Garden</button>
+        <button className="back-btn" onClick={onBack}> Back to Garden</button>
         
         <header className="about-header">
           <h1 className="brand-title">About Plantae</h1>
@@ -34,7 +34,9 @@ const About = ({ onBack }) => {
             </div>
           </div>
 
-          <div className="version-tag">Version 2.0.26 • Built with React</div>
+          <footer className="main-footer">
+        <p>© 2026 Plantae Discovery System</p>
+      </footer>
         </section>
       </div>
     </div>
