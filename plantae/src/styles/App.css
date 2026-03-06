@@ -20,9 +20,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding: 2rem 5% 1rem;
   width: 100%;
-  padding: 3rem 0;
+  box-sizing: border-box;
 }
 
 .brand-title {
@@ -30,7 +30,8 @@ body {
   font-size: 3.5rem;
   font-weight: 700;
   color: var(--accent);
-  margin-bottom: 10px;
+  margin-bottom: -1px;
+  margin-top: -5px;
   letter-spacing: -1.5px;
   background: linear-gradient(135deg, #2d5a27 0%, #4f9a44 100%);
   background-clip: text;
@@ -42,8 +43,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 1px;
   width: 100%;
+}
+.header-controls-container {
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+  align-items: center;
+  
 }
 
   /* 2. SEARCH & ADD CONTROLS */
@@ -245,6 +253,21 @@ body {
   to { transform: scale(1); opacity: 1; }
 }
 
+.close-x-apple {
+  position: absolute;
+  top: 20px; right: 25px;
+  background: none; border: none;
+  color: rgb(112, 112, 112); font-size: 2.5rem;
+  cursor: pointer; opacity: 0.7;
+}
+
+.close-x-apple:hover { opacity: 1; }
+
+@keyframes cardZoom {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
 /* 5. FOOTER */
 .main-footer {
   width: 100%;
@@ -311,6 +334,332 @@ p.latin-name {
   background: none; border: none;
   color: white; font-size: 2.5rem;
   cursor: pointer; opacity: 0.7;
+    
+
+}
+
+
+
+/* Header Layout Fix */
+
+
+.header-controls-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 20px;
+}
+
+/* Wings take up equal space to keep center centered */
+.controls-left, .controls-right {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+}
+
+.controls-right {
+  justify-content: flex-end;
+}
+
+.controls-center {
+  flex: 2; /* Search gets more room */
+  display: flex;
+  justify-content: center;
+}
+
+/* Shared Circle Button Style */
+.icon-circle-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.icon-circle-btn:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+/* Ensure search bar doesn't grow too wide */
+.glass-search {
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+
+/* Navigation Icons Typography (No Emojis) */
+.bar-icon { font-size: 1.4rem; font-weight: bold; }
+.home-icon { font-size: 1.6rem; margin-top: -4px; }
+.plus-icon { font-size: 1.5rem; }
+
+/* HEADER LAYOUT: 3-Column centering strategy */
+.header-controls-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+/* Wings take up equal space to force the search bar to the absolute center */
+.controls-left, .controls-right {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+}
+
+.controls-right {
+  justify-content: flex-end;
+}
+
+.controls-center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+}
+
+/* MODAL FIX: Using 'fixed' prevents the bottom white bar/footer push */
+.modal-backdrop {
+  position: fixed; /* Locks to screen */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Always on top */
+  backdrop-filter: blur(8px);
+}
+
+.expanded-square-card {
+  background: rgb(110, 110, 110);
+  width: 90%;
+  max-width: 850px;
+  height: 500px;
+  border-radius: 24px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* Sidebar Styling from your 'Settings' screenshot */
+.sidebar-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  
+ 
+  
+}
+.side-settings {
+  position: fixed;
+  top: 0;
+  left: -390px; 
+  width: 300px;
+  height: 100vh;
+  background: rgba(211, 211, 211, 0.15);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(112, 112, 112, 0.3);
+
+  animation: cardZoom 0.4s ease-in;
+  z-index: 1000;
+  transition: left 0.3s ease;
+  padding: 30px 34px;
+  border-radius: 0px;
+  text-align: left;
+  
+}
+
+.side-settings.open {
+  
+  left: 0;
+}
+
+/* 
+
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 850px;
+  height: 520px;
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  position: relative;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.3);
+  animation: cardZoom 0.4s ease-out; 
+  
+  */
+
+
+
+  /* Container for top buttons */
+/* 1. MODAL CONTROL BAR (Pencil & Close Button) */
+.modal-controls {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 100;
+}
+
+/* 2. THE EDIT/SAVE TOGGLE BUTTON */
+.edit-trigger-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: var(--ios-blur);
+  -webkit-backdrop-filter: var(--ios-blur);
+  border: 1px solid var(--glass-border);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.2rem;
+  transition: all 0.3s ease;
+}
+
+.edit-trigger-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* When the button turns into "Save" text */
+.edit-trigger-btn.active {
+  width: auto;
+  padding: 0 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: #4f9a44; /* Plantae Green */
+  border-color: rgba(255,255,255,0.4);
+}
+
+/* 3. SEAMLESS EDITABLE INPUTS */
+/* These remove borders/backgrounds so it looks like the original text */
+.edit-input-title, 
+.edit-input-species, 
+.edit-textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-family: inherit;
+  outline: none;
+  padding: 5px 10px;
+  margin-left: -10px; /* Adjusting for padding to keep text aligned */
+  transition: background 0.2s ease;
+}
+
+.edit-input-title {
+  font-size: 2.5rem; /* Matches your H1 */
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: rgb(190, 190, 190);
+}
+
+.edit-input-species {
+  font-size: 0.9rem;
+  font-style: italic;
+  opacity: 0.8;
+  margin-bottom: 12px;
+}
+
+.edit-textarea {
+  height: 100px;
+  resize: none;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.edit-input-title:focus, 
+.edit-textarea:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-style: solid;
+}
+
+/* 4. SIDEBAR CLICKABLE ITEMS (For your SettingsSidebar) */
+.menu-group p {
+  padding: 12px 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: rgba(78, 78, 78, 0.8);
+  margin: 4px 0;
+}
+
+.menu-group p:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgb(116, 160, 122);
+  padding-left: 20px; /* Slight Apple-style indent on hover */
+}
+
+.logout-text {
+  color: #636363 !important; /* Soft Red for logout */
+  font-weight: 600;
+  margin-top: 20px !important;
+}
+
+
+
+button.edit-toggle-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: var(--ios-blur);
+  -webkit-backdrop-filter: var(--ios-blur);
+  border: 1px solid var(--glass-border);
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
   
 
+  position: absolute;
+  top: 320px;
+  right: 25px;  
+
+ 
+  
+}
+
+/* This targets the button ONLY when isEditing is TRUE */
+button.edit-toggle-btn.saving {
+  width: auto;            /* Allow it to grow for the text "Save" */
+  height: 35px;           /* Slightly taller for the pill look */
+  padding: 0 20px;
+  border-radius: 20px;    /* Makes it a pill shape */
+  background: #7e7e7e;    /* Your Plantae Green */
+  color: white;
+  font-size: 0.8rem;      /* Fixed the 0.2rem—that was too tiny to see! */
+  font-weight: 600;
+  border-color: rgba(255, 255, 255, 0.4);
+
+  position: absolute;
+  top: 350px;             /* Matches your Pencil position */
+  right: 10px;            
 }

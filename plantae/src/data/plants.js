@@ -90,5 +90,15 @@ export const plantData = [
     light: "Bright, Indirect",
     water: "Every 1-2 weeks",
     imageUrl: "https://stacyling.com/wp-content/uploads/2024/10/spider-plant-3.jpg" 
+},
+
+{
+    id: 11,
+    name: "Boston Fern",
+    species: "Nephrolepis exaltata",
+    secretfact  : "Boston Ferns are known for their air-purifying qualities and can help remove indoor pollutants.",
+    light: "Indirect, Filtered",
+    water: "Keep soil consistently moist",
+    imageUrl: "https://costafarms.com/cdn/shop/files/L-BOS-P-WMC-01-CF--white_411c64f6-cb73-419c-8204-eb2154c19b62_2048x2048.jpg?v=1707335297"
 }
 ];
