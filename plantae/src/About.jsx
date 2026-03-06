@@ -1,5 +1,6 @@
 import React from 'react';
-import './About.css';
+// Fixed the dot-slash path here:
+import './styles/About.css'; 
 
 const About = ({ onBack }) => {
   return (
