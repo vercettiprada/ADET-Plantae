@@ -8,6 +8,7 @@ export const plantData = [
     light: "Bright, Indirect",
     water: "Every 7-10 days",
   },
+  
   {
     id: 2,
     name: "Snake Plant",
