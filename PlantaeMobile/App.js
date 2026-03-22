@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
-import { plantData } from './data/Plant'; 
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, StyleSheet, StatusBar } from 'react-native';
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { plantData } from './data/Plant';
 import GardenScreen from './screens/GardenScreen';
 import AboutScreen from './screens/AboutScreen';
 import PlantModal from './components/PlantModal';
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
-  const [allPlants, setAllPlants] = useState(plantData); 
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [allPlants, setAllPlants] = useState(plantData);
   const [currentView, setCurrentView] = useState('garden');
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlant, setSelectedPlant] = useState(null);
 
-  const filteredPlants = allPlants.filter((plant) => {
-    const name = plant.name?.toLowerCase() || "";
-    const species = plant.species?.toLowerCase() || "";
-    const query = searchQuery.toLowerCase();
-    return name.includes(query) || species.includes(query);
-  });
+  useEffect(() => {
+    async function loadResources() {
+      try {
+        await Font.loadAsync({
+          'AstonScript': require('./assets/fonts/AstonScript.ttf'),
+        });
+      } catch (e) {
+        console.warn("Font loading error:", e);
+      } finally {
+        setFontsLoaded(true);
+      }
+    }
+    loadResources();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) return null;
 
   const handleSavePlant = (updatedPlant) => {
     setAllPlants(prev => prev.map(p => p.id === updatedPlant.id ? updatedPlant : p));
@@ -24,11 +45,14 @@ export default function App() {
   };
 
   return (
-    <View style={styles.appContainer}>
+    <View style={styles.container} onLayout={onLayoutRootView}>
       <StatusBar barStyle="dark-content" />
       {currentView === 'garden' ? (
         <GardenScreen 
-          plants={filteredPlants} 
+          plants={allPlants.filter(p => 
+            p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            p.species.toLowerCase().includes(searchQuery.toLowerCase())
+          )} 
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           onAboutClick={() => setCurrentView('about')} 
@@ -49,5 +73,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  appContainer: { flex: 1, backgroundColor: '#f1eeee' },
+  container: { flex: 1, backgroundColor: '#f1eeee' }
 });

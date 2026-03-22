@@ -1,56 +1,143 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, BackHandler } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; 
 
-export default function AboutScreen({ onBack }) {
+const AboutScreen = ({ onBack }) => {
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      onBack?.();
+      return true;
+    });
+    return () => backHandler.remove();
+  }, [onBack]);
   return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView style={styles.container}>
-        <TouchableOpacity onPress={onBack} style={styles.backBtn}>
-          <Text style={styles.backBtnText}>← Back to Garden</Text> 
-        </TouchableOpacity>
-        
-        <Text style={styles.title}>About Plantae</Text>
-        <Text style={styles.subtitle}>Cultivating Digital Serenity</Text> 
+    <View style={styles.container}>
+      {/* 1. MANUALLY push content below the iPhone 12 notch (Status Bar) */}
+      <View style={styles.statusBarSpacer} />
 
-        <View style={styles.glassCard}>
-          <Text style={styles.cardTitle}>Our Mission</Text>
-          <Text style={styles.cardText}>
-            Plantae was born from a desire to bridge the gap between technology and nature. 
-            We believe that tracking your green companions should be as beautiful as the plants themselves.
-          </Text> 
+      <TouchableOpacity 
+        style={styles.backButton}
+        activeOpacity={0.7}
+        // Giant invisible tap area for your thumb on iPhone 12
+        hitSlop={{ top: 40, bottom: 40, left: 40, right: 40 }} 
+        onPress={onBack}
+      >
+        <Ionicons name="arrow-back-outline" size={26} color="#121212" />
+        <Text style={styles.backText}>back</Text>
+      </TouchableOpacity>
+
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent} 
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Main Title - Your Imported Font */}
+        <Text style={[styles.customFont, styles.mainTitle]}>Plantae.</Text>
+
+        <View style={styles.section}>
+          <Text style={[styles.customFont, styles.sectionHeader]}>about</Text>
+          <Text style={styles.bodyText}>
+            A bridge between the digital and the organic. Plantae is a sanctuary for 
+            those who value the quiet intersection of technology and nature.
+          </Text>
         </View>
 
-        <View style={styles.grid}>
-          <View style={[styles.glassCard, { flex: 1, marginRight: 10 }]}>
-            <Text style={styles.smallTitle}>Minimalist</Text>
-            <Text style={styles.smallText}>Inspired by Apple's clean aesthetics.</Text>
-          </View>
-          <View style={[styles.glassCard, { flex: 1 }]}>
-            <Text style={styles.smallTitle}>Smart Care</Text>
-            <Text style={styles.smallText}>Tailored schedules for every species.</Text>
-          </View>
+        <View style={styles.section}>
+          <Text style={[styles.customFont, styles.sectionHeader]}>our mission</Text>
+          <Text style={styles.bodyText}>
+            To redefine plant care through a minimalist lens. We aim to provide 
+            precision without sacrificing the "moody" visual energy of a curated space.
+          </Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={[styles.customFont, styles.sectionHeader]}>minimalist</Text>
+          <Text style={styles.bodyText}>
+            Design is the priority. By focusing on architectural silhouettes and 
+            intentional white space, we create an interface that feels like a 
+            high-end magazine.
+          </Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={[styles.customFont, styles.sectionHeader]}>smart care</Text>
+          <Text style={styles.bodyText}>
+            Integration of ESP32 hardware and cloud-based tracking ensures your 
+            environment stays optimal. Precision meets aesthetic.
+          </Text>
+        </View>
+
+        {/* Your Designer Statement */}
+        <View style={styles.designerCard}>
+          <Text style={[styles.customFont, styles.sectionHeader]}>the designer's lens</Text>
+          <Text style={styles.bodyText}>
+            As an aspiring graphic designer, I view every interface as a canvas. 
+            This drive to design appealingly moves away from generic UI toward 
+            an avant-garde, "editorial niche" experience.
+          </Text>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f1eeee' },
-  container: { padding: 25 },
-  backBtn: { marginBottom: 30 },
-  backBtnText: { color: '#2d5a27', fontWeight: '700' }, // [cite: 147]
-  title: { fontSize: 36, fontWeight: '700', color: '#2d5a27', textAlign: 'center' }, // [cite: 102]
-  subtitle: { fontSize: 16, color: '#2d5a27', opacity: 0.6, textAlign: 'center', marginBottom: 40 }, // [cite: 103]
-  glassCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.4)', // [cite: 153]
-    borderRadius: 24, padding: 25, // [cite: 155-156]
-    borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.5)',
-    marginBottom: 20
+  container: {
+    flex: 1,
+    backgroundColor: '#f1eeee', // Your signature light background
   },
-  cardTitle: { fontSize: 22, fontWeight: 'bold', color: '#2d5a27', marginBottom: 12 },
-  cardText: { color: '#444', lineHeight: 22, fontSize: 15 }, // [cite: 158]
-  grid: { flexDirection: 'row', justifyContent: 'space-between' }, // [cite: 164-167]
-  smallTitle: { fontSize: 16, fontWeight: 'bold', color: '#2d5a27', marginBottom: 5 },
-  smallText: { fontSize: 12, color: '#666' }
+  statusBarSpacer: {
+    // Spacer to push below status bar/notch
+    height: 60,
+    width: '100%',
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 25,
+    paddingVertical: 10,
+    zIndex: 9999, // Keeps it on the absolute top layer
+    gap: 8,
+  },
+  backText: {
+    fontSize: 18,
+    color: '#121212',
+    fontWeight: '400',
+    textTransform: 'lowercase',
+  },
+  scrollContent: {
+    paddingHorizontal: 30,
+    paddingTop: 20,
+    paddingBottom: 80,
+  },
+  customFont: {
+    fontFamily: 'AstonScript', 
+  },
+  mainTitle: {
+    fontSize: 62,
+    color: '#2d5a27',
+    marginBottom: 45,
+  },
+  section: {
+    marginBottom: 35,
+  },
+  sectionHeader: {
+    fontSize: 28,
+    color: '#121212',
+    marginBottom: 10,
+    textTransform: 'lowercase',
+  },
+  bodyText: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: '#4a4a4a',
+  },
+  designerCard: {
+    marginTop: 20,
+    paddingTop: 30,
+    borderTopWidth: 1,
+    borderTopColor: '#dcdcdc',
+    marginBottom: 40,
+  },
 });
+
+export default AboutScreen;
