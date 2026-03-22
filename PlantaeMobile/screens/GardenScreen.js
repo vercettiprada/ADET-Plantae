@@ -1,52 +1,54 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, FlatList, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-import { plantData } from '..PlantaeMobile/data/plant.js '; // Ensure this path is correct 
+import React from 'react';
+import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { BlurView } from 'expo-blur';
 import MobilePlantCard from '../components/MobilePlantCard';
 
-export default function GardenScreen({ navigation }) {
-  // Task 1: Use useState for managing UI data [cite: 99]
-  const [search, setSearch] = useState(''); 
-  const [filteredPlants, setFilteredPlants] = useState(plantData);
-
-  const handleSearch = (text) => {
-    setSearch(text); // Task 2: Controlled component (TextInput with state) [cite: 114, 158]
-    const filtered = plantData.filter(p => 
-      p.name.toLowerCase().includes(text.toLowerCase())
-    );
-    setFilteredPlants(filtered); // State changes trigger visible UI updates [cite: 101, 161]
-  };
-
+export default function GardenScreen({ plants, searchQuery, setSearchQuery, onAboutClick, onPlantClick }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Plantae</Text>
-        {/* Task 3: Navigation triggered via UI elements [cite: 131, 160] */}
-        <TouchableOpacity onPress={() => navigation.navigate('About')}>
-          <Text style={styles.navLink}>About</Text>
+        <View>
+          <Text style={styles.subtitle}>CULTIVATING DIGITAL SERENITY</Text>
+          <Text style={styles.brandTitle}>Plantae</Text>
+        </View>
+        <TouchableOpacity style={styles.iconCircleBtn} onPress={onAboutClick}>
+          <Text style={styles.barIcon}>☰</Text>
         </TouchableOpacity>
       </View>
 
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search your garden..."
-        placeholderTextColor="#aaa"
-        value={search}
-        onChangeText={handleSearch}
-      />
+      <View style={styles.searchWrapper}>
+        <BlurView intensity={30} tint="light" style={styles.glassSearchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search your garden.."
+            placeholderTextColor="rgba(45, 90, 39, 0.4)"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </BlurView>
+      </View>
 
       <FlatList
-        data={filteredPlants}
+        data={plants}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <MobilePlantCard plant={item} />} // Task 3: Reusable component [cite: 37, 63]
+        renderItem={({ item }) => (
+          <MobilePlantCard plant={item} onPress={() => onPlantClick(item)} />
+        )}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
+        showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#121212', padding: 20 }, // Task 4: Mobile-appropriate styling [cite: 47, 64]
-  header: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginBottom: 20 },
-  title: { fontSize: 32, fontWeight: 'bold', color: '#fff' },
-  navLink: { color: '#4f9a44', fontSize: 18, fontWeight: '600' },
-  searchInput: { backgroundColor: '#222', color: '#fff', padding: 15, borderRadius: 12, marginBottom: 20 }
+  container: { flex: 1 },
+  header: { paddingHorizontal: 20, marginTop: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
+  subtitle: { fontSize: 10, fontWeight: '700', color: '#2d5a27', letterSpacing: 1, opacity: 0.6 },
+  brandTitle: { fontSize: 48, fontWeight: '700', color: '#2d5a27', letterSpacing: -1.5 },
+  iconCircleBtn: { width: 48, height: 48, borderRadius: 24, backgroundColor: 'rgba(255, 255, 255, 0.3)', borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.4)', alignItems: 'center', justifyContent: 'center' },
+  barIcon: { fontSize: 20, color: '#2d5a27' },
+  searchWrapper: { paddingHorizontal: 20, marginBottom: 25 },
+  glassSearchContainer: { borderRadius: 50, overflow: 'hidden', borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.5)' },
+  searchInput: { padding: 16, textAlign: 'center', fontSize: 16, color: '#2d5a27' }
 });
