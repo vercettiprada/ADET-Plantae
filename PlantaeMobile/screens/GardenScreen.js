@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-import { plantData } from '../data/plants'; // Ensure this path is correct 
+import { plantData } from '..PlantaeMobile/data/plant.js '; // Ensure this path is correct 
 import MobilePlantCard from '../components/MobilePlantCard';
 
 export default function GardenScreen({ navigation }) {
