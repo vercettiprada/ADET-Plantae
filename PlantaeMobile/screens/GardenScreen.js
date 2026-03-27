@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   brandTitle: {
     fontSize: 62,
     fontFamily: 'AstonScript', 
-    color: '#121212',
+    color: '#2d5a27',
   },
   searchContainer: {
     flexDirection: 'row',
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: '#2d5a27',
   },
   listContent: {
     paddingHorizontal: 20,

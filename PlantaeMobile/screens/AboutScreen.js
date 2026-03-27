@@ -2,6 +2,14 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, BackHandler } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 
+// Helper function to capitalize the first letter of every word
+const toTitleCase = (str) => {
+  return str.replace(
+    /\w\S*/g,
+    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  );
+};
+
 const AboutScreen = ({ onBack }) => {
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -10,15 +18,14 @@ const AboutScreen = ({ onBack }) => {
     });
     return () => backHandler.remove();
   }, [onBack]);
+
   return (
     <View style={styles.container}>
-      {/* 1. MANUALLY push content below the iPhone 12 notch (Status Bar) */}
       <View style={styles.statusBarSpacer} />
 
       <TouchableOpacity 
         style={styles.backButton}
         activeOpacity={0.7}
-        // Giant invisible tap area for your thumb on iPhone 12
         hitSlop={{ top: 40, bottom: 40, left: 40, right: 40 }} 
         onPress={onBack}
       >
@@ -30,11 +37,11 @@ const AboutScreen = ({ onBack }) => {
         contentContainerStyle={styles.scrollContent} 
         showsVerticalScrollIndicator={false}
       >
-        {/* Main Title - Your Imported Font */}
-        <Text style={[styles.customFont, styles.mainTitle]}>Plantae.</Text>
-
+        
         <View style={styles.section}>
-          <Text style={[styles.customFont, styles.sectionHeader]}>about</Text>
+          <Text style={[styles.customFont, styles.sectionHeader]}>
+            {toTitleCase("about")}
+          </Text>
           <Text style={styles.bodyText}>
             A bridge between the digital and the organic. Plantae is a sanctuary for 
             those who value the quiet intersection of technology and nature.
@@ -42,7 +49,9 @@ const AboutScreen = ({ onBack }) => {
         </View>
 
         <View style={styles.section}>
-          <Text style={[styles.customFont, styles.sectionHeader]}>our mission</Text>
+          <Text style={[styles.customFont, styles.sectionHeader]}>
+            {toTitleCase("our mission")}
+          </Text>
           <Text style={styles.bodyText}>
             To redefine plant care through a minimalist lens. We aim to provide 
             precision without sacrificing the "moody" visual energy of a curated space.
@@ -50,7 +59,9 @@ const AboutScreen = ({ onBack }) => {
         </View>
 
         <View style={styles.section}>
-          <Text style={[styles.customFont, styles.sectionHeader]}>minimalist</Text>
+          <Text style={[styles.customFont, styles.sectionHeader]}>
+            {toTitleCase("minimalist")}
+          </Text>
           <Text style={styles.bodyText}>
             Design is the priority. By focusing on architectural silhouettes and 
             intentional white space, we create an interface that feels like a 
@@ -59,16 +70,19 @@ const AboutScreen = ({ onBack }) => {
         </View>
 
         <View style={styles.section}>
-          <Text style={[styles.customFont, styles.sectionHeader]}>smart care</Text>
+          <Text style={[styles.customFont, styles.sectionHeader]}>
+            {toTitleCase("smart care")}
+          </Text>
           <Text style={styles.bodyText}>
             Integration of ESP32 hardware and cloud-based tracking ensures your 
             environment stays optimal. Precision meets aesthetic.
           </Text>
         </View>
 
-        {/* Your Designer Statement */}
         <View style={styles.designerCard}>
-          <Text style={[styles.customFont, styles.sectionHeader]}>the designer's lens</Text>
+          <Text style={[styles.customFont, styles.sectionHeader]}>
+            {toTitleCase("the designer's lens")}
+          </Text>
           <Text style={styles.bodyText}>
             As an aspiring graphic designer, I view every interface as a canvas. 
             This drive to design appealingly moves away from generic UI toward 
@@ -83,10 +97,9 @@ const AboutScreen = ({ onBack }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f1eeee', // Your signature light background
+    backgroundColor: '#f1eeee',
   },
   statusBarSpacer: {
-    // Spacer to push below status bar/notch
     height: 60,
     width: '100%',
   },
@@ -95,14 +108,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 25,
     paddingVertical: 10,
-    zIndex: 9999, // Keeps it on the absolute top layer
+    zIndex: 9999,
     gap: 8,
   },
   backText: {
     fontSize: 18,
     color: '#121212',
     fontWeight: '400',
-    textTransform: 'lowercase',
+     // "BACK" in all caps looks more editorial
   },
   scrollContent: {
     paddingHorizontal: 30,
@@ -112,19 +125,15 @@ const styles = StyleSheet.create({
   customFont: {
     fontFamily: 'AstonScript', 
   },
-  mainTitle: {
-    fontSize: 62,
-    color: '#2d5a27',
-    marginBottom: 45,
-  },
   section: {
     marginBottom: 35,
   },
   sectionHeader: {
-    fontSize: 28,
-    color: '#121212',
-    marginBottom: 10,
-    textTransform: 'lowercase',
+    fontSize: 40, // BIGGER size as requested
+    lineHeight: 100, // Added line height so characters don't clip
+    color: '#2d5a27',
+    marginBottom: 0,
+    // REMOVED textTransform: 'lowercase' to allow capitalization function to work
   },
   bodyText: {
     fontSize: 16,
