@@ -53,3 +53,5 @@ const GardenScreen = ({ plants, searchQuery, setSearchQuery, onAboutClick, onPla
     </SafeAreaView>
   );
 };
+
+export default GardenScreen;
