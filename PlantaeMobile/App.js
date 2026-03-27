@@ -9,6 +9,14 @@ import PlantModal from './components/PlantModal';
 
 SplashScreen.preventAutoHideAsync();
 
+// ALWAYS place styles above the component to avoid TDZ (Temporal Dead Zone)
+const styles = StyleSheet.create({
+  container: { 
+    flex: 1, 
+    backgroundColor: '#f1eeee' 
+  }
+});
+
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [allPlants, setAllPlants] = useState(plantData);
@@ -71,7 +79,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1eeee' }
-});
