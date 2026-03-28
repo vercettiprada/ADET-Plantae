@@ -1,3 +1,16 @@
+@font-face {
+  font-family: 'AstonScript';
+  src: url('/astonscript.tff') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.brand-title {
+  font-family: 'AstonScript', sans-serif !important; /* Overrides Playfair Display */
+  font-size: 4.5rem; /* Adjusted since custom fonts often vary in scale */
+  letter-spacing: -1px;
+}
 
 /*BASE STYLES*/
 
