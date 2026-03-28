@@ -1,83 +1,114 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
-import { BlurView } from 'expo-blur'; // Ensure expo-blur is installed
+import { 
+  View, Text, StyleSheet, SafeAreaView, 
+  TouchableOpacity, Switch, Dimensions 
+} from 'react-native';
 
-export default function SettingsSidebar({ navigation }) {
-  const MenuItem = ({ title, onPress, isLogout }) => (
-    <TouchableOpacity style={styles.menuItem} onPress={onPress}>
-      <Text style={[styles.menuText, isLogout && styles.logoutText]}>{title}</Text>
-    </TouchableOpacity>
-  );
+const { width } = Dimensions.get('window');
 
+const MENU_ITEMS = [
+  'profile',
+  'garden stats',
+  'dark mode', // We'll add a switch here
+  'notifications',
+  'account settings',
+  'help & support',
+  'about plantae',
+  'logout',
+];
+
+const SettingsSidebar = ({ isDarkMode, setIsDarkMode }) => {
   return (
-    <View style={{ flex: 1 }}>
-      {/* This mimics your --ios-blur and glass-white background */}
-      <BlurView intensity={80} tint="light" style={StyleSheet.absoluteFill} />
-      
-      <SafeAreaView style={styles.container}>
-        <View style={styles.sidebarHeaderContainer}>
-          <Text style={styles.sidebarHeaderTitle}>Settings</Text>
-          <TouchableOpacity onPress={() => navigation.closeDrawer()}>
-            <Text style={styles.closeXApple}>✕</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <View style={styles.menuGroup}>
-          <MenuItem title="Profile" />
-          <MenuItem title="Garden Stats" />
-          <MenuItem title="Dark Mode" />
-          <MenuItem title="Notifications" />
-          <MenuItem title="Account Settings" />
-          <MenuItem title="Help & Support" />
-          
-          {/* This matches: <p onClick={onAboutClick}>About Plantae</p> */}
-          <MenuItem title="About Plantae" onPress={() => navigation.navigate('About')} />
-          
-          <MenuItem title="Logout" isLogout={true} />
-        </View>
-      </SafeAreaView>
-    </View>
+    <SafeAreaView style={styles.container}>
+      {/* 1. ARCHITECTURAL HEADER */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>settings</Text>
+        <View style={styles.accentDot} />
+      </View>
+
+      {/* 2. HIGH-FASHION MINIMALIST MENU */}
+      <View style={styles.menuContent}>
+        {MENU_ITEMS.map((item, index) => {
+          const isDarkModeToggle = item === 'dark mode';
+          const isLogout = item === 'logout';
+
+          return (
+            <View key={index} style={[styles.menuRow, isDarkModeToggle && styles.rowWithToggle]}>
+              <TouchableOpacity style={styles.menuButton} activeOpacity={0.7}>
+                <Text style={[
+                    styles.menuText, 
+                    isLogout && { color: '#888' }, // Subtle grey for logout
+                    isDarkModeToggle && { fontWeight: '700' } // Bold the toggle item
+                ]}>
+                  {item}
+                </Text>
+              </TouchableOpacity>
+
+              {isDarkModeToggle && (
+                <Switch 
+                  value={isDarkMode}
+                  onValueChange={setIsDarkMode}
+                  trackColor={{ false: '#ccc', true: '#2d5a27' }}
+                  thumbColor={isDarkMode ? '#fff' : '#f4f3f4'}
+                  ios_backgroundColor="#ccc"
+                />
+              )}
+            </View>
+          );
+        })}
+      </View>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // Matches your --glass-white background
-    backgroundColor: 'rgba(255, 255, 255, 0.3)', 
+    backgroundColor: '#fff', // Pure white, no light grey here
+    paddingHorizontal: 40, // Massive padding for editorial feel
+    paddingTop: 50,
   },
-  sidebarHeaderContainer: {
-    padding: 30,
+  header: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginBottom: 80, // Massive leading space
+  },
+  headerTitle: {
+    fontSize: 48, // Poster-sized
+    fontWeight: '700', // Heavy weight for title
+    letterSpacing: -1,
+    textTransform: 'lowercase',
+    color: '#121212',
+  },
+  accentDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#4f9a44',
+    marginLeft: 3,
+    marginBottom: 10,
+  },
+  menuContent: {
+    flex: 1,
+  },
+  menuRow: {
+    marginBottom: 40, // BRUTAL spacing between items
+  },
+  rowWithToggle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // Matches your .sidebar-header styles
   },
-  sidebarHeaderTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: 'rgb(63, 62, 62)',
-  },
-  closeXApple: {
-    fontSize: 28,
-    color: 'rgb(112, 112, 112)',
-    opacity: 0.7,
-  },
-  menuGroup: {
-    paddingHorizontal: 34,
-  },
-  menuItem: {
-    paddingVertical: 12,
-    marginVertical: 4,
-    borderRadius: 12,
+  menuButton: {
+    flex: 1,
   },
   menuText: {
-    fontSize: 16,
-    color: 'rgba(78, 78, 78, 0.8)', // Matches your .menu-group p
+    fontSize: 22, // Large and clean
+    fontWeight: '400',
+    letterSpacing: 0.5,
+    textTransform: 'lowercase', // THE KEY aesthetic change
+    color: '#121212',
   },
-  logoutText: {
-    color: '#636363',
-    fontWeight: '600',
-    marginTop: 20,
-  }
 });
+
+export default SettingsSidebar;
