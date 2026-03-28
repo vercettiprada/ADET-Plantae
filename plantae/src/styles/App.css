@@ -1,4 +1,10 @@
-
+@font-face {
+  font-family: 'AstonScript';
+  src: url('/AstonScript.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 /*BASE STYLES*/
 
 :root {
@@ -26,7 +32,7 @@ body {
 }
 
 .brand-title {
-  font-family: 'Playfair Display', serif;
+ font-family: 'AstonScript', sans-serif !important;
   font-size: 3.5rem;
   font-weight: 700;
   color: var(--accent);
