@@ -1,4 +1,4 @@
-# 🌿 Plantae REST API — Backend
+#  Plantae REST API — Backend
 
 Django REST Framework backend for the **PlantaeMobile** Expo app.  
 Implements every item from the **Module 3 Web Services Checklist**.
@@ -109,13 +109,13 @@ Authorization: Bearer eyJ...
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| GET | `/api/v1/plants/` | ✅ | List all (paginated) |
-| POST | `/api/v1/plants/` | ✅ | Create a plant |
-| GET | `/api/v1/plants/{id}/` | ✅ | Get single plant |
-| PUT | `/api/v1/plants/{id}/` | ✅ | Full update |
-| PATCH | `/api/v1/plants/{id}/` | ✅ | Partial update |
-| DELETE | `/api/v1/plants/{id}/` | ✅ | Delete plant |
-| GET | `/api/v1/plants/summary/` | ❌ | Public lightweight list |
+| GET | `/api/v1/plants/`  List all (paginated) |
+| POST | `/api/v1/plants/`  | Create a plant |
+| GET | `/api/v1/plants/{id}/`  | Get single plant |
+| PUT | `/api/v1/plants/{id}/`  | Full update |
+| PATCH | `/api/v1/plants/{id}/`  | Partial update |
+| DELETE | `/api/v1/plants/{id}/`  | Delete plant |
+| GET | `/api/v1/plants/summary/`  | Public lightweight list |
 
 **Query parameters:**
 - `?page=1&limit=10` — pagination
