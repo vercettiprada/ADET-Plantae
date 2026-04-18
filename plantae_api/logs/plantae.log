@@ -13549,40 +13549,6 @@ AttributeError: type object 'Token' has no attribute 'objects'
 [2026-04-18 19:05:27,237] WARNING django.security.csrf Forbidden (CSRF cookie not set.): /api/auth/login/
 [2026-04-18 19:05:27,237] INFO plantae_api << POST /api/auth/login/ | Status: 403 | Duration: 3ms
 [2026-04-18 19:05:27,238] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 403 2855
-[2026-04-18 19:38:30,251] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\urls.py changed, reloading.
-[2026-04-18 19:38:30,926] INFO django.utils.autoreload Watching for file changes with StatReloader
-[2026-04-18 19:38:57,456] INFO plantae_api >> POST /api/auth/login/
-[2026-04-18 19:38:57,917] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 461ms
-[2026-04-18 19:38:57,918] WARNING django.request Unauthorized: /api/auth/login/
-[2026-04-18 19:38:57,918] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
-[2026-04-18 19:39:04,986] INFO django.server - Broken pipe from ('192.168.137.86', 49378)
-[2026-04-18 19:39:30,007] INFO plantae_api >> POST /api/auth/login/
-[2026-04-18 19:39:30,583] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 576ms
-[2026-04-18 19:39:30,584] INFO django.server "POST /api/auth/login/ HTTP/1.1" 200 507
-[2026-04-18 19:39:30,837] INFO plantae_api >> GET /api/v1/plants/
-[2026-04-18 19:39:30,843] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
-[2026-04-18 19:39:30,844] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
-[2026-04-18 19:39:48,228] INFO plantae_api >> POST /api/auth/register/
-[2026-04-18 19:39:48,230] INFO plantae_api << POST /api/auth/register/ | Status: 400 | Duration: 1ms
-[2026-04-18 19:39:48,230] WARNING django.request Bad Request: /api/auth/register/
-[2026-04-18 19:39:48,231] WARNING django.server "POST /api/auth/register/ HTTP/1.1" 400 34
-[2026-04-18 19:39:51,713] INFO plantae_api >> POST /api/auth/register/
-[2026-04-18 19:39:52,655] INFO plantae_api << POST /api/auth/register/ | Status: 201 | Duration: 942ms
-[2026-04-18 19:39:52,655] INFO django.server "POST /api/auth/register/ HTTP/1.1" 201 510
-[2026-04-18 19:39:52,842] INFO plantae_api >> GET /api/v1/plants/
-[2026-04-18 19:39:52,847] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 4ms
-[2026-04-18 19:39:52,847] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
-[2026-04-18 19:39:58,725] INFO plantae_api >> POST /api/auth/login/
-[2026-04-18 19:39:59,191] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 465ms
-[2026-04-18 19:39:59,191] WARNING django.request Unauthorized: /api/auth/login/
-[2026-04-18 19:39:59,191] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
-[2026-04-18 19:40:05,420] INFO plantae_api >> POST /api/auth/login/
-[2026-04-18 19:40:05,886] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 466ms
-[2026-04-18 19:40:05,887] WARNING django.request Unauthorized: /api/auth/login/
-[2026-04-18 19:40:05,887] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
-[2026-04-18 19:40:09,734] INFO plantae_api >> POST /api/auth/login/
-[2026-04-18 19:40:10,364] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 630ms
-[2026-04-18 19:40:10,364] INFO django.server "POST /api/auth/login/ HTTP/1.1" 200 510
-[2026-04-18 19:40:10,567] INFO plantae_api >> GET /api/v1/plants/
-[2026-04-18 19:40:10,571] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 4ms
-[2026-04-18 19:40:10,571] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
+[2026-04-18 19:57:14,497] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 19:57:15,133] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 635ms
+[2026-04-18 19:57:15,133] INFO django.server "POST /api/auth/login/ HTTP/1.1" 200 507
