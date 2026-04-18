@@ -10,7 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 // Your Components
-import { plantData } from './data/Plant';
+import { plantData } from './data/plant';
 import GardenScreen from './screens/GardenScreen';
 import AboutScreen from './screens/AboutScreen';
 import PlantModal from './components/PlantModal';
