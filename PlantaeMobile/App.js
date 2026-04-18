@@ -1,127 +1,121 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-
-// React Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Alert } from 'react-native';
 
-// Your Components
-import { plantData } from './data/plant';
-import GardenScreen from './screens/GardenScreen';
-import AboutScreen from './screens/AboutScreen';
-import PlantModal from './components/PlantModal';
-import SettingsSidebar from './components/SettingsSidebar';
+import LoginScreen from './src/screens/LoginScreen';
+import GardenScreen from './src/screens/GardenScreen';
+import { api } from './src/api';
 
-SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
-
-// This is the "Base Layer" of your app
-function DrawerLayer({ allPlants, setSelectedPlant, isDarkMode, setIsDarkMode, theme }) {
-  return (
-    <Drawer.Navigator 
-      drawerContent={(props) => (
-        <SettingsSidebar 
-          {...props} 
-          isDarkMode={isDarkMode} 
-          setIsDarkMode={setIsDarkMode} 
-        />
-      )}
-      screenOptions={{ 
-        headerShown: false,
-        drawerPosition: 'right', 
-        drawerType: 'slide',
-        drawerStyle: { width: '85%' },
-      }}
-    >
-      <Drawer.Screen name="Garden">
-        {(props) => (
-          <GardenScreen 
-            {...props} 
-            plants={allPlants} 
-            isDarkMode={isDarkMode}
-            theme={theme}
-            onPlantClick={(plant) => setSelectedPlant(plant)}
-          />
-        )}
-      </Drawer.Screen>
-    </Drawer.Navigator>
-  );
-}
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [allPlants] = useState(plantData);
-  const [selectedPlant, setSelectedPlant] = useState(null);
+  const [ready, setReady] = useState(false);
+  const [token, setToken] = useState(null);
+  const [plants, setPlants] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasNext, setHasNext] = useState(true);
 
   useEffect(() => {
-    async function loadResources() {
+    async function init() {
       try {
-        await Font.loadAsync({
-          'AstonScript': require('./assets/fonts/AstonScript.ttf'),
-        });
-      } finally {
-        setFontsLoaded(true);
-      }
+        const [savedToken] = await Promise.all([
+          AsyncStorage.getItem('userToken'),
+          Font.loadAsync({ 'AstonScript': require('./assets/fonts/AstonScript.ttf') })
+        ]);
+        if (savedToken) {
+          setToken(savedToken);
+          const res = await api.getPlants(1);
+          setPlants(res.data);
+          setHasNext(res.hasNext);
+          setPage(2);
+        }
+      } catch (e) { console.warn(e); }
+      finally { setReady(true); await SplashScreen.hideAsync(); }
     }
-    loadResources();
+    init();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) await SplashScreen.hideAsync();
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) return null;
-
-  const theme = {
-    background: isDarkMode ? '#121212' : '#f1eeee',
-    text: isDarkMode ? '#e0e0e0' : '#2d5a27',
+  const handleRegister = async (userData) => {
+    setLoading(true);
+    const res = await api.register(userData);
+    if (res.token || res.id) { // Depending on if your Django returns a token immediately
+      Alert.alert("Success", "Account created! You can now login.");
+    } else {
+      Alert.alert("Registration Error", res.error || "Could not create account");
+    }
+    setLoading(false);
   };
 
+  const handleLogin = async (creds) => {
+    setLoading(true);
+    const res = await api.login(creds);
+    if (res.token) {
+      await AsyncStorage.setItem('userToken', res.token);
+      setToken(res.token);
+      const plantRes = await api.getPlants(1);
+      setPlants(plantRes.data);
+      setHasNext(plantRes.hasNext);
+      setPage(2);
+    } else {
+      Alert.alert("Login Failed", res.error || "Check your credentials");
+    }
+    setLoading(false);
+  };
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('userToken');
+    setToken(null);
+    setPlants([]);
+    setPage(1);
+  };
+
+  const loadMore = async () => {
+    if (loading || !hasNext) return;
+    setLoading(true);
+    const res = await api.getPlants(page);
+    setPlants(prev => [...prev, ...res.data]);
+    setHasNext(res.hasNext);
+    setPage(p => p + 1);
+    setLoading(false);
+  };
+
+  if (!ready) return null;
+
   return (
-    <View style={{ flex: 1, backgroundColor: theme.background }} onLayout={onLayoutRootView}>
-      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
-      
-      <NavigationContainer>
-        {/* The Root Stack handles the Modal transition */}
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="MainApp">
-            {() => (
-              <DrawerLayer 
-                allPlants={allPlants} 
-                setSelectedPlant={setSelectedPlant} 
-                isDarkMode={isDarkMode}
-                setIsDarkMode={setIsDarkMode}
-                theme={theme}
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {token == null ? (
+          <Stack.Screen name="Login">
+            {(props) => (
+              <LoginScreen 
+                {...props} 
+                onLogin={handleLogin} 
+                onRegister={handleRegister} 
+                loading={loading} 
               />
             )}
           </Stack.Screen>
-
-          {/* About slides up from bottom - very smooth transition */}
-          <Stack.Screen 
-            name="About" 
-            options={{ 
-              presentation: 'modal', 
-              animation: 'slide_from_bottom' 
-            }}
-          >
-            {(props) => <AboutScreen {...props} isDarkMode={isDarkMode} />}
+        ) : (
+          <Stack.Screen name="Garden">
+            {(props) => (
+              <GardenScreen 
+                {...props} 
+                plants={plants} 
+                onLogout={handleLogout} 
+                loadMorePlants={loadMore}
+                loadingMore={loading}
+              />
+            )}
           </Stack.Screen>
-        </Stack.Navigator>
-
-        {selectedPlant && (
-          <PlantModal 
-            plant={selectedPlant} 
-            isDarkMode={isDarkMode}
-            onClose={() => setSelectedPlant(null)} 
-          />
         )}
-      </NavigationContainer>
-    </View>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

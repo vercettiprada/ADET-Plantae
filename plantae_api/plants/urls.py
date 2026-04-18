@@ -1,10 +1,7 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import PlantViewSet
-
-router = DefaultRouter()
-router.register(r'plants', PlantViewSet, basename='plant')
+from django.urls import path
+from .views import login_view, register_view
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('auth/login/', login_view, name='login'),
+    path('auth/register/', register_view, name='register'),
 ]

@@ -1,6 +1,6 @@
 """
 Plantae API - Django Settings
-Implements all Module 3 checklist requirements:
+Implements all Module checklist w the following requirements:
 - REST API Design, Authentication, Pagination, Versioning, Logging, etc.
 """
 
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third-party
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
@@ -41,7 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'plantae_api.middleware.RequestLoggingMiddleware',  # Custom logging
+    'plantae_api.middleware.RequestLogMiddleware', 
 ]
 
 ROOT_URLCONF = 'plantae_api.urls'
@@ -108,8 +109,8 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ),
     # Pagination (Checklist §4)
-    'DEFAULT_PAGINATION_CLASS': 'plantae_api.pagination.PlantaePagination',
-    'PAGE_SIZE': 10,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 6, # Small size to demonstrate the skeleton loader quickly
     # Filtering
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',

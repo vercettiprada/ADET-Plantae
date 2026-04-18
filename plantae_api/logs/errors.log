@@ -1,1 +1,2 @@
 [2026-04-18 11:11:21,819] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: PlantViewSet | Path: /api/v1/plants/
+[2026-04-18 13:16:41,570] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: PlantViewSet | Path: /api/v1/plants/

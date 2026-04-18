@@ -1,65 +1,48 @@
-import logging
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from rest_framework import viewsets, status, filters
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status
 
-from .models import Plant
-from .serializers import PlantSerializer, PlantCreateSerializer, PlantSummarySerializer
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register_view(request, version=None):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
 
-logger = logging.getLogger('plants')
+    if not username or not password or not email:
+        return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
 
-class PlantViewSet(viewsets.ModelViewSet):
-    queryset = Plant.objects.all().order_by('name')
-    permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['light', 'water']
-    search_fields = ['name', 'species', 'secret_fact']
-    ordering_fields = ['name', 'species', 'created_at']
+    if User.objects.filter(username=username).exists():
+        return Response({'error': 'Username already taken'}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return PlantCreateSerializer
-        return PlantSerializer
+    user = User.objects.create_user(username=username, email=email, password=password)
+    token, _ = Token.objects.get_or_create(user=user)
+    
+    return Response({
+        'token': token.key,
+        'user_id': user.pk,
+        'email': user.email
+    }, status=status.HTTP_201_CREATED)
 
-    def list(self, request, *args, **kwargs):
-        logger.info(f"GET /plants/ by user: {request.user}")
-        queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def create(self, request, *args, **kwargs):
-        logger.info(f"POST /plants/ by user: {request.user}")
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid():
-            logger.warning(f"Validation failed: {serializer.errors}")
-            return Response({
-                'error': {
-                    'code': 400,
-                    'status': 'BAD_REQUEST',
-                    'message': 'Validation error.',
-                    'details': serializer.errors,
-                }
-            }, status=status.HTTP_400_BAD_REQUEST)
-        self.perform_create(serializer)
-        logger.info(f"Plant created: {serializer.data.get('name')}")
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def destroy(self, request, *args, **kwargs):
-        plant = self.get_object()
-        logger.info(f"DELETE /plants/{plant.id}/ ({plant.name}) by user: {request.user}")
-        plant.delete()
-        return Response({'message': f'Plant "{plant.name}" deleted.'}, status=status.HTTP_204_NO_CONTENT)
-
-    @action(detail=False, methods=['get'], permission_classes=[AllowAny], url_path='summary')
-    def list_summary(self, request, *args, **kwargs):
-        queryset = Plant.objects.all().order_by('name')
-        serializer = PlantSummarySerializer(queryset, many=True)
-        return Response({'plants': serializer.data, 'count': queryset.count()})
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_view(request, version=None):
+    username = request.data.get('username') 
+    password = request.data.get('password')
+    
+    user = authenticate(username=username, password=password) 
+    
+    if user is not None:
+        # FIXED: Removed extra indentation and local import
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'username': user.username
+        })
+    else:
+        return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)

@@ -26,3 +26,393 @@
 [2026-04-18 11:29:55,739] WARNING django.request Not Found: /post/api/token
 [2026-04-18 11:29:55,740] WARNING django.server "GET /post/api/token HTTP/1.1" 404 3629
 [2026-04-18 11:34:53,814] INFO django.server "GET /swagger/?format=openapi HTTP/1.1" 200 11922
+[2026-04-18 13:04:00,837] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 13:13:18,520] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 13:16:41,570] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: PlantViewSet | Path: /api/v1/plants/
+[2026-04-18 13:16:41,574] WARNING django.request Unauthorized: /api/v1/plants/
+[2026-04-18 13:16:41,575] WARNING django.server "GET /api/v1/plants/ HTTP/1.1" 401 119
+[2026-04-18 13:40:47,569] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 13:40:48,207] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 13:40:55,265] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\middleware.py changed, reloading.
+[2026-04-18 13:40:55,791] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 13:42:34,461] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\middleware.py changed, reloading.
+[2026-04-18 13:42:34,997] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 13:42:54,394] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 13:44:35,321] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-18 13:44:35,918] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 13:45:08,839] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 13:45:08,841] INFO plants GET /plants/ accessed
+[2026-04-18 13:45:08,847] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 7ms
+[2026-04-18 13:45:08,848] INFO django.server "GET /api/v1/plants/ HTTP/1.1" 200 4065
+[2026-04-18 14:46:10,729] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 14:46:10,732] INFO plants GET /plants/ accessed
+[2026-04-18 14:46:10,743] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 12ms
+[2026-04-18 14:46:10,744] INFO django.server "GET /api/v1/plants/ HTTP/1.1" 200 3944
+[2026-04-18 14:48:37,527] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 14:48:37,527] INFO plants GET /plants/ accessed
+[2026-04-18 14:48:37,530] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-18 14:48:37,530] INFO django.server "GET /api/v1/plants/ HTTP/1.1" 200 3944
+[2026-04-18 14:53:25,380] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-18 14:53:25,924] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 15:01:26,971] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:01:26,972] INFO plants GET /plants/ accessed
+[2026-04-18 15:01:26,977] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 4ms
+[2026-04-18 15:01:26,978] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:01:31,217] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:01:31,219] INFO plants GET /plants/ accessed
+[2026-04-18 15:01:31,221] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:01:31,222] INFO django.server "GET /api/v1/plants/?page=2 HTTP/1.1" 200 1837
+[2026-04-18 15:02:57,286] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:02:57,287] INFO plants GET /plants/ accessed
+[2026-04-18 15:02:57,289] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-18 15:02:57,290] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:03:04,280] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:03:04,282] INFO plants GET /plants/ accessed
+[2026-04-18 15:03:04,284] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-18 15:03:04,285] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:03:11,303] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:03:11,303] INFO plants GET /plants/ accessed
+[2026-04-18 15:03:11,305] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:03:11,306] INFO django.server "GET /api/v1/plants/?page=2 HTTP/1.1" 200 1837
+[2026-04-18 15:03:38,437] INFO django.server - Broken pipe from ('192.168.1.6', 62040)
+[2026-04-18 15:03:44,019] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:03:44,020] INFO plants GET /plants/ accessed
+[2026-04-18 15:03:44,022] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:03:44,023] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:03:47,007] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:03:47,008] INFO plants GET /plants/ accessed
+[2026-04-18 15:03:47,011] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:03:47,011] INFO django.server "GET /api/v1/plants/?page=2 HTTP/1.1" 200 1837
+[2026-04-18 15:03:59,487] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:03:59,487] INFO plants GET /plants/ accessed
+[2026-04-18 15:03:59,490] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-18 15:03:59,490] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:04:24,219] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:04:24,219] INFO plants GET /plants/ accessed
+[2026-04-18 15:04:24,221] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:04:24,222] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:04:49,848] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:04:49,848] INFO plants GET /plants/ accessed
+[2026-04-18 15:04:49,850] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:04:49,851] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:04:53,351] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:04:53,352] INFO plants GET /plants/ accessed
+[2026-04-18 15:04:53,355] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-18 15:04:53,355] INFO django.server "GET /api/v1/plants/?page=2 HTTP/1.1" 200 1837
+[2026-04-18 15:05:02,388] INFO django.server - Broken pipe from ('192.168.1.6', 62067)
+[2026-04-18 15:05:08,255] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:05:08,255] INFO plants GET /plants/ accessed
+[2026-04-18 15:05:08,258] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-18 15:05:08,258] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:05:10,763] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:05:10,763] INFO plants GET /plants/ accessed
+[2026-04-18 15:05:10,765] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:05:10,766] INFO django.server "GET /api/v1/plants/?page=2 HTTP/1.1" 200 1837
+[2026-04-18 15:05:43,109] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:05:43,109] INFO plants GET /plants/ accessed
+[2026-04-18 15:05:43,111] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:05:43,112] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:05:43,148] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:05:43,148] INFO plants GET /plants/ accessed
+[2026-04-18 15:05:43,151] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:05:43,152] INFO django.server "GET /api/v1/plants/?page=2 HTTP/1.1" 200 1837
+[2026-04-18 15:05:47,922] INFO django.server - Broken pipe from ('192.168.1.6', 62107)
+[2026-04-18 15:05:53,006] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:05:53,006] INFO plants GET /plants/ accessed
+[2026-04-18 15:05:53,008] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:05:53,009] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:06:06,126] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:06:06,127] INFO plants GET /plants/ accessed
+[2026-04-18 15:06:06,129] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:06:06,130] INFO django.server "GET /api/v1/plants/ HTTP/1.1" 200 2485
+[2026-04-18 15:06:06,204] INFO django.server code 400, message Bad request version ('\x9b|\x8c\x18\x00"\x13\x01\x13\x03\x13\x02À+À/Ì©Ì¨À,À0À')
+[2026-04-18 15:06:06,204] ERROR django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+[2026-04-18 15:06:06,205] INFO django.server code 400, message Bad request version ('ª\x87\x14ÌÅ«.±Ú÷§\x15S8¨é\x82KQ\x96^Î¿Â9\x03éÛÖ\x9c\x067\x00"\x13\x01\x13\x03\x13\x02À+À/Ì©Ì¨À,À0À')
+[2026-04-18 15:06:06,205] ERROR django.server You're accessing the development server over HTTPS, but it only supports HTTP.
+[2026-04-18 15:06:43,012] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:06:43,012] INFO plants GET /plants/ accessed
+[2026-04-18 15:06:43,015] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-18 15:06:43,015] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:06:55,640] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:06:55,640] INFO plants GET /plants/ accessed
+[2026-04-18 15:06:55,643] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-18 15:06:55,643] INFO django.server "GET /api/v1/plants/?page=2 HTTP/1.1" 200 1837
+[2026-04-18 15:07:06,260] INFO django.server - Broken pipe from ('192.168.1.6', 62137)
+[2026-04-18 15:07:10,229] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:07:10,229] INFO plants GET /plants/ accessed
+[2026-04-18 15:07:10,232] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-18 15:07:10,232] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2485
+[2026-04-18 15:07:12,784] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-18 15:07:12,785] INFO plants GET /plants/ accessed
+[2026-04-18 15:07:12,787] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-18 15:07:12,787] INFO django.server "GET /api/v1/plants/?page=2 HTTP/1.1" 200 1837
+[2026-04-18 16:10:35,256] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:10:35,282] WARNING plantae_api << POST /api/v1/auth/login/ | Status: 404 | Duration: 26ms
+[2026-04-18 16:10:35,284] WARNING django.request Not Found: /api/v1/auth/login/
+[2026-04-18 16:10:35,285] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 404 9526
+[2026-04-18 16:10:36,067] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:10:36,070] WARNING plantae_api << POST /api/v1/auth/login/ | Status: 404 | Duration: 3ms
+[2026-04-18 16:10:36,070] WARNING django.request Not Found: /api/v1/auth/login/
+[2026-04-18 16:10:36,071] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 404 9526
+[2026-04-18 16:10:43,282] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:10:43,286] WARNING plantae_api << POST /api/v1/auth/login/ | Status: 404 | Duration: 3ms
+[2026-04-18 16:10:43,286] WARNING django.request Not Found: /api/v1/auth/login/
+[2026-04-18 16:10:43,286] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 404 9526
+[2026-04-18 16:10:44,786] INFO django.server - Broken pipe from ('192.168.1.6', 61511)
+[2026-04-18 16:12:07,374] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:12:07,377] WARNING plantae_api << POST /api/v1/auth/login/ | Status: 404 | Duration: 2ms
+[2026-04-18 16:12:07,378] WARNING django.request Not Found: /api/v1/auth/login/
+[2026-04-18 16:12:07,378] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 404 9526
+[2026-04-18 16:12:08,409] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:12:08,413] WARNING plantae_api << POST /api/v1/auth/login/ | Status: 404 | Duration: 4ms
+[2026-04-18 16:12:08,413] WARNING django.request Not Found: /api/v1/auth/login/
+[2026-04-18 16:12:08,413] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 404 9526
+[2026-04-18 16:12:08,555] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:12:08,558] WARNING plantae_api << POST /api/v1/auth/login/ | Status: 404 | Duration: 3ms
+[2026-04-18 16:12:08,558] WARNING django.request Not Found: /api/v1/auth/login/
+[2026-04-18 16:12:08,559] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 404 9526
+[2026-04-18 16:19:33,990] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:19:33,993] WARNING plantae_api << POST /api/v1/auth/register/ | Status: 404 | Duration: 3ms
+[2026-04-18 16:19:33,993] WARNING django.request Not Found: /api/v1/auth/register/
+[2026-04-18 16:19:33,993] WARNING django.server "POST /api/v1/auth/register/ HTTP/1.1" 404 9535
+[2026-04-18 16:19:44,743] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:19:44,746] WARNING plantae_api << POST /api/v1/auth/register/ | Status: 404 | Duration: 3ms
+[2026-04-18 16:19:44,746] WARNING django.request Not Found: /api/v1/auth/register/
+[2026-04-18 16:19:44,748] WARNING django.server "POST /api/v1/auth/register/ HTTP/1.1" 404 9535
+[2026-04-18 16:19:46,991] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:19:46,995] WARNING plantae_api << POST /api/v1/auth/register/ | Status: 404 | Duration: 4ms
+[2026-04-18 16:19:46,995] WARNING django.request Not Found: /api/v1/auth/register/
+[2026-04-18 16:19:46,995] WARNING django.server "POST /api/v1/auth/register/ HTTP/1.1" 404 9535
+[2026-04-18 16:19:53,983] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:19:53,986] WARNING plantae_api << POST /api/v1/auth/register/ | Status: 404 | Duration: 3ms
+[2026-04-18 16:19:53,987] WARNING django.request Not Found: /api/v1/auth/register/
+[2026-04-18 16:19:53,987] WARNING django.server "POST /api/v1/auth/register/ HTTP/1.1" 404 9535
+[2026-04-18 16:20:46,438] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\urls.py changed, reloading.
+[2026-04-18 16:20:47,126] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:20:52,270] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\urls.py changed, reloading.
+[2026-04-18 16:20:52,803] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:20:59,801] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\urls.py changed, reloading.
+[2026-04-18 16:21:00,318] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:21:39,975] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:22:09,420] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 16:22:10,038] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:23:02,646] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 16:23:03,237] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:23:11,330] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\urls.py changed, reloading.
+[2026-04-18 16:23:11,871] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:23:13,750] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:23:13,809] ERROR django.request Internal Server Error: /api/v1/auth/register/
+Traceback (most recent call last):
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+TypeError: register_view() got an unexpected keyword argument 'version'
+[2026-04-18 16:23:13,810] WARNING plantae_api << POST /api/v1/auth/register/ | Status: 500 | Duration: 59ms
+[2026-04-18 16:23:13,811] ERROR django.server "POST /api/v1/auth/register/ HTTP/1.1" 500 98082
+[2026-04-18 16:23:22,448] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:23:22,466] ERROR django.request Internal Server Error: /api/v1/auth/register/
+Traceback (most recent call last):
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+TypeError: register_view() got an unexpected keyword argument 'version'
+[2026-04-18 16:23:22,467] WARNING plantae_api << POST /api/v1/auth/register/ | Status: 500 | Duration: 18ms
+[2026-04-18 16:23:22,468] ERROR django.server "POST /api/v1/auth/register/ HTTP/1.1" 500 98082
+[2026-04-18 16:24:01,908] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 16:24:02,535] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:24:17,093] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 16:24:17,645] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:24:17,992] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:24:19,323] ERROR django.request Internal Server Error: /api/v1/auth/register/
+Traceback (most recent call last):
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\github\ADET-Plantae\plantae_api\plants\views.py", line 23, in register_view
+    token, created = Token.objects.get_or_create(user=user)
+                     ^^^^^^^^^^^^^
+AttributeError: type object 'Token' has no attribute 'objects'
+[2026-04-18 16:24:19,326] WARNING plantae_api << POST /api/v1/auth/register/ | Status: 500 | Duration: 1334ms
+[2026-04-18 16:24:19,326] ERROR django.server "POST /api/v1/auth/register/ HTTP/1.1" 500 102774
+[2026-04-18 16:24:50,603] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\middleware.py changed, reloading.
+[2026-04-18 16:24:51,170] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:25:31,370] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-18 16:25:31,890] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:26:40,872] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-18 16:26:41,434] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:26:42,632] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:26:42,634] INFO plantae_api << POST /api/v1/auth/register/ | Status: 400 | Duration: 2ms
+[2026-04-18 16:26:42,635] WARNING django.request Bad Request: /api/v1/auth/register/
+[2026-04-18 16:26:42,635] WARNING django.server "POST /api/v1/auth/register/ HTTP/1.1" 400 34
+[2026-04-18 16:26:47,555] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:26:48,018] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 463ms
+[2026-04-18 16:26:48,018] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-18 16:26:48,018] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 16:26:53,249] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:26:53,732] ERROR django.request Internal Server Error: /api/v1/auth/login/
+Traceback (most recent call last):
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\github\ADET-Plantae\plantae_api\plants\views.py", line 40, in login_view
+    token, created = Token.objects.get_or_create(user=user)
+                     ^^^^^^^^^^^^^
+AttributeError: type object 'Token' has no attribute 'objects'
+[2026-04-18 16:26:53,734] INFO plantae_api << POST /api/v1/auth/login/ | Status: 500 | Duration: 484ms
+[2026-04-18 16:26:53,735] ERROR django.server "POST /api/v1/auth/login/ HTTP/1.1" 500 102027
+[2026-04-18 16:28:53,737] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 16:28:54,289] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:29:43,005] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 16:29:43,589] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:29:56,188] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:29:56,190] INFO plantae_api << POST /api/v1/auth/register/ | Status: 400 | Duration: 2ms
+[2026-04-18 16:29:56,191] WARNING django.request Bad Request: /api/v1/auth/register/
+[2026-04-18 16:29:56,191] WARNING django.server "POST /api/v1/auth/register/ HTTP/1.1" 400 34
+[2026-04-18 16:29:58,614] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:29:59,463] ERROR django.request Internal Server Error: /api/v1/auth/register/
+Traceback (most recent call last):
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xavie\OneDrive\Documents\python\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\github\ADET-Plantae\plantae_api\plants\views.py", line 23, in register_view
+    token, created = Token.objects.get_or_create(user=user)
+                     ^^^^^^^^^^^^^
+AttributeError: type object 'Token' has no attribute 'objects'
+[2026-04-18 16:29:59,466] INFO plantae_api << POST /api/v1/auth/register/ | Status: 500 | Duration: 852ms
+[2026-04-18 16:29:59,466] ERROR django.server "POST /api/v1/auth/register/ HTTP/1.1" 500 102767
+[2026-04-18 16:30:57,401] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 16:30:57,947] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:31:20,722] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 16:31:21,268] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:31:51,540] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\views.py changed, reloading.
+[2026-04-18 16:31:52,078] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:33:08,383] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 16:33:35,371] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:33:36,361] INFO plantae_api << POST /api/v1/auth/register/ | Status: 201 | Duration: 988ms
+[2026-04-18 16:33:36,361] INFO django.server "POST /api/v1/auth/register/ HTTP/1.1" 201 86
+[2026-04-18 16:33:41,861] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:33:41,862] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 0ms
+[2026-04-18 16:33:41,864] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-18 16:33:41,864] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 16:33:46,380] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:33:46,382] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 2ms
+[2026-04-18 16:33:46,382] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-18 16:33:46,382] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 16:33:52,088] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-18 16:33:52,089] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-18 16:33:52,089] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-18 16:33:52,089] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 16:33:57,590] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-18 16:33:57,592] INFO plantae_api << POST /api/v1/auth/register/ | Status: 400 | Duration: 2ms
+[2026-04-18 16:33:57,592] WARNING django.request Bad Request: /api/v1/auth/register/
+[2026-04-18 16:33:57,593] WARNING django.server "POST /api/v1/auth/register/ HTTP/1.1" 400 34
