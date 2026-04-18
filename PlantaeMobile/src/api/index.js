@@ -1,10 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const API_BASE = 'http://192.168.1.6:8000/api/v1';
-export const UNSPLASH_ACCESS_KEY = 'asDgc1ykxE_pRE3VxZgE4SA01ggeJVeIJSeTQ07Tjv4';
+// ⚠️  IMPORTANT: Replace with your PC's local IP address.
+// Run 'ipconfig' on Windows, find your IPv4 Address (e.g. 192.168.1.5)
+// Do NOT use 'localhost' — it won't reach Django from a phone/emulator.
+export const API_BASE = 'http://192.168.137.1:8000/api';
 
 export const api = {
-  // ITEM 5: Authentication - Register (CREATE User)
+
+  // REGISTER — POST /api/auth/register/
   register: async (userData) => {
     try {
       const res = await fetch(`${API_BASE}/auth/register/`, {
@@ -12,20 +15,18 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
-      // Check if response is actually JSON
       const contentType = res.headers.get("content-type");
-      if (contentType && contentType.indexOf("application/json") !== -1) {
+      if (contentType && contentType.includes("application/json")) {
         return await res.json();
-      } else {
-        return { error: "Server returned non-JSON response. Check Django URL." };
       }
+      return { error: "Server error. Check Django is running." };
     } catch (e) {
-      console.error("Register API Error:", e);
-      return { error: "Registration Failed" };
+      return { error: "Network error. Is Django running? Check your IP in src/api/index.js" };
     }
   },
 
-  // ITEM 5: Authentication - Login
+  // LOGIN — POST /api/auth/login/
+  // Matches login_view in plants/views.py -> returns { access, refresh, username }
   login: async (credentials) => {
     try {
       const res = await fetch(`${API_BASE}/auth/login/`, {
@@ -33,55 +34,46 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
       });
-      const contentType = res.headers.get("content-type");
-      if (contentType && contentType.indexOf("application/json") !== -1) {
-        return await res.json();
+      const json = await res.json();
+      if (res.ok) {
+        await AsyncStorage.setItem('userToken', json.access);
+        return { token: json.access };
       } else {
-        return { error: "Server error (HTML instead of JSON). Check API_BASE URL." };
+        return { error: json.error || json.detail || "Login failed. Check credentials." };
       }
     } catch (e) {
-      console.error("Login API Error:", e);
-      return { error: "Connection Failed" };
+      return { error: "Network error. Is Django running? Check your IP in src/api/index.js" };
     }
   },
 
-  // ITEM 4, 6 & 11: Secure Data Fetching
+  // GET PLANTS — GET /api/v1/plants/?page=N  (JWT protected)
   getPlants: async (page = 1) => {
     try {
       const token = await AsyncStorage.getItem('userToken');
-      const response = await fetch(`${API_BASE}/plants/?page=${page}`, {
-        headers: { 'Authorization': `Token ${token}` }
+      const response = await fetch(`${API_BASE}/v1/plants/?page=${page}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
+
+      if (!response.ok) {
+        console.log("Plants fetch error:", response.status);
+        return { data: [], hasNext: false };
+      }
+
       const json = await response.json();
-      
       const results = Array.isArray(json) ? json : (json.results || []);
 
-      const mappedData = await Promise.all(
-        results.map(async (plant) => {
-          let imageUrl = plant.imageUrl || 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8';
-          try {
-            const query = plant.name || 'houseplant';
-            const randomPage = Math.floor(Math.random() * 50) + 1;
-            const imgRes = await fetch(
-              `https://api.unsplash.com/search/photos?query=${query}&client_id=${UNSPLASH_ACCESS_KEY}&per_page=1&page=${randomPage}`
-            );
-            if (imgRes.ok) {
-              const imgData = await imgRes.json();
-              imageUrl = imgData.results?.[0]?.urls?.regular || imageUrl;
-            }
-          } catch (imgErr) { /* Fallback */ }
-
-          return {
-            id: plant.id.toString(),
-            name: plant.name || "Unknown Plant",
-            species: plant.species || "Unknown Species",
-            imageUrl: imageUrl,
-            light: plant.light || 'Bright, Indirect',
-            water: plant.water || 'Weekly',
-            secretfact: plant.secretfact || plant.secret_fact || 'Organic sanctuary addition.',
-          };
-        })
-      );
+      const mappedData = results.map((plant) => ({
+        id: (plant.id || Math.random()).toString(),
+        name: plant.name || "Unknown Plant",
+        species: plant.species || "Unknown Species",
+        imageUrl: plant.imageUrl || 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8',
+        light: plant.light || 'Bright, Indirect',
+        water: plant.water || 'Weekly',
+        secretfact: plant.secretfact || plant.secret_fact || 'A beautiful plant.',
+      }));
 
       return { data: mappedData, hasNext: !!json.next };
     } catch (error) {

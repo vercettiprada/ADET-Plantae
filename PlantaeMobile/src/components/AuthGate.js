@@ -5,11 +5,17 @@ import GardenScreen from '../screens/GardenScreen';
 
 const Stack = createNativeStackNavigator();
 
-export const AuthGate = ({ userToken, handleLogin, allPlants }) => (
+export const AuthGate = ({ userToken, handleLogin, handleRegister, allPlants }) => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     {userToken == null ? (
       <Stack.Screen name="Login">
-        {(props) => <LoginScreen {...props} onLogin={handleLogin} />}
+        {(props) => (
+          <LoginScreen
+            {...props}
+            onLogin={handleLogin}
+            onRegister={handleRegister}
+          />
+        )}
       </Stack.Screen>
     ) : (
       <Stack.Screen name="Garden">

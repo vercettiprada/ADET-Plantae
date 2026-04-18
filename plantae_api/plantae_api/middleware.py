@@ -4,7 +4,7 @@ import time
 # 1. Define the logger
 logger = logging.getLogger('plantae_api')
 
-class RequestLogMiddleware:  # Make sure this name matches settings.py
+class RequestLoggingMiddleware:  # Make sure this name matches settings.py
     def __init__(self, get_response):
         self.get_response = get_response
 
