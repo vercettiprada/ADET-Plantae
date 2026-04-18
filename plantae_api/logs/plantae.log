@@ -1,0 +1,28 @@
+[2026-04-18 11:08:26,354] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 11:09:56,948] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 11:10:18,197] WARNING django.request Not Found: /
+[2026-04-18 11:10:18,198] WARNING django.server "GET / HTTP/1.1" 404 3569
+[2026-04-18 11:10:18,248] WARNING django.request Not Found: /favicon.ico
+[2026-04-18 11:10:18,248] WARNING django.server "GET /favicon.ico HTTP/1.1" 404 3620
+[2026-04-18 11:11:21,819] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: PlantViewSet | Path: /api/v1/plants/
+[2026-04-18 11:11:21,822] WARNING django.request Unauthorized: /api/v1/plants/
+[2026-04-18 11:11:21,823] WARNING django.server "GET /api/v1/plants/ HTTP/1.1" 401 119
+[2026-04-18 11:11:21,857] WARNING django.request Not Found: /favicon.ico
+[2026-04-18 11:11:21,857] WARNING django.server "GET /favicon.ico HTTP/1.1" 404 3620
+[2026-04-18 11:12:00,057] INFO django.server "GET /swagger/ HTTP/1.1" 200 2160
+[2026-04-18 11:12:00,238] INFO django.server "GET /static/drf-yasg/swagger-ui-dist/swagger-ui.css HTTP/1.1" 200 177183
+[2026-04-18 11:12:00,239] INFO django.server "GET /static/drf-yasg/swagger-ui-init.js HTTP/1.1" 200 15480
+[2026-04-18 11:12:00,240] INFO django.server "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-standalone-preset.js HTTP/1.1" 200 252451
+[2026-04-18 11:12:00,243] INFO django.server "GET /static/drf-yasg/immutable.min.js HTTP/1.1" 200 56904
+[2026-04-18 11:12:00,249] INFO django.server "GET /static/drf-yasg/style.css HTTP/1.1" 200 1187
+[2026-04-18 11:12:00,251] INFO django.server "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-bundle.js HTTP/1.1" 200 1510271
+[2026-04-18 11:12:00,257] INFO django.server "GET /static/drf-yasg/insQ.min.js HTTP/1.1" 200 2093
+[2026-04-18 11:12:00,386] INFO django.server "GET /static/drf-yasg/swagger-ui-dist/favicon-32x32.png HTTP/1.1" 200 628
+[2026-04-18 11:12:00,415] INFO django.server "GET /swagger/?format=openapi HTTP/1.1" 200 11922
+[2026-04-18 11:12:09,069] WARNING django.request Not Found: /accounts/login/
+[2026-04-18 11:12:09,070] WARNING django.server "GET /accounts/login/?next=/swagger/ HTTP/1.1" 404 3647
+[2026-04-18 11:13:14,257] WARNING django.request Not Found: /accounts/login/
+[2026-04-18 11:13:14,257] WARNING django.server "GET /accounts/login/?next=/swagger/ HTTP/1.1" 404 3647
+[2026-04-18 11:29:55,739] WARNING django.request Not Found: /post/api/token
+[2026-04-18 11:29:55,740] WARNING django.server "GET /post/api/token HTTP/1.1" 404 3629
+[2026-04-18 11:34:53,814] INFO django.server "GET /swagger/?format=openapi HTTP/1.1" 200 11922
