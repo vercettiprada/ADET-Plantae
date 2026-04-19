@@ -13869,3 +13869,27 @@ AttributeError: type object 'Token' has no attribute 'objects'
 [2026-04-19 07:49:56,079] INFO plantae_api >> GET /api/v1/plants/
 [2026-04-19 07:49:56,122] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 41ms
 [2026-04-19 07:49:56,123] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
+[2026-04-19 07:52:11,698] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 07:52:11,701] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-19 07:52:11,702] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
+[2026-04-19 07:56:44,022] INFO plantae_api >> POST /api/auth/login/
+[2026-04-19 07:56:44,657] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 634ms
+[2026-04-19 07:56:44,657] INFO django.server "POST /api/auth/login/ HTTP/1.1" 200 507
+[2026-04-19 07:56:44,829] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 07:56:44,833] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 4ms
+[2026-04-19 07:56:44,833] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
+[2026-04-19 07:56:44,854] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 07:56:44,857] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-19 07:56:44,857] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
+[2026-04-19 08:03:29,477] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 08:03:29,481] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-19 08:03:29,481] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
+[2026-04-19 08:25:48,633] INFO plantae_api >> POST /api/auth/login/
+[2026-04-19 08:25:50,417] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 1783ms
+[2026-04-19 08:25:50,417] INFO django.server "POST /api/auth/login/ HTTP/1.1" 200 507
+[2026-04-19 08:25:50,623] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 08:25:50,627] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 3ms
+[2026-04-19 08:25:50,627] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
+[2026-04-19 08:25:50,643] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 08:25:50,645] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
+[2026-04-19 08:25:50,646] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487

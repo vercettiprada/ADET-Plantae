@@ -30,7 +30,6 @@ export const styles = StyleSheet.create({
   },
   menuBtn: { padding: 5, gap: 5 },
   menuLine: { width: 26, height: 2.5, borderRadius: 2, marginVertical: 2.5 },
-
   searchWrap: {
     overflow: 'hidden',
     justifyContent: 'flex-end',
