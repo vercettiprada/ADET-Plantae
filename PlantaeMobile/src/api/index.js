@@ -50,6 +50,10 @@ export const api = {
   getPlants: async (page = 1) => {
     try {
       const token = await AsyncStorage.getItem('userToken');
+      if (!token) {
+        return { data: [], hasNext: false, unauthorized: true };
+      }
+
       const response = await fetch(`${API_BASE}/v1/plants/?page=${page}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -59,7 +63,11 @@ export const api = {
 
       if (!response.ok) {
         console.log("Plants fetch error:", response.status);
-        return { data: [], hasNext: false };
+        return {
+          data: [],
+          hasNext: false,
+          unauthorized: response.status === 401 || response.status === 403,
+        };
       }
 
       const json = await response.json();
@@ -75,10 +83,10 @@ export const api = {
         secretfact: plant.secretfact || plant.secret_fact || 'A beautiful plant.',
       }));
 
-      return { data: mappedData, hasNext: !!json.next };
+      return { data: mappedData, hasNext: !!json.next, unauthorized: false };
     } catch (error) {
       console.error("Fetch Error:", error);
-      return { data: [], hasNext: false };
+      return { data: [], hasNext: false, unauthorized: false };
     }
   }
 };

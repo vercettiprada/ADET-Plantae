@@ -39,7 +39,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # Must be before CommonMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -94,22 +94,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ─── Django REST Framework ────────────────────────────────────────────────────
 # Checklist: Authentication (JWT), Stateless, JSON format
 REST_FRAMEWORK = {
-    # Authentication: JWT tokens (Checklist §5)
+    # Authentication: JWT tokens (Checklist num5)
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    # Stateless — no sessions (Checklist §2)
+    # Stateless — no sessions (Checklist num2)
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    # JSON as default renderer (Checklist §3)
+    # JSON as default renderer (Checklist num3)
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     ),
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
     ),
-    # Pagination (Checklist §4)
+    # Pagination (Checklist num4)
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 6, # Small size to demonstrate the skeleton loader quickly
     # Filtering
@@ -118,19 +118,19 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
-    # API versioning (Checklist §4)
+    # API versioning (Checklist num4)
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
     'DEFAULT_VERSION': 'v1',
     'ALLOWED_VERSIONS': ['v1'],
     'VERSION_PARAM': 'version',
-    # Error handling (Checklist §6)
+    # Error handling (Checklist num6)
     'EXCEPTION_HANDLER': 'plantae_api.exceptions.custom_exception_handler',
 }
 
 # ─── JWT Configuration ────────────────────────────────────────────────────────
-# Checklist §5: Token generation, expiry, refresh
+# Checklist num5: Token generation, expiry, refresh
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -143,7 +143,7 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 }
 
-# ─── Caching (Checklist §4) ───────────────────────────────────────────────────
+# ─── Caching (Checklist num4) ───────────────────────────────────────────────────
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -158,7 +158,7 @@ CACHES = {
 CACHE_MIDDLEWARE_SECONDS = 300
 CACHE_MIDDLEWARE_KEY_PREFIX = 'plantae'
 
-# ─── Logging (Checklist §9) ───────────────────────────────────────────────────
+# ─── Logging (Checklist num9) ───────────────────────────────────────────────────
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -208,7 +208,7 @@ LOGGING = {
     },
 }
 
-# ─── HTTPS (Checklist §5 — secure communication) ─────────────────────────────
+# ─── HTTPS (Checklist num5 — secure communication) ─────────────────────────────
 # In production, enable these:
 # SECURE_SSL_REDIRECT = True
 # SECURE_HSTS_SECONDS = 31536000

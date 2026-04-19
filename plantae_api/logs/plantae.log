@@ -13552,3 +13552,320 @@ AttributeError: type object 'Token' has no attribute 'objects'
 [2026-04-18 19:57:14,497] INFO plantae_api >> POST /api/auth/login/
 [2026-04-18 19:57:15,133] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 635ms
 [2026-04-18 19:57:15,133] INFO django.server "POST /api/auth/login/ HTTP/1.1" 200 507
+[2026-04-18 22:37:49,339] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 22:38:02,715] INFO plantae_api >> GET /
+[2026-04-18 22:38:02,732] INFO plantae_api << GET / | Status: 404 | Duration: 16ms
+[2026-04-18 22:38:02,733] WARNING django.request Not Found: /
+[2026-04-18 22:38:02,733] WARNING django.server "GET / HTTP/1.1" 404 3171
+[2026-04-18 22:39:47,257] INFO plantae_api >> GET /
+[2026-04-18 22:39:47,261] INFO plantae_api << GET / | Status: 404 | Duration: 3ms
+[2026-04-18 22:39:47,261] WARNING django.request Not Found: /
+[2026-04-18 22:39:47,262] WARNING django.server "GET / HTTP/1.1" 404 3171
+[2026-04-18 22:40:26,370] INFO plantae_api >> GET /admin/
+[2026-04-18 22:40:26,381] INFO plantae_api << GET /admin/ | Status: 302 | Duration: 10ms
+[2026-04-18 22:40:26,382] INFO django.server "GET /admin/ HTTP/1.1" 302 0
+[2026-04-18 22:40:26,386] INFO plantae_api >> GET /admin/login/
+[2026-04-18 22:40:26,490] INFO plantae_api << GET /admin/login/ | Status: 200 | Duration: 103ms
+[2026-04-18 22:40:26,490] INFO django.server "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4173
+[2026-04-18 22:40:26,667] INFO django.server "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[2026-04-18 22:40:26,668] INFO django.server "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[2026-04-18 22:40:26,671] INFO django.server "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[2026-04-18 22:40:26,674] INFO django.server "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[2026-04-18 22:40:26,674] INFO django.server "GET /static/admin/css/login.css HTTP/1.1" 200 951
+[2026-04-18 22:40:59,967] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-18 22:41:00,538] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 22:41:57,271] INFO plantae_api >> GET /plants/
+[2026-04-18 22:41:57,276] INFO plantae_api << GET /plants/ | Status: 404 | Duration: 4ms
+[2026-04-18 22:41:57,277] WARNING django.request Not Found: /plants/
+[2026-04-18 22:41:57,278] WARNING django.server "GET /plants/ HTTP/1.1" 404 3210
+[2026-04-18 22:42:03,442] INFO plantae_api >> GET /plants
+[2026-04-18 22:42:03,445] INFO plantae_api << GET /plants | Status: 404 | Duration: 3ms
+[2026-04-18 22:42:03,445] WARNING django.request Not Found: /plants
+[2026-04-18 22:42:03,446] WARNING django.server "GET /plants HTTP/1.1" 404 3207
+[2026-04-18 22:42:04,744] INFO plantae_api >> GET /plants/
+[2026-04-18 22:42:04,747] INFO plantae_api << GET /plants/ | Status: 404 | Duration: 1ms
+[2026-04-18 22:42:04,747] WARNING django.request Not Found: /plants/
+[2026-04-18 22:42:04,748] WARNING django.server "GET /plants/ HTTP/1.1" 404 3210
+[2026-04-18 22:42:14,460] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:42:14,464] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:42:14,696] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 235ms
+[2026-04-18 22:42:14,696] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:42:14,697] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 22:42:16,753] INFO plantae_api >> GET /api/plants
+[2026-04-18 22:42:16,756] INFO plantae_api << GET /api/plants | Status: 404 | Duration: 3ms
+[2026-04-18 22:42:16,756] INFO django.server "GET /api/plants HTTP/1.1" 301 0
+[2026-04-18 22:42:16,758] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:42:16,759] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:42:16,759] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 0ms
+[2026-04-18 22:42:16,761] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:42:16,761] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 22:42:17,859] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:42:17,859] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:42:17,859] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 0ms
+[2026-04-18 22:42:17,859] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:42:17,860] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 22:43:36,385] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:43:36,386] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:43:36,386] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 0ms
+[2026-04-18 22:43:36,386] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:43:36,387] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 22:43:37,298] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:43:37,298] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:43:37,298] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 0ms
+[2026-04-18 22:43:37,298] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:43:37,299] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 22:43:38,577] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:43:38,577] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:43:38,578] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 1ms
+[2026-04-18 22:43:38,578] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:43:38,578] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 22:43:45,469] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:43:45,470] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:43:45,470] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 1ms
+[2026-04-18 22:43:45,470] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:43:45,471] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 22:43:45,995] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:43:45,996] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:43:45,996] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 0ms
+[2026-04-18 22:43:45,996] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:43:45,997] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 22:43:51,053] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:43:51,054] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:43:51,054] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 0ms
+[2026-04-18 22:43:51,054] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:43:51,055] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 22:43:51,532] INFO plantae_api >> GET /api/plants/
+[2026-04-18 22:43:51,533] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/plants/
+[2026-04-18 22:43:51,533] INFO plantae_api << GET /api/plants/ | Status: 401 | Duration: 1ms
+[2026-04-18 22:43:51,533] WARNING django.request Unauthorized: /api/plants/
+[2026-04-18 22:43:51,533] WARNING django.server "GET /api/plants/ HTTP/1.1" 401 119
+[2026-04-18 23:02:19,265] INFO plantae_api >> GET /api/authenticate
+[2026-04-18 23:02:19,269] INFO plantae_api << GET /api/authenticate | Status: 404 | Duration: 2ms
+[2026-04-18 23:02:19,269] WARNING django.request Not Found: /api/authenticate
+[2026-04-18 23:02:19,269] WARNING django.server "GET /api/authenticate HTTP/1.1" 404 4432
+[2026-04-18 23:02:22,410] INFO plantae_api >> GET /api/authenticate/
+[2026-04-18 23:02:22,413] INFO plantae_api << GET /api/authenticate/ | Status: 404 | Duration: 3ms
+[2026-04-18 23:02:22,413] WARNING django.request Not Found: /api/authenticate/
+[2026-04-18 23:02:22,414] WARNING django.server "GET /api/authenticate/ HTTP/1.1" 404 5710
+[2026-04-18 23:02:34,292] INFO plantae_api >> GET /api/auth/login
+[2026-04-18 23:02:34,295] INFO plantae_api << GET /api/auth/login | Status: 404 | Duration: 3ms
+[2026-04-18 23:02:34,295] INFO django.server "GET /api/auth/login HTTP/1.1" 301 0
+[2026-04-18 23:02:34,299] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:02:34,300] ERROR plantae_api HTTP 405 | METHOD_NOT_ALLOWED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:02:34,300] INFO plantae_api << GET /api/auth/login/ | Status: 405 | Duration: 1ms
+[2026-04-18 23:02:34,300] WARNING django.request Method Not Allowed: /api/auth/login/
+[2026-04-18 23:02:34,301] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 405 107
+[2026-04-18 23:02:34,326] INFO plantae_api >> GET /favicon.ico
+[2026-04-18 23:02:34,329] INFO plantae_api << GET /favicon.ico | Status: 404 | Duration: 3ms
+[2026-04-18 23:02:34,329] WARNING django.request Not Found: /favicon.ico
+[2026-04-18 23:02:34,329] WARNING django.server "GET /favicon.ico HTTP/1.1" 404 3222
+[2026-04-18 23:09:25,651] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\urls.py changed, reloading.
+[2026-04-18 23:09:26,235] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-18 23:12:04,568] INFO plantae_api >> GET /api/auth/login/ username="admin" password="plantae123"
+[2026-04-18 23:12:04,573] INFO plantae_api << GET /api/auth/login/ username="admin" password="plantae123" | Status: 404 | Duration: 5ms
+[2026-04-18 23:12:04,574] WARNING django.request Not Found: /api/auth/login/ username="admin" password="plantae123"
+[2026-04-18 23:12:04,574] WARNING django.server "GET /api/auth/login/%20username=%22admin%22%20password=%22plantae123%22 HTTP/1.1" 404 7099
+[2026-04-18 23:12:10,971] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:12:10,973] ERROR plantae_api HTTP 405 | METHOD_NOT_ALLOWED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:12:10,973] INFO plantae_api << GET /api/auth/login/ | Status: 405 | Duration: 0ms
+[2026-04-18 23:12:10,973] WARNING django.request Method Not Allowed: /api/auth/login/
+[2026-04-18 23:12:10,974] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 405 107
+[2026-04-18 23:12:26,463] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:12:26,463] ERROR plantae_api HTTP 405 | METHOD_NOT_ALLOWED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:12:26,464] INFO plantae_api << GET /api/auth/login/ | Status: 405 | Duration: 1ms
+[2026-04-18 23:12:26,464] WARNING django.request Method Not Allowed: /api/auth/login/
+[2026-04-18 23:12:26,464] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 405 107
+[2026-04-18 23:12:27,120] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:12:27,121] ERROR plantae_api HTTP 405 | METHOD_NOT_ALLOWED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:12:27,122] INFO plantae_api << GET /api/auth/login/ | Status: 405 | Duration: 0ms
+[2026-04-18 23:12:27,122] WARNING django.request Method Not Allowed: /api/auth/login/
+[2026-04-18 23:12:27,123] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 405 107
+[2026-04-18 23:12:32,953] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:12:32,954] ERROR plantae_api HTTP 405 | METHOD_NOT_ALLOWED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:12:32,954] INFO plantae_api << GET /api/auth/login/ | Status: 405 | Duration: 0ms
+[2026-04-18 23:12:32,954] WARNING django.request Method Not Allowed: /api/auth/login/
+[2026-04-18 23:12:32,954] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 405 107
+[2026-04-18 23:12:33,395] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:12:33,396] ERROR plantae_api HTTP 405 | METHOD_NOT_ALLOWED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:12:33,396] INFO plantae_api << GET /api/auth/login/ | Status: 405 | Duration: 1ms
+[2026-04-18 23:12:33,396] WARNING django.request Method Not Allowed: /api/auth/login/
+[2026-04-18 23:12:33,398] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 405 107
+[2026-04-18 23:12:33,830] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:12:33,831] ERROR plantae_api HTTP 405 | METHOD_NOT_ALLOWED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:12:33,831] INFO plantae_api << GET /api/auth/login/ | Status: 405 | Duration: 0ms
+[2026-04-18 23:12:33,831] WARNING django.request Method Not Allowed: /api/auth/login/
+[2026-04-18 23:12:33,833] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 405 107
+[2026-04-18 23:12:34,250] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:12:34,251] ERROR plantae_api HTTP 405 | METHOD_NOT_ALLOWED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:12:34,251] INFO plantae_api << GET /api/auth/login/ | Status: 405 | Duration: 1ms
+[2026-04-18 23:12:34,251] WARNING django.request Method Not Allowed: /api/auth/login/
+[2026-04-18 23:12:34,252] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 405 107
+[2026-04-18 23:12:34,598] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:12:34,599] ERROR plantae_api HTTP 405 | METHOD_NOT_ALLOWED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:12:34,599] INFO plantae_api << GET /api/auth/login/ | Status: 405 | Duration: 0ms
+[2026-04-18 23:12:34,599] WARNING django.request Method Not Allowed: /api/auth/login/
+[2026-04-18 23:12:34,600] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 405 107
+[2026-04-18 23:13:05,457] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:13:05,459] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 2ms
+[2026-04-18 23:13:05,459] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:13:05,460] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:13:12,980] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:13:12,982] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 2ms
+[2026-04-18 23:13:12,982] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:13:12,982] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:13:13,501] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:13:13,503] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 2ms
+[2026-04-18 23:13:13,503] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:13:13,503] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:13:13,750] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:13:13,752] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 2ms
+[2026-04-18 23:13:13,752] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:13:13,752] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:13:13,924] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:13:13,925] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-18 23:13:13,925] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:13:13,926] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:13:14,066] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:13:14,068] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-18 23:13:14,068] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:13:14,068] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:13:14,204] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:13:14,205] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-18 23:13:14,206] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:13:14,206] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:13:47,218] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:13:47,679] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 461ms
+[2026-04-18 23:13:47,681] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:13:47,681] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:14:00,845] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:01,313] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 467ms
+[2026-04-18 23:14:01,313] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:01,314] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:14:06,866] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:06,867] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:14:06,867] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 0ms
+[2026-04-18 23:14:06,867] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:06,867] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 134
+[2026-04-18 23:14:08,456] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:08,457] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:14:08,457] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-18 23:14:08,457] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:08,458] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 134
+[2026-04-18 23:14:22,938] INFO plantae_api >> GET /api/auth/login/
+[2026-04-18 23:14:22,939] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:14:22,940] INFO plantae_api << GET /api/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-18 23:14:22,940] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:22,941] WARNING django.server "GET /api/auth/login/ HTTP/1.1" 401 134
+[2026-04-18 23:14:25,730] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:25,730] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:14:25,731] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 0ms
+[2026-04-18 23:14:25,731] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:25,731] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 134
+[2026-04-18 23:14:26,167] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:26,168] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:14:26,168] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 0ms
+[2026-04-18 23:14:26,168] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:26,169] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 134
+[2026-04-18 23:14:26,407] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:26,407] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:14:26,407] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 0ms
+[2026-04-18 23:14:26,407] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:26,408] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 134
+[2026-04-18 23:14:26,547] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:26,548] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:14:26,548] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-18 23:14:26,548] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:26,548] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 134
+[2026-04-18 23:14:26,681] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:26,681] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:14:26,682] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-18 23:14:26,682] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:26,682] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 134
+[2026-04-18 23:14:26,798] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:26,799] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
+[2026-04-18 23:14:26,799] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 0ms
+[2026-04-18 23:14:26,799] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:26,801] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 134
+[2026-04-18 23:14:30,740] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:31,201] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 460ms
+[2026-04-18 23:14:31,202] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:31,202] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:14:32,082] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:32,544] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 462ms
+[2026-04-18 23:14:32,544] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:32,544] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:14:39,760] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:40,225] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 465ms
+[2026-04-18 23:14:40,225] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:40,225] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:14:40,825] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:41,292] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 467ms
+[2026-04-18 23:14:41,292] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:41,293] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:14:48,555] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:14:49,017] INFO plantae_api << POST /api/auth/login/ | Status: 401 | Duration: 461ms
+[2026-04-18 23:14:49,017] WARNING django.request Unauthorized: /api/auth/login/
+[2026-04-18 23:14:49,018] WARNING django.server "POST /api/auth/login/ HTTP/1.1" 401 31
+[2026-04-18 23:15:27,604] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:15:28,860] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 1256ms
+[2026-04-18 23:15:28,861] INFO django.server "POST /api/auth/login/ HTTP/1.1" 200 507
+[2026-04-18 23:16:38,248] INFO plantae_api >> POST /api/auth/login/
+[2026-04-18 23:16:39,165] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 916ms
+[2026-04-18 23:16:39,166] INFO django.server "POST /api/auth/login/ HTTP/1.1" 200 507
+[2026-04-18 23:16:51,154] INFO plantae_api >> GET /api/plants
+[2026-04-18 23:16:51,157] INFO plantae_api << GET /api/plants | Status: 404 | Duration: 2ms
+[2026-04-18 23:16:51,158] INFO django.server "GET /api/plants HTTP/1.1" 301 0
+[2026-04-18 23:16:51,160] INFO plantae_api >> GET /api/plants/
+[2026-04-18 23:16:51,168] INFO plantae_api << GET /api/plants/ | Status: 200 | Duration: 7ms
+[2026-04-18 23:16:51,168] INFO django.server "GET /api/plants/ HTTP/1.1" 200 2484
+[2026-04-19 07:33:45,553] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-19 07:35:34,601] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-19 07:35:35,175] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-19 07:36:17,306] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 07:36:17,381] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/v1/plants/
+[2026-04-19 07:36:17,502] INFO plantae_api << GET /api/v1/plants/ | Status: 401 | Duration: 196ms
+[2026-04-19 07:36:17,505] WARNING django.request Unauthorized: /api/v1/plants/
+[2026-04-19 07:36:17,505] WARNING django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 401 114
+[2026-04-19 07:36:46,778] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-19 07:36:47,318] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-19 07:36:56,840] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 07:36:56,872] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/v1/plants/
+[2026-04-19 07:36:56,873] INFO plantae_api << GET /api/v1/plants/ | Status: 401 | Duration: 33ms
+[2026-04-19 07:36:56,873] WARNING django.request Unauthorized: /api/v1/plants/
+[2026-04-19 07:36:56,875] WARNING django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 401 114
+[2026-04-19 07:37:07,872] INFO django.server - Broken pipe from ('192.168.137.86', 52263)
+[2026-04-19 07:37:19,097] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-19 07:37:19,655] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-19 07:37:23,461] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-19 07:37:24,002] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-19 07:38:23,214] INFO plantae_api >> POST /api/auth/login/
+[2026-04-19 07:38:25,273] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 2058ms
+[2026-04-19 07:38:25,273] INFO django.server "POST /api/auth/login/ HTTP/1.1" 200 507
+[2026-04-19 07:38:25,748] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 07:38:25,756] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 8ms
+[2026-04-19 07:38:25,757] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
+[2026-04-19 07:43:00,032] INFO plantae_api >> POST /api/auth/register/
+[2026-04-19 07:43:00,037] INFO plantae_api << POST /api/auth/register/ | Status: 404 | Duration: 4ms
+[2026-04-19 07:43:00,038] WARNING django.request Not Found: /api/auth/register/
+[2026-04-19 07:43:00,039] WARNING django.server "POST /api/auth/register/ HTTP/1.1" 404 6936
+[2026-04-19 07:43:07,404] INFO plantae_api >> POST /api/auth/register/
+[2026-04-19 07:43:07,407] INFO plantae_api << POST /api/auth/register/ | Status: 404 | Duration: 3ms
+[2026-04-19 07:43:07,407] WARNING django.request Not Found: /api/auth/register/
+[2026-04-19 07:43:07,407] WARNING django.server "POST /api/auth/register/ HTTP/1.1" 404 6936
+[2026-04-19 07:43:19,785] INFO plantae_api >> POST /api/auth/register/
+[2026-04-19 07:43:19,788] INFO plantae_api << POST /api/auth/register/ | Status: 404 | Duration: 3ms
+[2026-04-19 07:43:19,789] WARNING django.request Not Found: /api/auth/register/
+[2026-04-19 07:43:19,789] WARNING django.server "POST /api/auth/register/ HTTP/1.1" 404 6936
+[2026-04-19 07:43:54,084] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plants\urls.py changed, reloading.
+[2026-04-19 07:43:54,642] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-19 07:43:54,917] INFO plantae_api >> POST /api/auth/register/
+[2026-04-19 07:43:56,331] INFO plantae_api << POST /api/auth/register/ | Status: 201 | Duration: 1413ms
+[2026-04-19 07:43:56,332] INFO django.server "POST /api/auth/register/ HTTP/1.1" 201 508
+[2026-04-19 07:43:56,570] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 07:43:56,576] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 6ms
+[2026-04-19 07:43:56,577] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487
+[2026-04-19 07:46:29,664] INFO django.utils.autoreload D:\github\ADET-Plantae\plantae_api\plantae_api\settings.py changed, reloading.
+[2026-04-19 07:46:30,268] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-19 07:49:56,079] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-19 07:49:56,122] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 41ms
+[2026-04-19 07:49:56,123] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 2487

@@ -5,19 +5,16 @@ import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-// Screens & Components (original design preserved)
-import GardenScreen from './src/screens/GardenScreen';
-import AboutScreen from './src/screens/AboutScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import PlantModal from './src/components/PlantModal';
-import SettingsSidebar from './src/components/SettingsSidebar';
+import GardenScreen from './screens/GardenScreen';
+import AboutScreen from './screens/AboutScreen';
+import LoginScreen from './screens/LoginScreen';
+import PlantModal from './components/PlantModal';
+import SettingsSidebar from './components/SettingsSidebar';
 
-// API
 import { api } from './src/api/index';
 
 SplashScreen.preventAutoHideAsync();
@@ -25,7 +22,6 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
-// Original Drawer layout — preserved exactly
 function DrawerLayer({ allPlants, setSelectedPlant, isDarkMode, setIsDarkMode, theme, onLogout }) {
   return (
     <Drawer.Navigator
@@ -61,6 +57,7 @@ function DrawerLayer({ allPlants, setSelectedPlant, isDarkMode, setIsDarkMode, t
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [userToken, setUserToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -69,84 +66,128 @@ export default function App() {
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
 
+  const clearSession = useCallback(async () => {
+    await AsyncStorage.removeItem('userToken');
+    setUserToken(null);
+    setAllPlants([]);
+    setPage(1);
+    setSelectedPlant(null);
+  }, []);
+
+  const loadPlants = useCallback(async (pageNum = 1) => {
+    setLoadingMore(true);
+    const result = await api.getPlants(pageNum);
+
+    if (result.unauthorized) {
+      await clearSession();
+      setLoadingMore(false);
+      return { unauthorized: true, data: [] };
+    }
+
+    if (pageNum === 1) {
+      setAllPlants(result.data);
+      setPage(1);
+    } else if (result.data.length > 0) {
+      setAllPlants(prev => [...prev, ...result.data]);
+      setPage(pageNum);
+    }
+
+    setLoadingMore(false);
+    return result;
+  }, [clearSession]);
+
+  const bootstrapAuth = useCallback(async () => {
+    const storedToken = await AsyncStorage.getItem('userToken');
+
+    if (!storedToken) {
+      setUserToken(null);
+      setAuthChecked(true);
+      return;
+    }
+
+    setUserToken(storedToken);
+    const result = await api.getPlants(1);
+
+    if (result.unauthorized) {
+      await clearSession();
+    } else {
+      setAllPlants(result.data);
+      setPage(1);
+    }
+
+    setAuthChecked(true);
+  }, [clearSession]);
+
   useEffect(() => {
     async function loadResources() {
       try {
         await Font.loadAsync({
-          'AstonScript': require('./assets/fonts/AstonScript.ttf'),
+          AstonScript: require('./assets/fonts/AstonScript.ttf'),
         });
-        // Check persisted login — but do NOT auto-fetch plants here
-        // Plants are only loaded after confirmed login via loadPlants()
-        const storedToken = await AsyncStorage.getItem('userToken');
-        if (storedToken) {
-          setUserToken(storedToken);
-        }
+        await bootstrapAuth();
       } finally {
         setFontsLoaded(true);
       }
     }
+
     loadResources();
-  }, []);
+  }, [bootstrapAuth]);
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) await SplashScreen.hideAsync();
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
   }, [fontsLoaded]);
 
-  // Load plants ONLY when userToken is set (not on mount)
   useEffect(() => {
-    if (userToken && allPlants.length === 0) {
+    if (authChecked && userToken && allPlants.length === 0) {
       loadPlants(1);
     }
-  }, [userToken]);
-
-  const loadPlants = async (pageNum = 1) => {
-    setLoadingMore(true);
-    const result = await api.getPlants(pageNum);
-    if (result.data.length > 0) {
-      setAllPlants(prev => pageNum === 1 ? result.data : [...prev, ...result.data]);
-      setPage(pageNum);
-    }
-    setLoadingMore(false);
-  };
+  }, [authChecked, userToken, allPlants.length, loadPlants]);
 
   const handleLogin = async (credentials) => {
     setLoading(true);
     const result = await api.login(credentials);
-    setLoading(false);
+
     if (result.token) {
       setUserToken(result.token);
+      const plantsResult = await loadPlants(1);
+      if (plantsResult.unauthorized) {
+        Alert.alert('Session Expired', 'Please log in again.');
+      }
     } else {
       Alert.alert('Login Failed', result.error || 'Invalid credentials.');
     }
+
+    setLoading(false);
   };
 
   const handleRegister = async (userData) => {
     setLoading(true);
     const result = await api.register(userData);
-    setLoading(false);
+
     if (result.access) {
       await AsyncStorage.setItem('userToken', result.access);
       setUserToken(result.access);
+      await loadPlants(1);
     } else {
       Alert.alert('Registration Failed', result.error || 'Could not create account.');
     }
+
+    setLoading(false);
   };
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem('userToken');
-    setUserToken(null);
-    setAllPlants([]);
-    setPage(1);
+    await clearSession();
   };
 
-  if (!fontsLoaded) return null;
+  if (!fontsLoaded || !authChecked) return null;
 
   const theme = {
     background: isDarkMode ? '#121212' : '#f1eeee',
     text: isDarkMode ? '#e0e0e0' : '#2d5a27',
   };
 
-  // Show Login if no token
   if (!userToken) {
     return (
       <View style={{ flex: 1, backgroundColor: theme.background }} onLayout={onLayoutRootView}>
@@ -162,7 +203,6 @@ export default function App() {
     );
   }
 
-  // Show main app once logged in — original design preserved
   return (
     <View style={{ flex: 1, backgroundColor: theme.background }} onLayout={onLayoutRootView}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -188,7 +228,6 @@ export default function App() {
           </Stack.Screen>
         </Stack.Navigator>
 
-        {/* PlantModal — original floating modal over everything */}
         {selectedPlant && (
           <PlantModal
             plant={selectedPlant}

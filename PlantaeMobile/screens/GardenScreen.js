@@ -1,9 +1,15 @@
 import React, { useState, useMemo, useRef } from 'react';
 import {
-  View, Text, StyleSheet, TextInput, Animated,
-  FlatList, TouchableOpacity, ActivityIndicator
+  View, Text, TextInput, Animated,
+  TouchableOpacity, ActivityIndicator
 } from 'react-native';
 import MobilePlantCard from '../components/MobilePlantCard';
+import {
+  styles,
+  EXPANDED_HEADER_HEIGHT,
+  COLLAPSED_HEADER_HEIGHT,
+  SEARCH_HEIGHT,
+} from '../styles/screens/GardenScreen.styles';
 
 export default function GardenScreen({ plants = [], onPlantClick, loadingMore, loadMorePlants, navigation, theme, isDarkMode }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,29 +25,67 @@ export default function GardenScreen({ plants = [], onPlantClick, loadingMore, l
 
   const headerHeight = scrollY.interpolate({
     inputRange: [0, 120],
-    outputRange: [180, 90],
+    outputRange: [EXPANDED_HEADER_HEIGHT, COLLAPSED_HEADER_HEIGHT],
     extrapolate: 'clamp',
   });
 
   const titleOpacity = scrollY.interpolate({
     inputRange: [0, 80],
-    outputRange: [1, 0.7],
+    outputRange: [1, 0.92],
     extrapolate: 'clamp',
   });
 
   const titleSize = scrollY.interpolate({
     inputRange: [0, 120],
-    outputRange: [42, 28],
+    outputRange: [42, 26],
+    extrapolate: 'clamp',
+  });
+
+  const titleTranslateY = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [0, -4],
+    extrapolate: 'clamp',
+  });
+
+  const searchHeight = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [SEARCH_HEIGHT, 0],
+    extrapolate: 'clamp',
+  });
+
+  const searchOpacity = scrollY.interpolate({
+    inputRange: [0, 60, 100],
+    outputRange: [1, 0.45, 0],
+    extrapolate: 'clamp',
+  });
+
+  const searchMarginTop = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [12, 0],
+    extrapolate: 'clamp',
+  });
+
+  const searchTranslateY = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [0, -10],
     extrapolate: 'clamp',
   });
 
   return (
     <View style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#f1eeee' }]}>
-
-      {/* Animated header — same as original */}
       <Animated.View style={[styles.header, { height: headerHeight, backgroundColor: isDarkMode ? '#121212' : '#f1eeee' }]}>
         <View style={styles.topRow}>
-          <Animated.Text style={[styles.brand, { opacity: titleOpacity, fontSize: titleSize, color: isDarkMode ? '#a5d6a7' : '#2d5a27' }]}>
+          <Animated.Text
+            style={[
+              styles.brand,
+              {
+                opacity: titleOpacity,
+                fontSize: titleSize,
+                color: isDarkMode ? '#a5d6a7' : '#2d5a27',
+                transform: [{ translateY: titleTranslateY }],
+              },
+            ]}
+          >
             Plantae.
           </Animated.Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()} style={styles.menuBtn}>
@@ -50,20 +94,33 @@ export default function GardenScreen({ plants = [], onPlantClick, loadingMore, l
             <View style={[styles.menuLine, { backgroundColor: isDarkMode ? '#e0e0e0' : '#2d5a27' }]} />
           </TouchableOpacity>
         </View>
-        <TextInput
-          style={[styles.search, { backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#e0e0e0' : '#333' }]}
-          placeholder="search species..."
-          placeholderTextColor={isDarkMode ? '#666' : '#aaa'}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
+
+        <Animated.View
+          style={[
+            styles.searchWrap,
+            {
+              height: searchHeight,
+              marginTop: searchMarginTop,
+              opacity: searchOpacity,
+              transform: [{ translateY: searchTranslateY }],
+            },
+          ]}
+          pointerEvents="box-none"
+        >
+          <TextInput
+            style={[styles.search, { backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#e0e0e0' : '#333' }]}
+            placeholder="search species..."
+            placeholderTextColor={isDarkMode ? '#666' : '#aaa'}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </Animated.View>
       </Animated.View>
 
-      {/* Plant list — uses original MobilePlantCard (BlurView glass design) */}
       <Animated.FlatList
         data={filteredPlants}
         keyExtractor={(item) => item.id?.toString()}
-        contentContainerStyle={{ paddingTop: 195, paddingHorizontal: 20, paddingBottom: 40 }}
+        contentContainerStyle={styles.listContent}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: false }
@@ -94,27 +151,3 @@ export default function GardenScreen({ plants = [], onPlantClick, loadingMore, l
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: {
-    position: 'absolute', top: 0, left: 0, right: 0,
-    zIndex: 10, paddingHorizontal: 20, paddingTop: 55,
-    paddingBottom: 10,
-  },
-  topRow: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-  },
-  brand: {
-    fontFamily: 'AstonScript', color: '#2d5a27',
-  },
-  menuBtn: { padding: 5, gap: 5 },
-  menuLine: { width: 26, height: 2.5, borderRadius: 2, marginVertical: 2.5 },
-  search: {
-    padding: 12, borderRadius: 15, marginTop: 10, fontSize: 15,
-    shadowColor: '#000', shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08, shadowRadius: 4, elevation: 2,
-  },
-  emptyContainer: { alignItems: 'center', marginTop: 60 },
-  emptyText: { fontSize: 16 },
-});
