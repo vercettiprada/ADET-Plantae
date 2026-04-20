@@ -1,7 +1,7 @@
-#  Plantae REST API — Backend
+# Plantae REST API Backend
 
-Django REST Framework backend for the **PlantaeMobile** Expo app.  
-Implements every item from the **Module 3 Web Services Checklist**.
+Django REST Framework backend for the **PlantaeMobile** Expo app.
+This project now covers the code-side requirements of the Module 3 Web Services Checklist, with presentation screenshots still needing manual capture during the demo.
 
 ---
 
@@ -10,12 +10,12 @@ Implements every item from the **Module 3 Web Services Checklist**.
 ```bash
 # 1. Install dependencies
 pip install django djangorestframework djangorestframework-simplejwt \
-            drf-yasg django-filter
+            drf-yasg django-filter django-cors-headers
 
 # 2. Run migrations
 python manage.py migrate
 
-# 3. Seed plant data (all 11 plants from plant.js)
+# 3. Seed plant data
 python manage.py seed_plants
 
 # 4. Create a superuser
@@ -25,8 +25,9 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-API is live at: **http://127.0.0.1:8000**  
-Swagger UI:     **http://127.0.0.1:8000/swagger/**
+Home page: **http://127.0.0.1:8000/**
+API root: **http://127.0.0.1:8000/api/**
+Swagger UI: **http://127.0.0.1:8000/swagger/**
 
 ---
 
@@ -34,43 +35,62 @@ Swagger UI:     **http://127.0.0.1:8000/swagger/**
 
 | # | Checklist Item | Implementation |
 |---|----------------|----------------|
-| 1 | Local server running | `python manage.py runserver` → Django homepage |
-| 1 | API base URL accessible | `http://127.0.0.1:8000/api/v1/` |
-| 2 | Resources clearly defined | `/api/v1/plants/` (plural, no verbs) |
-| 2 | Proper HTTP methods | GET, POST, PUT, PATCH, DELETE all implemented |
-| 2 | Endpoint naming conventions | `/plants/` not `/getPlants/` |
-| 2 | API is stateless | JWT-only, no session dependency |
-| 3 | Standard JSON format | All responses are `application/json` |
-| 3 | Correct request/response structure | Serializers with validation |
-| 4 | Pagination | `?page=1&limit=10` → `pagination.count`, `results` |
-| 4 | API versioning | `/api/v1/plants/` via URL path versioning |
-| 4 | Caching | `cache_page(300)` on list/summary endpoints |
-| 5 | Authentication (JWT) | `POST /api/token/` → access + refresh tokens |
-| 5 | Protected endpoints | All CRUD requires `Authorization: Bearer <token>` |
-| 5 | Input validation | Serializer-level field + object validation |
-| 5 | HTTPS concept | Settings include production HTTPS config (commented) |
-| 6 | Proper HTTP status codes | 200, 201, 204, 400, 401, 403, 404, 500 |
-| 6 | Clear JSON error messages | `{"error": {"code": 404, "status": "NOT_FOUND", ...}}` |
-| 7 | API documentation | Swagger UI at `/swagger/`, ReDoc at `/redoc/` |
-| 7 | Endpoints + params documented | Full Swagger with request/response schemas |
-| 7 | Auth and error codes documented | Documented in Swagger + Postman collection |
-| 8 | Functional testing | Postman collection with auto-tests |
-| 8 | Security testing | 401 test included in Postman collection |
-| 8 | Integration testing (API + DB) | All CRUD operations persist to SQLite |
-| 9 | Logging implemented | Console + `logs/plantae.log` + `logs/errors.log` |
-| 9 | Errors traceable | All 4xx/5xx logged with view, path, detail |
-| 9 | Data format validation | Serializer validates on every POST/PUT/PATCH |
-| 10 | GET endpoint works | `GET /api/v1/plants/` and `GET /api/v1/plants/{id}/` |
-| 10 | POST endpoint works | `POST /api/v1/plants/` → 201 Created |
-| 10 | PUT/PATCH endpoint works | `PUT /api/v1/plants/{id}/` and `PATCH /api/v1/plants/{id}/` |
-| 10 | DELETE endpoint works | `DELETE /api/v1/plants/{id}/` → 204 No Content |
-| 11 | Framework usage | Django REST Framework + SimpleJWT + drf-yasg |
-| 11 | Testing tools | Postman collection + Swagger UI |
-| 12 | Working REST API | All endpoints live and tested |
-| 12 | Source code | This repository |
-| 12 | Documentation | Swagger + this README |
+| 1 | Local server running | `python manage.py runserver` -> homepage at `/` |
+| 1 | API base URL accessible | `http://127.0.0.1:8000/api/` and `http://127.0.0.1:8000/api/v1/` |
+| 2 | Resources clearly defined | `/api/v1/plants/` |
+| 2 | Proper HTTP methods | GET, POST, PUT, PATCH, DELETE |
+| 2 | Endpoint naming conventions | plural nouns, no verbs |
+| 2 | API is stateless | JWT auth, no session auth in DRF |
+| 3 | Standard JSON format | JSON parser and renderer configured |
+| 3 | Correct request/response structure | serializers validate and shape payloads |
+| 4 | Pagination | `?page=1&limit=10` |
+| 4 | API versioning | `/api/v1/` |
+| 4 | Caching | list and summary endpoints use 5-minute cache |
+| 5 | Authentication (JWT) | `/api/token/`, `/api/token/refresh/`, `/api/token/verify/` |
+| 5 | Protected endpoints | authenticated CRUD routes return 401 without token |
+| 5 | Input validation | serializer validation on create/update |
+| 5 | HTTPS concept | production HTTPS settings documented in `settings.py` |
+| 6 | Proper HTTP status codes | 200, 201, 204, 400, 401, 404, 500 |
+| 6 | Clear error messages returned | consistent JSON `error` object |
+| 7 | API documentation | Swagger at `/swagger/`, ReDoc at `/redoc/` |
+| 7 | Includes endpoints, params, request/response | documented with drf-yasg |
+| 7 | Includes authentication and error codes | documented in Swagger and Postman collection |
+| 8 | Functional testing | Django API tests plus Postman collection |
+| 8 | Security testing | unauthorized access test returns 401 |
+| 8 | Integration testing | API tests read/write SQLite data |
+| 9 | Logging implemented | console plus `logs/plantae.log` and `logs/errors.log` |
+| 9 | Errors analyzed and resolved | exceptions and HTTP errors logged |
+| 9 | Data format validation ensured | serializer validation and JSON-only parsers |
+| 10 | GET endpoint works | list, detail, and summary endpoints |
+| 10 | POST endpoint works | create plant |
+| 10 | PUT/PATCH endpoint works | full and partial update |
+| 10 | DELETE endpoint works | delete plant |
+| 11 | Uses appropriate framework | Django REST Framework |
+| 11 | Uses testing tools | Postman collection and Swagger UI |
+| 12 | Working REST API system | verified by automated test suite |
+| 12 | Source code submitted | repository contains backend source |
+| 12 | Documentation included | this README plus Swagger |
 
 ---
+
+## Architecture / System Flow
+
+```mermaid
+flowchart LR
+    A["Client (Postman / Mobile App / Browser)"] --> B["Django REST API"]
+    B --> C["JWT Auth"]
+    B --> D["Plants Endpoints"]
+    D --> E["SQLite Database"]
+    B --> F["Swagger Docs"]
+    B --> G["Logging + Error Handling"]
+```
+
+Flow summary:
+- Clients send JSON requests to Django endpoints.
+- JWT protects private endpoints.
+- Serializers validate request bodies and shape responses.
+- Views read and write persisted plant data in SQLite.
+- Middleware and exception handlers record request and error details.
 
 ## API Endpoints
 
@@ -78,140 +98,109 @@ Swagger UI:     **http://127.0.0.1:8000/swagger/**
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/token/` | Obtain access + refresh tokens |
+| POST | `/api/token/` | Obtain access and refresh tokens |
 | POST | `/api/token/refresh/` | Refresh access token |
 | POST | `/api/token/verify/` | Verify token validity |
+| POST | `/api/v1/auth/register/` | Register a user |
+| POST | `/api/v1/auth/login/` | App login endpoint |
+| GET/PATCH/DELETE | `/api/v1/auth/profile/` | Read, update, or delete current profile |
 
-**Login example:**
-```json
-POST /api/token/
-{
-  "username": "admin",
-  "password": "plantae123"
-}
-```
-Response:
-```json
-{
-  "access": "eyJ...",
-  "refresh": "eyJ..."
-}
-```
-
-Use the token in all subsequent requests:
-```
-Authorization: Bearer eyJ...
-```
-
----
-
-### Plants — `/api/v1/plants/`
+### Plants
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| GET | `/api/v1/plants/`  List all (paginated) |
-| POST | `/api/v1/plants/`  | Create a plant |
-| GET | `/api/v1/plants/{id}/`  | Get single plant |
-| PUT | `/api/v1/plants/{id}/`  | Full update |
-| PATCH | `/api/v1/plants/{id}/`  | Partial update |
-| DELETE | `/api/v1/plants/{id}/`  | Delete plant |
-| GET | `/api/v1/plants/summary/`  | Public lightweight list |
+| GET | `/api/v1/plants/` | Yes | List plants |
+| POST | `/api/v1/plants/` | Yes | Create a plant |
+| GET | `/api/v1/plants/{id}/` | Yes | Retrieve a plant |
+| PUT | `/api/v1/plants/{id}/` | Yes | Replace a plant |
+| PATCH | `/api/v1/plants/{id}/` | Yes | Partially update a plant |
+| DELETE | `/api/v1/plants/{id}/` | Yes | Delete a plant |
+| GET | `/api/v1/plants/summary/` | No | Public lightweight list |
+| POST | `/api/v1/plants/identify/` | Yes | Identify a plant from an image |
 
-**Query parameters:**
-- `?page=1&limit=10` — pagination
-- `?search=monstera` — search name/species/fact
-- `?ordering=name` or `?ordering=-created_at` — sort
-- `?light=Full+Sun` — filter by light requirement
+Query parameters:
+- `?page=1&limit=10`
+- `?search=monstera`
+- `?ordering=name`
+- `?ordering=-created_at`
+- `?light=Bright Indirect Light`
+- `?water=Every 7 days`
 
-**Plant JSON shape** (matches mobile app's `plant.js`):
+Paginated responses use this structure:
+
 ```json
 {
-  "id": 1,
-  "name": "Monstera Deliciosa",
-  "species": "Swiss Cheese Plant",
-  "imageUrl": "https://...",
-  "secretfact": "Named for its delicious fruit...",
-  "light": "Bright, Indirect",
-  "water": "Every 7-10 days",
-  "created_at": "2026-04-18T10:00:00Z",
-  "updated_at": "2026-04-18T10:00:00Z"
+  "pagination": {
+    "count": 12,
+    "total_pages": 2,
+    "current_page": 1,
+    "next": "http://127.0.0.1:8000/api/v1/plants/?page=2",
+    "previous": null
+  },
+  "results": [
+    {
+      "id": 1,
+      "name": "Monstera Deliciosa",
+      "species": "Swiss Cheese Plant",
+      "imageUrl": "https://example.com/plant.jpg",
+      "secretfact": "Example fact",
+      "light": "Bright Indirect Light",
+      "water": "Every 7 days",
+      "created_at": "2026-04-18T10:00:00Z",
+      "updated_at": "2026-04-18T10:00:00Z"
+    }
+  ]
 }
 ```
 
----
+Error responses use this structure:
 
-### Error Response Format
-
-All errors follow a consistent JSON structure:
 ```json
 {
   "error": {
-    "code": 404,
-    "status": "NOT_FOUND",
-    "message": "No Plant matches the given query.",
-    "details": null
+    "code": 400,
+    "status": "BAD_REQUEST",
+    "message": "Validation error. Please check the fields below.",
+    "details": {
+      "name": ["This field is required."]
+    }
   }
 }
 ```
 
----
-
 ## Connecting to PlantaeMobile
 
-Copy `apiService.js` into your Expo project:
-```
-PlantaeMobile/
-  services/
-    apiService.js   ← drop it here
-```
+`getPublicPlants()` returns a paginated payload, so the mobile app should read `results`:
 
-Then in `GardenScreen.js`, replace the static import:
 ```js
-// Before (static data)
-import { plantData } from '../data/plant';
-
-// After (live API)
-import { getPublicPlants } from '../services/apiService';
-
 useEffect(() => {
-  getPublicPlants().then(data => setPlants(data.plants));
+  getPublicPlants().then((data) => setPlants(data.results));
 }, []);
 ```
 
----
+## Testing
 
-## Testing with Postman
+Automated checks included in the repo:
+- Django test suite for auth, CRUD, validation, homepage, and Swagger access
+- Postman collection for manual demo flows
 
-1. Import `Plantae_API_Postman_Collection.json` into Postman
-2. Set collection variable `base_url` = `http://127.0.0.1:8000`
-3. Run **"§5 AUTH — Obtain Token"** first (auto-saves token)
-4. Run all other requests — each has automated pass/fail tests
+Run locally:
 
----
-
-## Project Structure
-
+```bash
+python manage.py test
+python manage.py check
 ```
-plantae_api/
-├── plantae_api/
-│   ├── settings.py      # JWT, pagination, logging, caching config
-│   ├── urls.py          # Root URLs: /api/v1/, /swagger/, /api/token/
-│   ├── pagination.py    # PlantaePagination (?page=1&limit=10)
-│   ├── exceptions.py    # Custom JSON error handler
-│   └── middleware.py    # Request/response logging middleware
-├── plants/
-│   ├── models.py        # Plant model (mirrors plant.js structure)
-│   ├── serializers.py   # Validation + camelCase field mapping
-│   ├── views.py         # Full CRUD ViewSet with Swagger docs
-│   ├── urls.py          # Router: /plants/, /plants/{id}/
-│   ├── admin.py         # Django admin registration
-│   └── fixtures/
-│       └── plants.json  # All 11 plants from plant.js
-├── logs/
-│   ├── plantae.log      # All requests logged here
-│   └── errors.log       # 4xx/5xx errors logged here
-├── apiService.js        # → copy to PlantaeMobile/services/
-├── Plantae_API_Postman_Collection.json
-├── manage.py
-└── README.md
-```
+
+## Final Deliverables Notes
+
+Already included:
+- Working backend code
+- Swagger documentation
+- Postman collection
+- Automated API tests
+- Logging configuration
+- Architecture explanation
+
+Still manual for presentation:
+- Capture screenshots of Swagger and Postman while running locally
+- Capture any optional load/performance evidence if your instructor asks for it

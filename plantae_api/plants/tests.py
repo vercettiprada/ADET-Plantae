@@ -32,12 +32,18 @@ class PlantApiTests(APITestCase):
     def test_protected_endpoint_blocks_unauthorized_access(self):
         response = self.client.get("/api/v1/plants/")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertIn("error", response.data)
 
     def test_get_plants_returns_paginated_results(self):
         response = self.client.get("/api/v1/plants/?page=1&limit=10", **self.auth_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("pagination", response.data)
         self.assertIn("results", response.data)
+
+    def test_homepage_loads(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, "Plantae API is running")
 
     def test_create_plant(self):
         payload = {
@@ -61,6 +67,23 @@ class PlantApiTests(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["water"], "Every 14 days")
+
+    def test_put_plant(self):
+        response = self.client.put(
+            f"/api/v1/plants/{self.plant.id}/",
+            {
+                "name": "Updated Monstera",
+                "species": "Monstera deliciosa",
+                "imageUrl": "https://example.com/updated.jpg",
+                "secretfact": "Updated fact",
+                "light": "Medium Light",
+                "water": "Every 9 days",
+            },
+            format="json",
+            **self.auth_headers,
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["name"], "Updated Monstera")
 
     def test_delete_plant(self):
         response = self.client.delete(f"/api/v1/plants/{self.plant.id}/", **self.auth_headers)
@@ -92,3 +115,18 @@ class PlantApiTests(APITestCase):
         response = self.client.delete("/api/v1/auth/profile/", **self.auth_headers)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(User.objects.filter(username=self.user.username).exists())
+
+    def test_invalid_create_returns_json_error(self):
+        response = self.client.post(
+            "/api/v1/plants/",
+            {"name": "A", "species": ""},
+            format="json",
+            **self.auth_headers,
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("error", response.data)
+        self.assertEqual(response.data["error"]["status"], "BAD_REQUEST")
+
+    def test_swagger_accessible(self):
+        response = self.client.get("/swagger/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

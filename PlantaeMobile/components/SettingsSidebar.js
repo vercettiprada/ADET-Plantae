@@ -3,7 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Switch } from '
 import { BlurView } from 'expo-blur';
 import { styles } from '../styles/components/SettingsSidebar.styles';
 
-export default function SettingsSidebar({ navigation, isDarkMode, setIsDarkMode, onLogout }) {
+export default function SettingsSidebar({
+  navigation,
+  isDarkMode,
+  setIsDarkMode,
+  onLogout,
+  gardenView,
+  setGardenView,
+}) {
   const palette = {
     blurTint: isDarkMode ? 'dark' : 'light',
     background: isDarkMode ? 'rgba(18,18,18,0.86)' : 'rgba(255,255,255,0.3)',
@@ -26,12 +33,38 @@ export default function SettingsSidebar({ navigation, isDarkMode, setIsDarkMode,
     navigation.getParent()?.navigate('About');
   };
 
-  const MenuItem = ({ title, onPress, isLogout }) => (
+  const openPlantLibrary = () => {
+    setGardenView?.('all');
+    navigation.closeDrawer();
+  };
+
+  const openSanctuaryCollection = () => {
+    setGardenView?.('sanctuary');
+    navigation.closeDrawer();
+  };
+
+  const MenuItem = ({ title, onPress, isLogout, active }) => (
     <TouchableOpacity
-      style={[styles.menuItem, { borderBottomColor: palette.divider }]}
+      style={[
+        styles.menuItem,
+        {
+          borderBottomColor: palette.divider,
+          backgroundColor: active
+            ? (isDarkMode ? 'rgba(127,176,123,0.12)' : 'rgba(45,90,39,0.08)')
+            : 'transparent',
+        },
+      ]}
       onPress={onPress}
     >
-      <Text style={[styles.menuText, { color: palette.text }, isLogout && styles.logoutText]}>{title}</Text>
+      <Text
+        style={[
+          styles.menuText,
+          { color: active ? (isDarkMode ? '#d8ead5' : '#234a20') : palette.text },
+          isLogout && styles.logoutText,
+        ]}
+      >
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 
@@ -47,6 +80,11 @@ export default function SettingsSidebar({ navigation, isDarkMode, setIsDarkMode,
         </View>
 
         <View style={styles.menuGroup}>
+          <Text style={[styles.menuSectionTitle, { color: palette.muted }]}>Discover</Text>
+          <MenuItem title="Plant Library" onPress={openPlantLibrary} active={gardenView === 'all'} />
+          <MenuItem title="Saved Plants" onPress={openSanctuaryCollection} active={gardenView === 'sanctuary'} />
+
+          <Text style={[styles.menuSectionTitle, { color: palette.muted }]}>Account</Text>
           <MenuItem title="Profile" onPress={openProfile} />
           <MenuItem title="Garden Stats" onPress={() => {}} />
 

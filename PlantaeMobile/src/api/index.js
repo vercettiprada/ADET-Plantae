@@ -223,6 +223,82 @@ export const api = {
     }
   },
 
+  createPlant: async (plantData) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request('/v1/plants/', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(plantData),
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to create your plant.'),
+        };
+      }
+
+      return { data: mapPlant(payload), unauthorized: false };
+    } catch {
+      return {
+        unauthorized: false,
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
+    }
+  },
+
+  identifyPlant: async ({ imageBase64, mimeType = 'image/jpeg', fileName = 'plant.jpg' }) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request('/v1/plants/identify/', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageBase64,
+          mimeType,
+          fileName,
+        }),
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to identify this plant.'),
+        };
+      }
+
+      return {
+        data: {
+          candidates: payload?.candidates || [],
+          provider: payload?.provider || 'plantnet',
+        },
+        unauthorized: false,
+      };
+    } catch {
+      return {
+        unauthorized: false,
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
+    }
+  },
+
   getProfile: async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');

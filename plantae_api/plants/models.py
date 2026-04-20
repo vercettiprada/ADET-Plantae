@@ -5,7 +5,7 @@ class Plant(models.Model):
 
     species = models.CharField(max_length=200)
     
-    image_url = models.URLField(max_length=500, blank=True, default='')
+    image_url = models.TextField(blank=True, default='')
     
     secret_fact = models.TextField(blank=True, default='')
     

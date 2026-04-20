@@ -1,3 +1,10 @@
+import base64
+import json
+import os
+import uuid
+from urllib import request as urllib_request
+from urllib import error as urllib_error
+
 from django.contrib.auth.models import User
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
@@ -61,6 +68,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ["username", "email", "first_name"]
         read_only_fields = ["username"]
+
+
+class PlantIdentifySerializer(serializers.Serializer):
+    imageBase64 = serializers.CharField()
+    mimeType = serializers.CharField(required=False, default="image/jpeg")
+    fileName = serializers.CharField(required=False, default="plant.jpg")
 
 
 auth_success_schema = openapi.Schema(
@@ -187,6 +200,102 @@ def profile_view(request):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+def _build_multipart_form_data(fields, file_name, mime_type, binary_data):
+    boundary = f"----PlantaeBoundary{uuid.uuid4().hex}"
+    body = bytearray()
+
+    for key, value in fields:
+        body.extend(f"--{boundary}\r\n".encode("utf-8"))
+        body.extend(f'Content-Disposition: form-data; name="{key}"\r\n\r\n'.encode("utf-8"))
+        body.extend(f"{value}\r\n".encode("utf-8"))
+
+    body.extend(f"--{boundary}\r\n".encode("utf-8"))
+    body.extend(
+        f'Content-Disposition: form-data; name="images"; filename="{file_name}"\r\n'.encode("utf-8")
+    )
+    body.extend(f"Content-Type: {mime_type}\r\n\r\n".encode("utf-8"))
+    body.extend(binary_data)
+    body.extend(b"\r\n")
+    body.extend(f"--{boundary}--\r\n".encode("utf-8"))
+
+    return boundary, bytes(body)
+
+
+def _identify_with_plantnet(image_base64, mime_type, file_name):
+    api_key = os.getenv("PLANTNET_API_KEY")
+    if not api_key:
+        return None, "Plant identification is not configured yet. Add PLANTNET_API_KEY on the backend."
+
+    try:
+        binary_data = base64.b64decode(image_base64)
+    except Exception:
+        return None, "Image data could not be decoded."
+
+    fields = [("organs", "leaf")]
+    boundary, body = _build_multipart_form_data(fields, file_name, mime_type, binary_data)
+    identify_url = f"https://my-api.plantnet.org/v2/identify/all?api-key={api_key}"
+    http_request = urllib_request.Request(
+        identify_url,
+        data=body,
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+        method="POST",
+    )
+
+    try:
+        with urllib_request.urlopen(http_request, timeout=30) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except urllib_error.HTTPError as exc:
+        error_payload = exc.read().decode("utf-8", errors="ignore")
+        return None, f"Plant identification failed: {error_payload or exc.reason}"
+    except Exception as exc:
+        return None, f"Plant identification failed: {exc}"
+
+    results = payload.get("results", [])[:5]
+    candidates = []
+
+    for result in results:
+        species = result.get("species", {})
+        scientific_name = species.get("scientificNameWithoutAuthor") or species.get("scientificName") or ""
+        common_names = species.get("commonNames") or []
+        common_name = common_names[0] if common_names else scientific_name
+        candidates.append(
+            {
+                "name": common_name,
+                "species": scientific_name or common_name,
+                "confidence": round(float(result.get("score", 0)) * 100, 1),
+            }
+        )
+
+    if not candidates:
+        return None, "No plant matches were found from that image."
+
+    return {"provider": "plantnet", "candidates": candidates}, None
+
+
+@swagger_auto_schema(
+    method="post",
+    operation_summary="Identify a plant from a user photo",
+    request_body=PlantIdentifySerializer,
+    responses={200: openapi.Schema(type=openapi.TYPE_OBJECT), 400: error_schema, 401: error_schema},
+)
+@api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
+def identify_plant_view(request):
+    serializer = PlantIdentifySerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    data, error_message = _identify_with_plantnet(
+        serializer.validated_data["imageBase64"],
+        serializer.validated_data.get("mimeType", "image/jpeg"),
+        serializer.validated_data.get("fileName", "plant.jpg"),
+    )
+
+    if error_message:
+        return error_response(error_message, status.HTTP_503_SERVICE_UNAVAILABLE)
+
+    return Response(data)
+
+
 @swagger_auto_schema(
     method="get",
     operation_summary="API base information",
@@ -212,6 +321,7 @@ def api_root_view(request):
             "name": "Plantae REST API",
             "version": "v1",
             "resources": [
+                "/api/v1/plants/identify/",
                 "/api/v1/plants/",
                 "/api/v1/plants/summary/",
                 "/api/token/",

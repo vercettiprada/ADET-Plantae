@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Plant
 
 class PlantSerializer(serializers.ModelSerializer):
-    imageUrl = serializers.URLField(source='image_url', required=False, allow_blank=True)
+    imageUrl = serializers.CharField(source='image_url', required=False, allow_blank=True)
     secretfact = serializers.CharField(source='secret_fact', required=False, allow_blank=True)
 
     class Meta:
@@ -25,13 +25,13 @@ class PlantSerializer(serializers.ModelSerializer):
 class PlantCreateSerializer(PlantSerializer):
     name = serializers.CharField(required=True, max_length=200)
     species = serializers.CharField(required=True, max_length=200)
-    imageUrl = serializers.URLField(source='image_url', required=False, allow_blank=True, default='')
+    imageUrl = serializers.CharField(source='image_url', required=False, allow_blank=True, default='')
     secretfact = serializers.CharField(source='secret_fact', required=False, allow_blank=True, default='')
     light = serializers.CharField(required=False, allow_blank=True, default='')
     water = serializers.CharField(required=False, allow_blank=True, default='')
 
 class PlantSummarySerializer(serializers.ModelSerializer):
-    imageUrl = serializers.URLField(source='image_url')
+    imageUrl = serializers.CharField(source='image_url')
 
     class Meta:
         model = Plant

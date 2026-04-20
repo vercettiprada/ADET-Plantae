@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
+from plantae_api.views import api_not_found_view, api_server_error_view, home_view
 from plants.views import api_root_view
 
 schema_view = get_schema_view(
@@ -22,6 +23,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path("", home_view, name="home"),
     path("admin/", admin.site.urls),
     path("api/", api_root_view, name="api-root"),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
@@ -31,3 +33,6 @@ urlpatterns = [
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ]
+
+handler404 = "plantae_api.views.api_not_found_view"
+handler500 = "plantae_api.views.api_server_error_view"

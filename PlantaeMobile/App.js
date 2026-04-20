@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, StatusBar, Alert } from 'react-native';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,9 +15,16 @@ import AboutScreen from './screens/AboutScreen';
 import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import PlantModal from './components/PlantModal';
+import AddPlantModal from './components/AddPlantModal';
 import SettingsSidebar from './components/SettingsSidebar';
 
 import { api } from './src/api/index';
+import {
+  buildHistoryEntry,
+  createEmptyCareProfile,
+  hydratePlant,
+  sortPlantsForDashboard,
+} from './src/care';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,7 +32,7 @@ const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 function DrawerLayer({
-  allPlants,
+  plants,
   setSelectedPlant,
   isDarkMode,
   setIsDarkMode,
@@ -33,6 +41,12 @@ function DrawerLayer({
   loadingMore,
   loadMorePlants,
   profile,
+  onUpdatePlantCare,
+  gardenView,
+  setGardenView,
+  onFocusSavedPlants,
+  onAddPlant,
+  isIdentifyingPlant,
 }) {
   return (
     <Drawer.Navigator
@@ -43,6 +57,8 @@ function DrawerLayer({
           isDarkMode={isDarkMode}
           setIsDarkMode={setIsDarkMode}
           onLogout={onLogout}
+          gardenView={gardenView}
+          setGardenView={setGardenView}
         />
       )}
       screenOptions={{
@@ -56,11 +72,17 @@ function DrawerLayer({
         {(props) => (
           <GardenScreen
             {...props}
-            plants={allPlants}
+            plants={plants}
             isDarkMode={isDarkMode}
             theme={theme}
             loadingMore={loadingMore}
             loadMorePlants={loadMorePlants}
+            profile={profile}
+            onUpdatePlantCare={onUpdatePlantCare}
+            gardenView={gardenView}
+            onFocusSavedPlants={onFocusSavedPlants}
+            onAddPlant={onAddPlant}
+            isIdentifyingPlant={isIdentifyingPlant}
             onPlantClick={(plant) => setSelectedPlant(plant)}
           />
         )}
@@ -81,6 +103,21 @@ export default function App() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [profile, setProfile] = useState({ username: '', email: '', firstName: '' });
+  const [careProfiles, setCareProfiles] = useState({});
+  const [careReady, setCareReady] = useState(false);
+  const [gardenView, setGardenView] = useState('all');
+  const [isIdentifyingPlant, setIsIdentifyingPlant] = useState(false);
+  const [isSavingAddedPlant, setIsSavingAddedPlant] = useState(false);
+  const [addPlantDraft, setAddPlantDraft] = useState(null);
+  const [addPlantCandidates, setAddPlantCandidates] = useState([]);
+
+  const careStorageKey = useMemo(() => (
+    profile.username ? `plantae:care:${profile.username}` : null
+  ), [profile.username]);
+
+  const enrichedPlants = useMemo(() => sortPlantsForDashboard(
+    allPlants.map((plant) => hydratePlant(plant, careProfiles[plant.id]))
+  ), [allPlants, careProfiles]);
 
   const clearSession = useCallback(async () => {
     await AsyncStorage.removeItem('userToken');
@@ -90,6 +127,9 @@ export default function App() {
     setHasNextPage(true);
     setSelectedPlant(null);
     setProfile({ username: '', email: '', firstName: '' });
+    setCareProfiles({});
+    setCareReady(false);
+    setGardenView('all');
   }, []);
 
   const loadPlants = useCallback(async (pageNum = 1) => {
@@ -173,6 +213,42 @@ export default function App() {
       loadPlants(1);
     }
   }, [authChecked, userToken, allPlants.length, loadPlants]);
+
+  useEffect(() => {
+    let isActive = true;
+
+    const loadCareProfiles = async () => {
+      if (!careStorageKey || !userToken) {
+        if (isActive) {
+          setCareProfiles({});
+          setCareReady(false);
+        }
+        return;
+      }
+
+      const stored = await AsyncStorage.getItem(careStorageKey);
+      if (!isActive) {
+        return;
+      }
+
+      setCareProfiles(stored ? JSON.parse(stored) : {});
+      setCareReady(true);
+    };
+
+    loadCareProfiles();
+
+    return () => {
+      isActive = false;
+    };
+  }, [careStorageKey, userToken]);
+
+  useEffect(() => {
+    if (!careStorageKey || !careReady) {
+      return;
+    }
+
+    AsyncStorage.setItem(careStorageKey, JSON.stringify(careProfiles));
+  }, [careProfiles, careReady, careStorageKey]);
 
   const handleLogin = async (credentials) => {
     setLoading(true);
@@ -290,6 +366,176 @@ export default function App() {
     return true;
   }, [clearSession]);
 
+  const handleUpdatePlantCare = useCallback((plantId, updates) => {
+    setCareProfiles((prev) => {
+      const current = { ...createEmptyCareProfile(), ...(prev[plantId] || {}) };
+      const next = { ...current, ...updates };
+
+      if (updates.appendHistory) {
+        next.history = [updates.appendHistory, ...(current.history || [])].slice(0, 12);
+      }
+
+      delete next.appendHistory;
+
+      return {
+        ...prev,
+        [plantId]: next,
+      };
+    });
+  }, []);
+
+  const focusSavedPlants = useCallback(() => {
+    setGardenView('sanctuary');
+    setSelectedPlant(null);
+  }, []);
+
+  const selectedPlantData = useMemo(() => {
+    if (!selectedPlant?.id) {
+      return null;
+    }
+
+    return enrichedPlants.find((plant) => plant.id === selectedPlant.id) || selectedPlant;
+  }, [enrichedPlants, selectedPlant]);
+
+  const closeAddPlantModal = useCallback(() => {
+    setAddPlantDraft(null);
+    setAddPlantCandidates([]);
+    setIsIdentifyingPlant(false);
+  }, []);
+
+  const handleCreatePlant = useCallback(async (draft) => {
+    setIsSavingAddedPlant(true);
+    const result = await api.createPlant({
+      name: draft.name,
+      species: draft.species,
+      imageUrl: draft.imageUrl,
+      secretfact: draft.secretfact || 'Added from your own photo.',
+      light: draft.light,
+      water: draft.water,
+    });
+
+    if (result.unauthorized) {
+      await clearSession();
+      Alert.alert('Session Expired', 'Please log in again.');
+      setIsSavingAddedPlant(false);
+      return false;
+    }
+
+    if (result.error) {
+      Alert.alert('Could Not Save Plant', result.error);
+      setIsSavingAddedPlant(false);
+      return false;
+    }
+
+    if (result.data) {
+      setAllPlants((prev) => [result.data, ...prev]);
+      handleUpdatePlantCare(result.data.id, {
+        inSanctuary: true,
+        notes: draft.secretfact || '',
+        appendHistory: buildHistoryEntry('saved', 'Added from your own plant photo'),
+      });
+      focusSavedPlants();
+      setAddPlantDraft(null);
+      setAddPlantCandidates([]);
+    }
+
+    setIsSavingAddedPlant(false);
+    return true;
+  }, [clearSession, focusSavedPlants, handleUpdatePlantCare]);
+
+  const launchPlantPicker = useCallback(() => {
+    const handleAsset = async (asset) => {
+      if (!asset?.base64) {
+        Alert.alert('Image Missing', 'Please choose a photo that can be processed.');
+        return;
+      }
+
+      const imageUrl = `data:${asset.mimeType || 'image/jpeg'};base64,${asset.base64}`;
+      setIsIdentifyingPlant(true);
+      setAddPlantDraft({
+        name: '',
+        species: '',
+        imageUrl,
+        secretfact: 'Added from your own photo.',
+        light: 'Bright, indirect light',
+        water: 'Water when the top soil feels dry',
+      });
+      setAddPlantCandidates([]);
+
+      const identifyResult = await api.identifyPlant({
+        imageBase64: asset.base64,
+        mimeType: asset.mimeType || 'image/jpeg',
+        fileName: asset.fileName || 'plant.jpg',
+      });
+
+      if (identifyResult.unauthorized) {
+        await clearSession();
+        Alert.alert('Session Expired', 'Please log in again.');
+        closeAddPlantModal();
+        return;
+      }
+
+      if (identifyResult.error) {
+        setIsIdentifyingPlant(false);
+        Alert.alert('Identification Unavailable', `${identifyResult.error}\n\nYou can still add the plant manually from this photo.`);
+        return;
+      }
+
+      const firstCandidate = identifyResult.data?.candidates?.[0];
+      setAddPlantCandidates(identifyResult.data?.candidates || []);
+      setAddPlantDraft((prev) => ({
+        ...prev,
+        name: firstCandidate?.name || prev.name,
+        species: firstCandidate?.species || prev.species,
+      }));
+      setIsIdentifyingPlant(false);
+    };
+
+    Alert.alert(
+      'Add My Plant',
+      'Choose how you want to add your plant.',
+      [
+        {
+          text: 'Camera',
+          onPress: async () => {
+            const permission = await ImagePicker.requestCameraPermissionsAsync();
+            if (!permission.granted) {
+              Alert.alert('Camera Permission', 'Camera access is required to take a plant photo.');
+              return;
+            }
+            const result = await ImagePicker.launchCameraAsync({
+              mediaTypes: ['images'],
+              base64: true,
+              quality: 0.7,
+            });
+            if (!result.canceled) {
+              handleAsset(result.assets[0]);
+            }
+          },
+        },
+        {
+          text: 'Library',
+          onPress: async () => {
+            const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (!permission.granted) {
+              Alert.alert('Library Permission', 'Photo library access is required to choose a plant photo.');
+              return;
+            }
+            const result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ['images'],
+              base64: true,
+              quality: 0.7,
+            });
+            if (!result.canceled) {
+              handleAsset(result.assets[0]);
+            }
+          },
+        },
+        { text: 'Cancel', style: 'cancel' },
+      ]
+    );
+  }, [clearSession, closeAddPlantModal]);
+
   if (!fontsLoaded || !authChecked) return null;
 
   const theme = {
@@ -320,7 +566,7 @@ export default function App() {
           <Stack.Screen name="MainApp">
             {() => (
               <DrawerLayer
-                allPlants={allPlants}
+                plants={enrichedPlants}
                 setSelectedPlant={setSelectedPlant}
                 isDarkMode={isDarkMode}
                 setIsDarkMode={setIsDarkMode}
@@ -329,6 +575,12 @@ export default function App() {
                 loadingMore={loadingMore}
                 loadMorePlants={handleLoadMorePlants}
                 profile={profile}
+                onUpdatePlantCare={handleUpdatePlantCare}
+                gardenView={gardenView}
+                setGardenView={setGardenView}
+                onFocusSavedPlants={focusSavedPlants}
+                onAddPlant={launchPlantPicker}
+                isIdentifyingPlant={isIdentifyingPlant}
               />
             )}
           </Stack.Screen>
@@ -357,12 +609,24 @@ export default function App() {
 
         {selectedPlant && (
           <PlantModal
-            plant={selectedPlant}
+            plant={selectedPlantData}
             isDarkMode={isDarkMode}
             onClose={() => setSelectedPlant(null)}
             onSave={handleSavePlant}
+            onUpdatePlantCare={handleUpdatePlantCare}
+            onFocusSavedPlants={focusSavedPlants}
           />
         )}
+
+        <AddPlantModal
+          visible={!!addPlantDraft}
+          draft={addPlantDraft}
+          candidates={addPlantCandidates}
+          loading={isIdentifyingPlant}
+          saving={isSavingAddedPlant}
+          onClose={closeAddPlantModal}
+          onSave={handleCreatePlant}
+        />
       </NavigationContainer>
     </View>
   );
