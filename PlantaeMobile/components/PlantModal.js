@@ -10,14 +10,30 @@ import { styles } from '../styles/components/PlantModal.styles';
 export default function PlantModal({ plant, onClose, onSave }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedPlant, setEditedPlant] = useState(plant);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    if (plant) setEditedPlant(plant);
+    if (plant) {
+      setEditedPlant(plant);
+      setIsEditing(false);
+      setIsSaving(false);
+    }
   }, [plant]);
 
-  const handleSave = () => {
-    onSave(editedPlant);
-    setIsEditing(false);
+  const handleSave = async () => {
+    if (!onSave || isSaving) {
+      return;
+    }
+
+    setIsSaving(true);
+    const saved = await onSave(editedPlant);
+
+    if (saved) {
+      setIsEditing(false);
+      onClose();
+    }
+
+    setIsSaving(false);
   };
 
   return (
@@ -33,9 +49,12 @@ export default function PlantModal({ plant, onClose, onSave }) {
                 <TouchableOpacity onPress={onClose}>
                   <Text style={styles.headerText}>Close</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={isEditing ? handleSave : () => setIsEditing(true)}>
+                <TouchableOpacity
+                  onPress={isEditing ? handleSave : () => setIsEditing(true)}
+                  disabled={isSaving}
+                >
                   <Text style={[styles.headerText, { color: '#4f9a44' }]}>
-                    {isEditing ? 'Save' : 'Edit'}
+                    {isEditing ? (isSaving ? 'Saving...' : 'Save') : 'Edit'}
                   </Text>
                 </TouchableOpacity>
               </View>

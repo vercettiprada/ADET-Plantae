@@ -110,8 +110,8 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ),
     # Pagination (Checklist num4)
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 6, # Small size to demonstrate the skeleton loader quickly
+    'DEFAULT_PAGINATION_CLASS': 'plantae_api.pagination.PlantaePagination',
+    'PAGE_SIZE': 10,
     # Filtering
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -222,3 +222,15 @@ CORS_ALLOW_ALL_ORIGINS = True
 REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
     'rest_framework_simplejwt.authentication.JWTAuthentication',
 ]
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Authorization header using the Bearer scheme. Example: "Bearer <token>"',
+        }
+    },
+}

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-export const EXPANDED_HEADER_HEIGHT = 168;
-export const COLLAPSED_HEADER_HEIGHT = 88;
+export const EXPANDED_HEADER_HEIGHT = 194;
+export const COLLAPSED_HEADER_HEIGHT = 96;
 export const SEARCH_HEIGHT = 48;
 
 export const styles = StyleSheet.create({
@@ -32,13 +32,17 @@ export const styles = StyleSheet.create({
   menuLine: { width: 26, height: 2.5, borderRadius: 2, marginVertical: 2.5 },
   searchWrap: {
     overflow: 'hidden',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    paddingBottom: 4,
   },
   search: {
     height: SEARCH_HEIGHT,
     paddingHorizontal: 16,
+    paddingVertical: 0,
     borderRadius: 16,
     fontSize: 15,
+    lineHeight: 18,
+    textAlignVertical: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.08,

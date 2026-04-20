@@ -2603,3 +2603,9 @@
 [2026-04-18 23:14:26,799] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: login_view | Path: /api/auth/login/
 [2026-04-19 07:36:17,381] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/v1/plants/
 [2026-04-19 07:36:56,872] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/v1/plants/
+[2026-04-20 09:18:32,212] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: plant_list_view | Path: /api/v1/plants/
+[2026-04-20 09:23:57,567] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: PlantListCreateView | Path: /api/v1/plants/
+[2026-04-20 09:44:48,286] ERROR plantae_api HTTP 400 | BAD_REQUEST | View: register_view | Path: /api/v1/auth/register/
+[2026-04-20 09:44:54,148] ERROR plantae_api HTTP 400 | BAD_REQUEST | View: register_view | Path: /api/v1/auth/register/
+[2026-04-20 09:44:58,891] ERROR plantae_api HTTP 400 | BAD_REQUEST | View: register_view | Path: /api/v1/auth/register/
+[2026-04-20 09:47:21,385] ERROR plantae_api HTTP 400 | BAD_REQUEST | View: register_view | Path: /api/v1/auth/register/

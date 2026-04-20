@@ -12,6 +12,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import GardenScreen from './screens/GardenScreen';
 import AboutScreen from './screens/AboutScreen';
 import LoginScreen from './screens/LoginScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import PlantModal from './components/PlantModal';
 import SettingsSidebar from './components/SettingsSidebar';
 
@@ -22,12 +23,23 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
-function DrawerLayer({ allPlants, setSelectedPlant, isDarkMode, setIsDarkMode, theme, onLogout }) {
+function DrawerLayer({
+  allPlants,
+  setSelectedPlant,
+  isDarkMode,
+  setIsDarkMode,
+  theme,
+  onLogout,
+  loadingMore,
+  loadMorePlants,
+  profile,
+}) {
   return (
     <Drawer.Navigator
       drawerContent={(props) => (
         <SettingsSidebar
           {...props}
+          profile={profile}
           isDarkMode={isDarkMode}
           setIsDarkMode={setIsDarkMode}
           onLogout={onLogout}
@@ -47,6 +59,8 @@ function DrawerLayer({ allPlants, setSelectedPlant, isDarkMode, setIsDarkMode, t
             plants={allPlants}
             isDarkMode={isDarkMode}
             theme={theme}
+            loadingMore={loadingMore}
+            loadMorePlants={loadMorePlants}
             onPlantClick={(plant) => setSelectedPlant(plant)}
           />
         )}
@@ -65,13 +79,17 @@ export default function App() {
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [profile, setProfile] = useState({ username: '', email: '', firstName: '' });
 
   const clearSession = useCallback(async () => {
     await AsyncStorage.removeItem('userToken');
     setUserToken(null);
     setAllPlants([]);
     setPage(1);
+    setHasNextPage(true);
     setSelectedPlant(null);
+    setProfile({ username: '', email: '', firstName: '' });
   }, []);
 
   const loadPlants = useCallback(async (pageNum = 1) => {
@@ -87,9 +105,13 @@ export default function App() {
     if (pageNum === 1) {
       setAllPlants(result.data);
       setPage(1);
+      setHasNextPage(result.hasNext);
     } else if (result.data.length > 0) {
       setAllPlants(prev => [...prev, ...result.data]);
       setPage(pageNum);
+      setHasNextPage(result.hasNext);
+    } else {
+      setHasNextPage(false);
     }
 
     setLoadingMore(false);
@@ -106,13 +128,20 @@ export default function App() {
     }
 
     setUserToken(storedToken);
-    const result = await api.getPlants(1);
+    const [plantsResult, profileResult] = await Promise.all([
+      api.getPlants(1),
+      api.getProfile(),
+    ]);
 
-    if (result.unauthorized) {
+    if (plantsResult.unauthorized || profileResult.unauthorized) {
       await clearSession();
     } else {
-      setAllPlants(result.data);
+      setAllPlants(plantsResult.data);
       setPage(1);
+      setHasNextPage(plantsResult.hasNext);
+      if (profileResult.data) {
+        setProfile(profileResult.data);
+      }
     }
 
     setAuthChecked(true);
@@ -151,6 +180,11 @@ export default function App() {
 
     if (result.token) {
       setUserToken(result.token);
+      setProfile((prev) => ({ ...prev, username: result.username || prev.username }));
+      const profileResult = await api.getProfile();
+      if (profileResult.data) {
+        setProfile(profileResult.data);
+      }
       const plantsResult = await loadPlants(1);
       if (plantsResult.unauthorized) {
         Alert.alert('Session Expired', 'Please log in again.');
@@ -167,8 +201,12 @@ export default function App() {
     const result = await api.register(userData);
 
     if (result.access) {
-      await AsyncStorage.setItem('userToken', result.access);
       setUserToken(result.access);
+      setProfile({
+        username: result.username || '',
+        email: userData.email,
+        firstName: '',
+      });
       await loadPlants(1);
     } else {
       Alert.alert('Registration Failed', result.error || 'Could not create account.');
@@ -180,6 +218,77 @@ export default function App() {
   const handleLogout = async () => {
     await clearSession();
   };
+
+  const handleSaveProfile = useCallback(async (updates) => {
+    const result = await api.updateProfile(updates);
+
+    if (result.unauthorized) {
+      await clearSession();
+      Alert.alert('Session Expired', 'Please log in again.');
+      return false;
+    }
+
+    if (result.error) {
+      Alert.alert('Save Failed', result.error);
+      return false;
+    }
+
+    if (result.data) {
+      setProfile(result.data);
+    }
+
+    return true;
+  }, [clearSession]);
+
+  const handleDeleteAccount = useCallback(async () => {
+    const result = await api.deleteAccount();
+
+    if (result.unauthorized) {
+      await clearSession();
+      Alert.alert('Session Expired', 'Please log in again.');
+      return false;
+    }
+
+    if (result.error) {
+      Alert.alert('Delete Failed', result.error);
+      return false;
+    }
+
+    await clearSession();
+    return true;
+  }, [clearSession]);
+
+  const handleLoadMorePlants = useCallback(() => {
+    if (loadingMore || !hasNextPage || !userToken) {
+      return;
+    }
+
+    loadPlants(page + 1);
+  }, [hasNextPage, loadPlants, loadingMore, page, userToken]);
+
+  const handleSavePlant = useCallback(async (updatedPlant) => {
+    const result = await api.updatePlant(updatedPlant.id, updatedPlant);
+
+    if (result.unauthorized) {
+      await clearSession();
+      Alert.alert('Session Expired', 'Please log in again.');
+      return false;
+    }
+
+    if (result.error) {
+      Alert.alert('Save Failed', result.error);
+      return false;
+    }
+
+    if (result.data) {
+      setAllPlants((prev) => prev.map((plant) => (
+        plant.id === result.data.id ? result.data : plant
+      )));
+      setSelectedPlant(result.data);
+    }
+
+    return true;
+  }, [clearSession]);
 
   if (!fontsLoaded || !authChecked) return null;
 
@@ -217,6 +326,24 @@ export default function App() {
                 setIsDarkMode={setIsDarkMode}
                 theme={theme}
                 onLogout={handleLogout}
+                loadingMore={loadingMore}
+                loadMorePlants={handleLoadMorePlants}
+                profile={profile}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Profile"
+            options={{ presentation: 'card', animation: 'slide_from_right' }}
+          >
+            {(props) => (
+              <ProfileScreen
+                {...props}
+                isDarkMode={isDarkMode}
+                profile={profile}
+                plantCount={allPlants.length}
+                onSaveProfile={handleSaveProfile}
+                onDeleteAccount={handleDeleteAccount}
               />
             )}
           </Stack.Screen>
@@ -233,10 +360,7 @@ export default function App() {
             plant={selectedPlant}
             isDarkMode={isDarkMode}
             onClose={() => setSelectedPlant(null)}
-            onSave={(updated) => {
-              setAllPlants(prev => prev.map(p => p.id === updated.id ? updated : p));
-              setSelectedPlant(null);
-            }}
+            onSave={handleSavePlant}
           />
         )}
       </NavigationContainer>

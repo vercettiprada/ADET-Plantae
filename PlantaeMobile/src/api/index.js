@@ -1,92 +1,339 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
-// ⚠️  IMPORTANT: Replace with your PC's local IP address.
-// Run 'ipconfig' on Windows, find your IPv4 Address (e.g. 192.168.1.5)
-// Do NOT use 'localhost' — it won't reach Django from a phone/emulator.
-export const API_BASE = 'http://192.168.137.1:8000/api';
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8';
+
+const flattenDetails = (details) => {
+  if (!details) {
+    return [];
+  }
+
+  if (Array.isArray(details)) {
+    return details.flatMap(flattenDetails);
+  }
+
+  if (typeof details === 'object') {
+    return Object.entries(details).flatMap(([field, value]) => {
+      const messages = flattenDetails(value);
+      return messages.map((message) => `${field}: ${message}`);
+    });
+  }
+
+  return [String(details)];
+};
+
+const normalizeError = (payload, fallbackMessage) => {
+  if (!payload) {
+    return fallbackMessage;
+  }
+
+  if (typeof payload.error === 'string') {
+    return payload.error;
+  }
+
+  if (payload.error?.message) {
+    const detailMessages = flattenDetails(payload.error.details);
+    if (detailMessages.length > 0) {
+      return detailMessages.join('\n');
+    }
+    return payload.error.message;
+  }
+
+  if (payload.detail) {
+    return payload.detail;
+  }
+
+  return fallbackMessage;
+};
+
+const resolveHost = () => {
+  const configuredHost =
+    Constants.expoConfig?.extra?.apiHost ||
+    Constants.manifest2?.extra?.expoClient?.hostUri ||
+    Constants.expoGoConfig?.debuggerHost ||
+    Constants.manifest?.debuggerHost ||
+    Constants.linkingUri;
+
+  if (!configuredHost) {
+    return Platform.OS === 'android' ? '10.0.2.2' : '127.0.0.1';
+  }
+
+  const sanitizedHost = configuredHost
+    .replace(/^[a-z]+:\/\//i, '')
+    .split('/')[0]
+    .split(':')[0];
+
+  if (sanitizedHost === 'localhost' && Platform.OS === 'android') {
+    return '10.0.2.2';
+  }
+
+  return sanitizedHost || (Platform.OS === 'android' ? '10.0.2.2' : '127.0.0.1');
+};
+
+const API_BASE = `http://${resolveHost()}:8000/api`;
+
+const mapPlant = (plant) => ({
+  id: String(plant.id),
+  name: plant.name || 'Unknown Plant',
+  species: plant.species || 'Unknown Species',
+  imageUrl: plant.imageUrl || FALLBACK_IMAGE,
+  light: plant.light || 'Bright, indirect light',
+  water: plant.water || 'Water when the soil feels dry',
+  secretfact: plant.secretfact || plant.secret_fact || 'A beautiful plant.',
+});
+
+const request = async (path, options = {}) => {
+  const response = await fetch(`${API_BASE}${path}`, options);
+  const contentType = response.headers.get('content-type') || '';
+  const payload = contentType.includes('application/json') ? await response.json() : null;
+
+  return { response, payload };
+};
 
 export const api = {
+  baseUrl: API_BASE,
 
-  // REGISTER — POST /api/auth/register/
   register: async (userData) => {
     try {
-      const res = await fetch(`${API_BASE}/auth/register/`, {
+      const { response, payload } = await request('/v1/auth/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
-      const contentType = res.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        return await res.json();
+
+      if (!response.ok) {
+        return { error: normalizeError(payload, 'Could not create account.') };
       }
-      return { error: "Server error. Check Django is running." };
-    } catch (e) {
-      return { error: "Network error. Is Django running? Check your IP in src/api/index.js" };
+
+      if (payload?.access) {
+        await AsyncStorage.setItem('userToken', payload.access);
+      }
+
+      return payload || { error: 'Could not create account.' };
+    } catch {
+      return {
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
     }
   },
 
-  // LOGIN — POST /api/auth/login/
-  // Matches login_view in plants/views.py -> returns { access, refresh, username }
   login: async (credentials) => {
     try {
-      const res = await fetch(`${API_BASE}/auth/login/`, {
+      const { response, payload } = await request('/v1/auth/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
       });
-      const json = await res.json();
-      if (res.ok) {
-        await AsyncStorage.setItem('userToken', json.access);
-        return { token: json.access };
-      } else {
-        return { error: json.error || json.detail || "Login failed. Check credentials." };
+
+      if (!response.ok) {
+        return { error: normalizeError(payload, 'Login failed. Check your credentials.') };
       }
-    } catch (e) {
-      return { error: "Network error. Is Django running? Check your IP in src/api/index.js" };
+
+      if (payload?.access) {
+        await AsyncStorage.setItem('userToken', payload.access);
+        return { token: payload.access, username: payload.username };
+      }
+
+      return { error: 'Login failed. The backend did not return an access token.' };
+    } catch {
+      return {
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
     }
   },
 
-  // GET PLANTS — GET /api/v1/plants/?page=N  (JWT protected)
   getPlants: async (page = 1) => {
     try {
       const token = await AsyncStorage.getItem('userToken');
+
       if (!token) {
         return { data: [], hasNext: false, unauthorized: true };
       }
 
-      const response = await fetch(`${API_BASE}/v1/plants/?page=${page}`, {
+      const { response, payload } = await request(`/v1/plants/?page=${page}`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       });
 
       if (!response.ok) {
-        console.log("Plants fetch error:", response.status);
         return {
           data: [],
           hasNext: false,
           unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to load plants.'),
         };
       }
 
-      const json = await response.json();
-      const results = Array.isArray(json) ? json : (json.results || []);
-
-      const mappedData = results.map((plant) => ({
-        id: (plant.id || Math.random()).toString(),
-        name: plant.name || "Unknown Plant",
-        species: plant.species || "Unknown Species",
-        imageUrl: plant.imageUrl || 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8',
-        light: plant.light || 'Bright, Indirect',
-        water: plant.water || 'Weekly',
-        secretfact: plant.secretfact || plant.secret_fact || 'A beautiful plant.',
-      }));
-
-      return { data: mappedData, hasNext: !!json.next, unauthorized: false };
-    } catch (error) {
-      console.error("Fetch Error:", error);
-      return { data: [], hasNext: false, unauthorized: false };
+      const results = Array.isArray(payload) ? payload : payload?.results || [];
+      return {
+        data: results.map(mapPlant),
+        hasNext: Boolean(payload?.next),
+        unauthorized: false,
+      };
+    } catch {
+      return {
+        data: [],
+        hasNext: false,
+        unauthorized: false,
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
     }
-  }
+  },
+
+  updatePlant: async (plantId, updates) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request(`/v1/plants/${plantId}/`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: updates.name,
+          species: updates.species,
+          imageUrl: updates.imageUrl,
+          light: updates.light,
+          water: updates.water,
+          secretfact: updates.secretfact,
+        }),
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to save plant changes.'),
+        };
+      }
+
+      return { data: mapPlant(payload), unauthorized: false };
+    } catch {
+      return {
+        unauthorized: false,
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
+    }
+  },
+
+  getProfile: async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request('/v1/auth/profile/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to load your profile.'),
+        };
+      }
+
+      return {
+        data: {
+          username: payload.username || '',
+          email: payload.email || '',
+          firstName: payload.first_name || '',
+        },
+        unauthorized: false,
+      };
+    } catch {
+      return {
+        unauthorized: false,
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
+    }
+  },
+
+  updateProfile: async (updates) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request('/v1/auth/profile/', {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: updates.email,
+          first_name: updates.firstName,
+        }),
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to save your profile.'),
+        };
+      }
+
+      return {
+        data: {
+          username: payload.username || '',
+          email: payload.email || '',
+          firstName: payload.first_name || '',
+        },
+        unauthorized: false,
+      };
+    } catch {
+      return {
+        unauthorized: false,
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
+    }
+  },
+
+  deleteAccount: async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request('/v1/auth/profile/', {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to delete your account.'),
+        };
+      }
+
+      await AsyncStorage.removeItem('userToken');
+      return { success: true, unauthorized: false };
+    } catch {
+      return {
+        unauthorized: false,
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
+    }
+  },
 };

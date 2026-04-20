@@ -60,6 +60,14 @@ export const styles = StyleSheet.create({
   },
   fieldLabel: { fontSize: 15, flex: 1 },
   fieldValue: { fontSize: 15, flex: 1.5, textAlign: 'right' },
-  fieldInput: { fontSize: 15, flex: 1.5, textAlign: 'right' },
+  fieldInput: {
+    fontSize: 15,
+    flex: 1.5,
+    textAlign: 'right',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
   deleteText: { fontSize: 15, color: '#e53935', paddingVertical: 2 },
 });
