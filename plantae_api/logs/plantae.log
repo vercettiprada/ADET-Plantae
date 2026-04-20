@@ -14378,3 +14378,13 @@ AttributeError: type object 'Token' has no attribute 'objects'
 [2026-04-20 11:15:18,692] INFO plantae_api << POST /api/token/ | Status: 200 | Duration: 746ms
 [2026-04-20 11:15:18,693] INFO plantae_api >> PATCH /api/v1/auth/profile/
 [2026-04-20 11:15:18,721] INFO plantae_api << PATCH /api/v1/auth/profile/ | Status: 200 | Duration: 27ms
+[2026-04-20 11:17:27,952] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-20 11:17:29,217] INFO plantae_api << POST /api/v1/auth/login/ | Status: 200 | Duration: 1264ms
+[2026-04-20 11:17:29,219] INFO django.server "POST /api/v1/auth/login/ HTTP/1.1" 200 507
+[2026-04-20 11:17:29,367] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-20 11:17:29,371] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 3ms
+[2026-04-20 11:17:29,371] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-20 11:17:29,423] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-20 11:17:29,452] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 28ms
+[2026-04-20 11:17:29,453] INFO django.server "GET /api/v1/plants/?page=2 HTTP/1.1" 200 2912311
+[2026-04-20 11:17:43,409] INFO django.server - Broken pipe from ('192.168.1.6', 61561)
