@@ -46,7 +46,7 @@ function App() {
           />
 
           <header className="main-header">
-            <h1 className="brand-title">Plantae.</h1>
+            <h1 className="brand-title">Plantae</h1>
             
             <div className="header-controls-container">
               <div className="controls-left">

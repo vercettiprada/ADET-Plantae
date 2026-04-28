@@ -23,7 +23,7 @@ const SettingsSidebar = ({ isOpen, onClose, onAboutClick }) => {
               <p>Account Settings</p>
               <p>Help & Support</p>
               
-              
+              {/* Added the onClick here */}
               <p onClick={onAboutClick} style={{ cursor: 'pointer' }}>About Plantae</p>
               
               <p className="logout-text">Logout</p>
