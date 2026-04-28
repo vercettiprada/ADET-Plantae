@@ -14063,3 +14063,165 @@ AttributeError: type object 'Token' has no attribute 'objects'
 [2026-04-20 10:03:57,042] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 2ms
 [2026-04-20 10:03:57,043] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 3944
 [2026-04-20 10:03:57,044] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 3944
+[2026-04-28 19:42:30,049] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-28 19:43:07,952] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-04-28 19:43:14,980] INFO django.server "OPTIONS /api/v1/auth/register/ HTTP/1.1" 200 0
+[2026-04-28 19:43:14,984] INFO plantae_api >> POST /api/v1/auth/register/
+[2026-04-28 19:43:15,026] ERROR plantae_api HTTP 400 | BAD_REQUEST | View: register_view | Path: /api/v1/auth/register/
+[2026-04-28 19:43:15,026] INFO plantae_api << POST /api/v1/auth/register/ | Status: 400 | Duration: 42ms
+[2026-04-28 19:43:15,028] WARNING django.request Bad Request: /api/v1/auth/register/
+[2026-04-28 19:43:15,029] WARNING django.server "POST /api/v1/auth/register/ HTTP/1.1" 400 217
+[2026-04-28 19:43:20,922] INFO django.server "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+[2026-04-28 19:43:20,923] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 19:43:21,916] INFO plantae_api << POST /api/v1/auth/login/ | Status: 200 | Duration: 993ms
+[2026-04-28 19:43:21,918] INFO django.server "POST /api/v1/auth/login/ HTTP/1.1" 200 507
+[2026-04-28 19:43:21,922] INFO django.server "OPTIONS /api/v1/auth/profile/ HTTP/1.1" 200 0
+[2026-04-28 19:43:21,923] INFO django.server "OPTIONS /api/v1/plants/?page=1 HTTP/1.1" 200 0
+[2026-04-28 19:43:21,985] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:43:21,986] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-28 19:43:21,988] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 3ms
+[2026-04-28 19:43:21,988] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:43:22,001] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 14ms
+[2026-04-28 19:43:22,002] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 3942
+[2026-04-28 19:44:35,673] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:44:35,675] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 19:44:35,676] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:44:35,678] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:44:35,680] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 19:44:35,680] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:44:38,473] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:44:38,475] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 19:44:38,476] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:44:38,478] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:44:38,479] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 1ms
+[2026-04-28 19:44:38,481] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:44:38,780] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:44:38,782] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 1ms
+[2026-04-28 19:44:38,782] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:44:38,785] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:44:38,787] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 19:44:38,787] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:44:38,924] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:44:38,925] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 1ms
+[2026-04-28 19:44:38,926] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:44:38,929] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:44:38,931] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 19:44:38,931] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:45:23,463] INFO plantae_api >> GET /api/
+[2026-04-28 19:45:23,463] INFO plantae_api << GET /api/ | Status: 200 | Duration: 0ms
+[2026-04-28 19:45:23,463] INFO django.server "GET /api/ HTTP/1.1" 200 179
+[2026-04-28 19:45:23,481] INFO django.server - Broken pipe from ('127.0.0.1', 49796)
+[2026-04-28 19:45:56,666] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 19:45:57,550] INFO plantae_api << POST /api/v1/auth/login/ | Status: 200 | Duration: 884ms
+[2026-04-28 19:45:57,550] INFO django.server "POST /api/v1/auth/login/ HTTP/1.1" 200 507
+[2026-04-28 19:45:57,554] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:45:57,557] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 1ms
+[2026-04-28 19:45:57,558] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:46:55,676] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:46:55,678] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 19:46:55,678] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:46:55,698] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:46:55,700] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 1ms
+[2026-04-28 19:46:55,701] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:47:03,215] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:47:03,217] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 19:47:03,217] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:47:03,222] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:47:03,224] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 1ms
+[2026-04-28 19:47:03,224] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:47:08,927] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:47:08,929] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 19:47:08,929] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:47:08,948] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:47:08,950] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 1ms
+[2026-04-28 19:47:08,951] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:47:14,051] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:47:14,052] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 1ms
+[2026-04-28 19:47:14,054] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:47:14,061] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:47:14,062] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 1ms
+[2026-04-28 19:47:14,064] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:56:57,506] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:56:57,508] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-28 19:56:57,510] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 3ms
+[2026-04-28 19:56:57,511] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 19:56:57,513] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-04-28 19:56:57,514] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 19:56:57,515] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 3942
+[2026-04-28 19:56:57,516] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 19:56:57,516] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 20:07:54,323] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-28 20:07:54,325] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: PlantListCreateView | Path: /api/v1/plants/
+[2026-04-28 20:07:54,325] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 20:07:54,325] INFO plantae_api << GET /api/v1/plants/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:07:54,327] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: profile_view | Path: /api/v1/auth/profile/
+[2026-04-28 20:07:54,327] WARNING django.request Unauthorized: /api/v1/plants/
+[2026-04-28 20:07:54,327] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:07:54,327] WARNING django.request Unauthorized: /api/v1/auth/profile/
+[2026-04-28 20:07:54,328] WARNING django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 401 114
+[2026-04-28 20:07:54,328] WARNING django.server "GET /api/v1/auth/profile/ HTTP/1.1" 401 114
+[2026-04-28 20:07:54,391] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-28 20:07:54,391] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 20:07:54,392] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: PlantListCreateView | Path: /api/v1/plants/
+[2026-04-28 20:07:54,394] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: profile_view | Path: /api/v1/auth/profile/
+[2026-04-28 20:07:54,394] INFO plantae_api << GET /api/v1/plants/ | Status: 401 | Duration: 2ms
+[2026-04-28 20:07:54,394] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:07:54,394] WARNING django.request Unauthorized: /api/v1/plants/
+[2026-04-28 20:07:54,395] WARNING django.request Unauthorized: /api/v1/auth/profile/
+[2026-04-28 20:07:54,395] WARNING django.server "GET /api/v1/auth/profile/ HTTP/1.1" 401 114
+[2026-04-28 20:07:54,396] WARNING django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 401 114
+[2026-04-28 20:08:30,848] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:31,737] INFO plantae_api << POST /api/v1/auth/login/ | Status: 200 | Duration: 889ms
+[2026-04-28 20:08:31,737] INFO django.server "POST /api/v1/auth/login/ HTTP/1.1" 200 507
+[2026-04-28 20:08:31,741] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 20:08:31,742] INFO plantae_api >> GET /api/v1/plants/
+[2026-04-28 20:08:31,746] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 3ms
+[2026-04-28 20:08:31,747] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-04-28 20:08:31,748] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65
+[2026-04-28 20:08:31,748] INFO django.server "GET /api/v1/plants/?page=1 HTTP/1.1" 200 3942
+[2026-04-28 20:08:55,527] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:55,529] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 0ms
+[2026-04-28 20:08:55,529] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:08:55,529] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:08:56,059] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:56,061] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:08:56,062] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:08:56,062] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:08:56,196] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:56,199] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:08:56,199] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:08:56,199] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:08:56,339] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:56,340] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:08:56,340] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:08:56,340] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:08:56,475] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:56,477] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:08:56,477] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:08:56,477] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:08:56,619] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:56,620] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:08:56,620] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:08:56,621] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:08:56,770] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:56,771] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:08:56,771] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:08:56,772] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:08:56,968] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:56,970] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 0ms
+[2026-04-28 20:08:56,970] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:08:56,970] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:08:57,141] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:08:57,143] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 1ms
+[2026-04-28 20:08:57,143] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:08:57,143] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:11:49,975] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:11:49,978] INFO plantae_api << POST /api/v1/auth/login/ | Status: 401 | Duration: 2ms
+[2026-04-28 20:11:49,978] WARNING django.request Unauthorized: /api/v1/auth/login/
+[2026-04-28 20:11:49,978] WARNING django.server "POST /api/v1/auth/login/ HTTP/1.1" 401 94
+[2026-04-28 20:11:56,474] INFO plantae_api >> POST /api/v1/auth/login/
+[2026-04-28 20:11:58,191] INFO plantae_api << POST /api/v1/auth/login/ | Status: 200 | Duration: 1717ms
+[2026-04-28 20:11:58,192] INFO django.server "POST /api/v1/auth/login/ HTTP/1.1" 200 507
+[2026-04-28 20:11:58,197] INFO plantae_api >> GET /api/v1/auth/profile/
+[2026-04-28 20:11:58,200] INFO plantae_api << GET /api/v1/auth/profile/ | Status: 200 | Duration: 2ms
+[2026-04-28 20:11:58,200] INFO django.server "GET /api/v1/auth/profile/ HTTP/1.1" 200 65

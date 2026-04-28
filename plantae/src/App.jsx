@@ -1,109 +1,368 @@
-import React, { useState } from 'react';
-import './styles/App.css'; 
-import { plantData } from './data/plants';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import './styles/App.css';
+import About from './About';
+import { api } from './api';
+import AuthScreen from './components/AuthScreen';
 import PlantCard from './components/PlantCard';
 import PlantModal from './components/PlantModal';
+import ProfilePanel from './components/ProfilePanel';
 import SettingsSidebar from './components/SettingsSidebar';
-import About from './About'; // Import the new About component
 
 function App() {
-  // 1. INITIAL STATES
-  const [allPlants, setAllPlants] = useState(plantData);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPlant, setSelectedPlant] = useState(null); 
+  const [authChecked, setAuthChecked] = useState(false);
+  const [userToken, setUserToken] = useState(api.getStoredToken());
+  const [loading, setLoading] = useState(false);
+  const [allPlants, setAllPlants] = useState([]);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPlant, setSelectedPlant] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [currentView, setCurrentView] = useState('garden'); // 'garden' or 'about'
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [currentView, setCurrentView] = useState('garden');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [profile, setProfile] = useState({ username: '', email: '', firstName: '' });
+  const [authError, setAuthError] = useState('');
+  const [gardenError, setGardenError] = useState('');
+  const [profileError, setProfileError] = useState('');
 
-  // 2. FILTER LOGIC
-  const filteredPlants = allPlants.filter((plant) => {
-    const name = plant.name?.toLowerCase() || "";
-    const species = plant.species?.toLowerCase() || "";
-    const query = searchQuery.toLowerCase();
-    return name.includes(query) || species.includes(query);
-  });
+  const clearSession = useCallback(() => {
+    api.clearStoredToken();
+    setUserToken(null);
+    setAllPlants([]);
+    setHasNextPage(true);
+    setPage(1);
+    setSelectedPlant(null);
+    setIsSettingsOpen(false);
+    setIsProfileOpen(false);
+    setProfile({ username: '', email: '', firstName: '' });
+  }, []);
 
-  // 3. HANDLER FUNCTIONS
-  const handleSavePlant = (updatedPlant) => {
-    setAllPlants(prevPlants => 
-      prevPlants.map(p => p.id === updatedPlant.id ? updatedPlant : p)
-    );
-    setSelectedPlant(updatedPlant); 
+  const loadPlants = useCallback(async (pageNumber = 1) => {
+    setLoadingMore(true);
+    const result = await api.getPlants(pageNumber);
+
+    if (result.unauthorized) {
+      clearSession();
+      setLoadingMore(false);
+      return { unauthorized: true };
+    }
+
+    setGardenError(result.error || '');
+
+    if (pageNumber === 1) {
+      setAllPlants(result.data || []);
+      setPage(1);
+      setHasNextPage(result.hasNext);
+    } else if ((result.data || []).length > 0) {
+      setAllPlants((prev) => [...prev, ...result.data]);
+      setPage(pageNumber);
+      setHasNextPage(result.hasNext);
+    } else {
+      setHasNextPage(false);
+    }
+
+    setLoadingMore(false);
+    return result;
+  }, [clearSession]);
+
+  useEffect(() => {
+    const bootstrap = async () => {
+      const storedToken = api.getStoredToken();
+
+      if (!storedToken) {
+        setAuthChecked(true);
+        return;
+      }
+
+      setUserToken(storedToken);
+      const [plantsResult, profileResult] = await Promise.all([
+        api.getPlants(1),
+        api.getProfile(),
+      ]);
+
+      if (plantsResult.unauthorized || profileResult.unauthorized) {
+        clearSession();
+      } else {
+        setAllPlants(plantsResult.data || []);
+        setHasNextPage(plantsResult.hasNext);
+        setPage(1);
+        setGardenError(plantsResult.error || '');
+        if (profileResult.data) {
+          setProfile(profileResult.data);
+        }
+        setProfileError(profileResult.error || '');
+      }
+
+      setAuthChecked(true);
+    };
+
+    bootstrap();
+  }, [clearSession]);
+
+  const filteredPlants = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) {
+      return allPlants;
+    }
+
+    return allPlants.filter((plant) => (
+      plant.name.toLowerCase().includes(query) ||
+      plant.species.toLowerCase().includes(query)
+    ));
+  }, [allPlants, searchQuery]);
+
+  const handleLogin = async (credentials) => {
+    setLoading(true);
+    setAuthError('');
+    const result = await api.login(credentials);
+
+    if (result.token) {
+      setUserToken(result.token);
+      const [profileResult, plantsResult] = await Promise.all([
+        api.getProfile(),
+        loadPlants(1),
+      ]);
+
+      if (profileResult.data) {
+        setProfile(profileResult.data);
+      }
+
+      setProfileError(profileResult.error || '');
+
+      if (plantsResult?.unauthorized) {
+        setAuthError('Session expired. Please sign in again.');
+      }
+    } else {
+      setAuthError(result.error || 'Invalid credentials.');
+    }
+
+    setLoading(false);
+    setAuthChecked(true);
   };
 
-  // 4. NAVIGATION RENDER
+  const handleRegister = async (userData) => {
+    setLoading(true);
+    setAuthError('');
+    const result = await api.register(userData);
+
+    if (result.access) {
+      setUserToken(result.access);
+      setProfile({
+        username: result.username || userData.username,
+        email: userData.email,
+        firstName: '',
+      });
+      await loadPlants(1);
+    } else {
+      setAuthError(result.error || 'Could not create account.');
+    }
+
+    setLoading(false);
+    setAuthChecked(true);
+  };
+
+  const handleLogout = () => {
+    clearSession();
+    setCurrentView('garden');
+    setSearchQuery('');
+    setAuthError('');
+  };
+
+  const handleSavePlant = async (updatedPlant) => {
+    setGardenError('');
+    const result = await api.updatePlant(updatedPlant.id, updatedPlant);
+
+    if (result.unauthorized) {
+      clearSession();
+      setAuthError('Session expired. Please sign in again.');
+      return false;
+    }
+
+    if (result.error) {
+      setGardenError(result.error);
+      return false;
+    }
+
+    if (result.data) {
+      setAllPlants((prev) => prev.map((plant) => (plant.id === result.data.id ? result.data : plant)));
+      setSelectedPlant(result.data);
+    }
+
+    return true;
+  };
+
+  const handleSaveProfile = async (updates) => {
+    setLoading(true);
+    setProfileError('');
+    const result = await api.updateProfile(updates);
+
+    if (result.unauthorized) {
+      clearSession();
+      setAuthError('Session expired. Please sign in again.');
+      setLoading(false);
+      return false;
+    }
+
+    if (result.error) {
+      setProfileError(result.error);
+      setLoading(false);
+      return false;
+    }
+
+    if (result.data) {
+      setProfile(result.data);
+    }
+
+    setLoading(false);
+    return true;
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmed = window.confirm('This permanently deletes your account. This action cannot be undone.');
+
+    if (!confirmed) {
+      return;
+    }
+
+    setLoading(true);
+    setProfileError('');
+    const result = await api.deleteAccount();
+
+    if (result.unauthorized) {
+      clearSession();
+      setAuthError('Session expired. Please sign in again.');
+    } else if (result.error) {
+      setProfileError(result.error);
+    } else {
+      clearSession();
+      setAuthError('');
+    }
+
+    setLoading(false);
+  };
+
+  const handleLoadMore = () => {
+    if (loadingMore || !hasNextPage || !userToken) {
+      return;
+    }
+
+    loadPlants(page + 1);
+  };
+
+  if (!authChecked) {
+    return <div className="screen-loader">Loading Plantae...</div>;
+  }
+
+  if (!userToken) {
+    return (
+      <AppFrame>
+        <AuthScreen
+          loading={loading}
+          error={authError}
+          onLogin={handleLogin}
+          onRegister={handleRegister}
+        />
+      </AppFrame>
+    );
+  }
+
   return (
-    <div className="App">
+    <AppFrame dark={isDarkMode}>
       {currentView === 'garden' ? (
-        /* GARDEN VIEW */
         <>
-          <SettingsSidebar 
-            isOpen={isSettingsOpen} 
-            onClose={() => setIsSettingsOpen(false)} 
+          <SettingsSidebar
+            isOpen={isSettingsOpen}
+            onClose={() => setIsSettingsOpen(false)}
             onAboutClick={() => {
               setCurrentView('about');
               setIsSettingsOpen(false);
             }}
+            onProfileClick={() => {
+              setIsProfileOpen(true);
+              setIsSettingsOpen(false);
+            }}
+            onLogout={handleLogout}
+            isDarkMode={isDarkMode}
+            setIsDarkMode={setIsDarkMode}
+          />
+
+          <ProfilePanel
+            isOpen={isProfileOpen}
+            profile={profile}
+            plantCount={allPlants.length}
+            loading={loading}
+            error={profileError}
+            onClose={() => setIsProfileOpen(false)}
+            onSave={handleSaveProfile}
+            onDeleteAccount={handleDeleteAccount}
           />
 
           <header className="main-header">
-            <h1 className="brand-title">Plantae</h1>
-            
-            <div className="header-controls-container">
-              <div className="controls-left">
-                <button className="icon-circle-btn" onClick={() => setIsSettingsOpen(true)}>
-                  <span className="bar-icon">☰</span>
-                </button>
-                <button className="icon-circle-btn" onClick={() => window.location.reload()}>
-                  <span className="home-icon">⌂</span>
-                </button>
-              </div>
+            <div className="header-topline">
+              <h1 className="brand-script">Plantae.</h1>
+              <button
+                className="menu-button"
+                type="button"
+                onClick={() => setIsSettingsOpen(true)}
+                aria-label="Open settings"
+              >
+                <span />
+                <span />
+                <span />
+              </button>
+            </div>
 
-              <div className="controls-center">
-                <input 
-                  type="text" 
-                  placeholder="Search your garden..." 
-                  className="glass-search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-
-              <div className="controls-right">
-                <button className="icon-circle-btn" onClick={() => alert("AI Analyzing...")}>
-                  <span className="plus-icon">+</span>
-                </button>
-              </div>
+            <div className="search-wrap">
+              <input
+                type="text"
+                placeholder="search species..."
+                className="glass-search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+              />
             </div>
           </header>
 
           <main className="discovery-container">
+            {gardenError ? <p className="form-message error garden-message">{gardenError}</p> : null}
+
             <section className="plant-stack">
               {filteredPlants.map((plant) => (
-                <PlantCard 
-                  key={plant.id} 
-                  plant={plant} 
-                  onCardClick={setSelectedPlant} 
-                />
+                <PlantCard key={plant.id} plant={plant} onCardClick={setSelectedPlant} />
               ))}
             </section>
+
+            {!filteredPlants.length ? (
+              <div className="empty-state">
+                <p>{allPlants.length === 0 ? 'Loading your garden...' : 'No plants found.'}</p>
+              </div>
+            ) : null}
+
+            {hasNextPage ? (
+              <button className="secondary-button" type="button" onClick={handleLoadMore} disabled={loadingMore}>
+                {loadingMore ? 'Loading...' : 'Load more plants'}
+              </button>
+            ) : null}
           </main>
 
-          <PlantModal 
-            plant={selectedPlant} 
-            onClose={() => setSelectedPlant(null)} 
-            onSave={handleSavePlant} 
+          <PlantModal
+            plant={selectedPlant}
+            onClose={() => setSelectedPlant(null)}
+            onSave={handleSavePlant}
+            saving={loading}
           />
         </>
       ) : (
-        /* ABOUT VIEW */
         <About onBack={() => setCurrentView('garden')} />
       )}
-
-      <footer className="main-footer">
-        <p>© 2026 Plantae Discovery System</p>
-      </footer>
-    </div>
+    </AppFrame>
   );
+}
+
+function AppFrame({ children, dark = false }) {
+  return <div className={`app-shell ${dark ? 'dark' : ''}`}>{children}</div>;
 }
 
 export default App;

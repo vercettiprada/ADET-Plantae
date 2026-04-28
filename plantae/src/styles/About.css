@@ -1,63 +1,70 @@
 .about-page {
   min-height: 100vh;
-  background-color: var(--bg-color);
-  padding: 40px 20px;
-  animation: cardZoom 0.5s ease-out;
+  padding: 32px 20px 60px;
 }
 
 .about-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-  text-align: center;
 }
 
 .back-btn {
-  background: var(--glass-white);
-  backdrop-filter: var(--ios-blur);
-  border: 1px solid var(--glass-border);
-  padding: 10px 20px;
-  border-radius: 20px;
-  color: var(--accent);
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s;
-  margin-bottom: 40px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface-strong);
+  color: var(--green);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  margin-bottom: 32px;
 }
 
-.back-btn:hover {
-  transform: scale(1.05);
+.about-header {
+  margin-bottom: 26px;
 }
 
-.glass-card {
-  background: var(--glass-white);
-  backdrop-filter: var(--ios-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  padding: 30px;
-  margin-bottom: 20px;
-  color: #444;
-  text-align: left;
+.about-header .brand-title {
+  font-size: clamp(3rem, 8vw, 4.2rem);
 }
-.glass-card h4 {
-  color: var(--accent);
-  margin: -9px 0;
-  line-height: 1.6;
+
+.subtitle {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.about-content {
+  display: grid;
+  gap: 20px;
+}
+
+.about-card,
+.about-mini-card {
+  padding: 24px;
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.about-card h3,
+.about-mini-card h4 {
+  margin-top: 0;
+  color: var(--green);
+}
+
+.about-card p,
+.about-mini-card p {
+  margin-bottom: 0;
+  line-height: 1.7;
 }
 
 .about-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
 }
 
-.version-tag {
-  margin-top: 50px;
-  opacity: 0.4;
-  font-size: 0.8rem;
-  color: var(--accent);
-}
-
-.about-card h3 {
-  color: var(--accent);
-  margin-top: 0;
+@media (max-width: 640px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
 }
