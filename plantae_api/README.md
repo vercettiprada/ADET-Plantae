@@ -22,7 +22,7 @@ python manage.py seed_plants
 python manage.py createsuperuser
 
 # 5. Start the server
-python manage.py runserver
+python manage.py runserver 0.0.0.0:8000 
 ```
 
 API is live at: **http://127.0.0.1:8000**  
