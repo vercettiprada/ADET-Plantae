@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import {
   View, Text, Modal, Image, TouchableOpacity,
   ScrollView, TextInput, SafeAreaView, KeyboardAvoidingView,
-  Platform, TouchableWithoutFeedback, Keyboard
+  Platform, TouchableWithoutFeedback, Keyboard, ActivityIndicator
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { styles } from '../styles/components/PlantModal.styles';
 
-export default function PlantModal({ plant, onClose, onSave }) {
+const displayValue = (value, fallback = 'Not available') => {
+  const normalized = typeof value === 'string' ? value.trim() : value;
+  return normalized ? normalized : fallback;
+};
+
+export default function PlantModal({ plant, onClose, onSave, loading = false }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedPlant, setEditedPlant] = useState(plant);
   const [isSaving, setIsSaving] = useState(false);
@@ -36,6 +41,10 @@ export default function PlantModal({ plant, onClose, onSave }) {
     setIsSaving(false);
   };
 
+  const hardinessRange = plant?.hardinessMin && plant?.hardinessMax
+    ? `${plant.hardinessMin} - ${plant.hardinessMax}`
+    : '';
+
   return (
     <Modal animationType="slide" transparent={true} visible={!!plant}>
       <BlurView intensity={95} tint="dark" style={styles.modalOverlay}>
@@ -60,7 +69,8 @@ export default function PlantModal({ plant, onClose, onSave }) {
               </View>
 
               <ScrollView
-                showsVerticalScrollIndicator={false}
+                style={styles.scrollView}
+                showsVerticalScrollIndicator={true}
                 keyboardShouldPersistTaps="handled"
                 contentContainerStyle={styles.scrollContent}
               >
@@ -85,7 +95,7 @@ export default function PlantModal({ plant, onClose, onSave }) {
                                 placeholderTextColor="rgba(255,255,255,0.3)"
                               />
                             ) : (
-                              <Text style={styles.value}>{plant.light}</Text>
+                              <Text style={styles.value}>{displayValue(plant.light)}</Text>
                             )}
                           </View>
 
@@ -99,10 +109,42 @@ export default function PlantModal({ plant, onClose, onSave }) {
                                 placeholderTextColor="rgba(255,255,255,0.3)"
                               />
                             ) : (
-                              <Text style={styles.value}>{plant.water}</Text>
+                              <Text style={styles.value}>{displayValue(plant.water)}</Text>
                             )}
                           </View>
+
+                          <View style={styles.careBox}>
+                            <Text style={styles.label}>Cycle</Text>
+                            <Text style={styles.value}>{displayValue(plant.cycle)}</Text>
+                          </View>
+
+                          <View style={styles.careBox}>
+                            <Text style={styles.label}>Maintenance</Text>
+                            <Text style={styles.value}>{displayValue(plant.maintenance)}</Text>
+                          </View>
+
+                          <View style={styles.careBox}>
+                            <Text style={styles.label}>Growth Rate</Text>
+                            <Text style={styles.value}>{displayValue(plant.growthRate)}</Text>
+                          </View>
+
+                          <View style={styles.careBox}>
+                            <Text style={styles.label}>Hardiness</Text>
+                            <Text style={styles.value}>{hardinessRange || 'Not available'}</Text>
+                          </View>
                         </View>
+                      </View>
+
+                      <View style={styles.secretBox}>
+                        <Text style={styles.secretTitle}>Description</Text>
+                        {loading ? (
+                          <View style={styles.loadingRow}>
+                            <ActivityIndicator size="small" color="#4f9a44" />
+                            <Text style={styles.secretText}>Fetching full plant details...</Text>
+                          </View>
+                        ) : (
+                          <Text style={styles.secretText}>{displayValue(plant.description)}</Text>
+                        )}
                       </View>
 
                       <View style={styles.secretBox}>
@@ -117,9 +159,20 @@ export default function PlantModal({ plant, onClose, onSave }) {
                             blurOnSubmit={false}
                           />
                         ) : (
-                          <Text style={styles.secretText}>{plant.secretfact}</Text>
+                          <Text style={styles.secretText}>{displayValue(plant.secretfact)}</Text>
                         )}
                       </View>
+
+                      {plant.careGuides?.length ? (
+                        <View style={styles.secretBox}>
+                          <Text style={styles.secretTitle}>Care Guides</Text>
+                          {plant.careGuides.slice(0, 4).map((guide) => (
+                            <Text key={guide.id || `${guide.type}-${guide.section || ''}`} style={styles.secretText}>
+                              {(guide.type || 'Guide') + ': '}{guide.description || guide.summary || 'No details available.'}
+                            </Text>
+                          ))}
+                        </View>
+                      ) : null}
                     </View>
                   </>
                 )}

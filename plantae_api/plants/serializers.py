@@ -4,10 +4,38 @@ from .models import Plant
 class PlantSerializer(serializers.ModelSerializer):
     imageUrl = serializers.URLField(source='image_url', required=False, allow_blank=True)
     secretfact = serializers.CharField(source='secret_fact', required=False, allow_blank=True)
+    description = serializers.CharField(required=False, allow_blank=True)
+    #cycle = serializers.CharField(required=False, allow_blank=True)
+    #maintenance = serializers.CharField(required=False, allow_blank=True)
+    #growthRate = serializers.CharField(source='growth_rate', required=False, allow_blank=True)
+    #hardinessMin = serializers.CharField(source='hardiness_min', required=False, allow_blank=True)
+    #hardinessMax = serializers.CharField(source='hardiness_max', required=False, allow_blank=True)
+    #perenualId = serializers.IntegerField(source='perenual_id', required=False, allow_null=True)
+    #perenualData = serializers.JSONField(source='perenual_payload', required=False)
+    #careGuides = serializers.JSONField(source='care_guides', required=False)
 
     class Meta:
         model = Plant
-        fields = ['id', 'name', 'species', 'imageUrl', 'secretfact', 'light', 'water', 'created_at', 'updated_at']
+        fields = [
+            'id',
+            'name',
+            'species',
+            'imageUrl',
+            'secretfact',
+            'description',
+            'light',
+            'water',
+            #'cycle',
+            #'maintenance',
+            #'growthRate',
+            #'hardinessMin',
+            #'hardinessMax',
+            #'perenualId',
+            #'perenualData',
+            #'careGuides',
+            #'created_at',
+            #'updated_at',
+        ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 
     def validate_name(self, value):
@@ -23,12 +51,36 @@ class PlantSerializer(serializers.ModelSerializer):
         return value
 
 class PlantCreateSerializer(PlantSerializer):
+
     name = serializers.CharField(required=True, max_length=200)
+
     species = serializers.CharField(required=True, max_length=200)
+
     imageUrl = serializers.URLField(source='image_url', required=False, allow_blank=True, default='')
+
     secretfact = serializers.CharField(source='secret_fact', required=False, allow_blank=True, default='')
+
+    description = serializers.CharField(required=False, allow_blank=True, default='')
+
     light = serializers.CharField(required=False, allow_blank=True, default='')
+
     water = serializers.CharField(required=False, allow_blank=True, default='')
+
+    #cycle = serializers.CharField(required=False, allow_blank=True, default='')
+
+    #maintenance = serializers.CharField(required=False, allow_blank=True, default='')
+
+    #growthRate = serializers.CharField(source='growth_rate', required=False, allow_blank=True, default='')
+
+    #hardinessMin = serializers.CharField(source='hardiness_min', required=False, allow_blank=True, default='')
+
+    #hardinessMax = serializers.CharField(source='hardiness_max', required=False, allow_blank=True, default='')
+
+    #perenualId = serializers.IntegerField(source='perenual_id', required=False, allow_null=True)
+
+    #perenualData = serializers.JSONField(source='perenual_payload', required=False, default=dict)
+
+    #careGuides = serializers.JSONField(source='care_guides', required=False, default=list)
 
 class PlantSummarySerializer(serializers.ModelSerializer):
     imageUrl = serializers.URLField(source='image_url')

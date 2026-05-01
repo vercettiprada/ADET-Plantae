@@ -25,8 +25,20 @@ export default function LoginScreen({ onLogin, onRegister, loading }) {
         Alert.alert('Error', 'Please fill in all fields');
         return;
       }
+      if (username.trim().length < 3) {
+        Alert.alert('Error', 'Username must be at least 3 characters.');
+        return;
+      }
+      if (!/\S+@\S+\.\S+/.test(email.trim())) {
+        Alert.alert('Error', 'Enter a valid email address.');
+        return;
+      }
+      if (password.length < 8) {
+        Alert.alert('Error', 'Password must be at least 8 characters.');
+        return;
+      }
       if (onRegister) {
-        onRegister({ username, email, password });
+        onRegister({ username: username.trim(), email: email.trim(), password });
       } else {
         Alert.alert('Error', 'Registration is not available.');
       }

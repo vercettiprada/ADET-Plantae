@@ -25,7 +25,18 @@ function App() {
   const [profile, setProfile] = useState({ username: '', email: '', firstName: '' });
   const [authError, setAuthError] = useState('');
   const [gardenError, setGardenError] = useState('');
+  const [gardenNotice, setGardenNotice] = useState('');
   const [profileError, setProfileError] = useState('');
+
+  const mergePlants = useCallback((incomingPlants) => {
+    setAllPlants((prev) => {
+      const byId = new Map(prev.map((plant) => [plant.id, plant]));
+      for (const plant of incomingPlants || []) {
+        byId.set(plant.id, plant);
+      }
+      return Array.from(byId.values());
+    });
+  }, []);
 
   const clearSession = useCallback(() => {
     api.clearStoredToken();
@@ -38,6 +49,17 @@ function App() {
     setIsProfileOpen(false);
     setProfile({ username: '', email: '', firstName: '' });
   }, []);
+
+  const handleBackendUnavailable = useCallback((message) => {
+    clearSession();
+    setAllPlants([]);
+    setSelectedPlant(null);
+    setGardenNotice('');
+    setGardenError('');
+    setProfileError('');
+    setAuthError(message || 'Backend offline. Please start Django and sign in again.');
+    setAuthChecked(true);
+  }, [clearSession]);
 
   const loadPlants = useCallback(async (pageNumber = 1) => {
     setLoadingMore(true);
@@ -56,7 +78,7 @@ function App() {
       setPage(1);
       setHasNextPage(result.hasNext);
     } else if ((result.data || []).length > 0) {
-      setAllPlants((prev) => [...prev, ...result.data]);
+      mergePlants(result.data || []);
       setPage(pageNumber);
       setHasNextPage(result.hasNext);
     } else {
@@ -65,7 +87,7 @@ function App() {
 
     setLoadingMore(false);
     return result;
-  }, [clearSession]);
+  }, [clearSession, mergePlants]);
 
   useEffect(() => {
     const bootstrap = async () => {
@@ -76,14 +98,26 @@ function App() {
         return;
       }
 
+      const sessionResult = await api.verifySession(storedToken);
+
+      if (!sessionResult.valid) {
+        handleBackendUnavailable(sessionResult.error || 'Your session expired. Please sign in again.');
+        setAuthChecked(true);
+        return;
+      }
+
       setUserToken(storedToken);
       const [plantsResult, profileResult] = await Promise.all([
         api.getPlants(1),
         api.getProfile(),
       ]);
 
-      if (plantsResult.unauthorized || profileResult.unauthorized) {
-        clearSession();
+      if (plantsResult.unauthorized || profileResult.unauthorized || plantsResult.error || profileResult.error) {
+        handleBackendUnavailable(
+          plantsResult.error ||
+          profileResult.error ||
+          'Your session expired. Please sign in again.',
+        );
       } else {
         setAllPlants(plantsResult.data || []);
         setHasNextPage(plantsResult.hasNext);
@@ -99,7 +133,41 @@ function App() {
     };
 
     bootstrap();
-  }, [clearSession]);
+  }, [handleBackendUnavailable]);
+
+  useEffect(() => {
+    if (!userToken) {
+      return undefined;
+    }
+
+    let active = true;
+
+    const verifyLiveSession = async () => {
+      const sessionResult = await api.verifySession(userToken);
+      if (!active || sessionResult.valid) {
+        return;
+      }
+
+      handleBackendUnavailable(sessionResult.error || 'Backend offline. Please sign in again.');
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        verifyLiveSession();
+      }
+    };
+
+    const intervalId = window.setInterval(verifyLiveSession, 5000);
+    window.addEventListener('focus', verifyLiveSession);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+      window.removeEventListener('focus', verifyLiveSession);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [handleBackendUnavailable, userToken]);
 
   const filteredPlants = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -119,6 +187,15 @@ function App() {
     const result = await api.login(credentials);
 
     if (result.token) {
+      const sessionResult = await api.verifySession(result.token);
+
+      if (!sessionResult.valid) {
+        handleBackendUnavailable(sessionResult.error || 'Login failed. Please try again.');
+        setLoading(false);
+        setAuthChecked(true);
+        return;
+      }
+
       setUserToken(result.token);
       const [profileResult, plantsResult] = await Promise.all([
         api.getProfile(),
@@ -131,8 +208,12 @@ function App() {
 
       setProfileError(profileResult.error || '');
 
-      if (plantsResult?.unauthorized) {
-        setAuthError('Session expired. Please sign in again.');
+      if (plantsResult?.unauthorized || profileResult.unauthorized || plantsResult?.error || profileResult.error) {
+        handleBackendUnavailable(
+          plantsResult?.error ||
+          profileResult.error ||
+          'Session expired. Please sign in again.',
+        );
       }
     } else {
       setAuthError(result.error || 'Invalid credentials.');
@@ -143,6 +224,12 @@ function App() {
   };
 
   const handleRegister = async (userData) => {
+    if (userData?.error) {
+      setAuthError(userData.error);
+      setAuthChecked(true);
+      return;
+    }
+
     setLoading(true);
     setAuthError('');
     const result = await api.register(userData);
@@ -175,18 +262,21 @@ function App() {
     const result = await api.updatePlant(updatedPlant.id, updatedPlant);
 
     if (result.unauthorized) {
-      clearSession();
-      setAuthError('Session expired. Please sign in again.');
+      handleBackendUnavailable('Session expired. Please sign in again.');
       return false;
     }
 
     if (result.error) {
+      if (result.networkDown) {
+        handleBackendUnavailable(result.error);
+        return false;
+      }
       setGardenError(result.error);
       return false;
     }
 
     if (result.data) {
-      setAllPlants((prev) => prev.map((plant) => (plant.id === result.data.id ? result.data : plant)));
+      mergePlants([result.data]);
       setSelectedPlant(result.data);
     }
 
@@ -199,13 +289,17 @@ function App() {
     const result = await api.updateProfile(updates);
 
     if (result.unauthorized) {
-      clearSession();
-      setAuthError('Session expired. Please sign in again.');
+      handleBackendUnavailable('Session expired. Please sign in again.');
       setLoading(false);
       return false;
     }
 
     if (result.error) {
+      if (result.networkDown) {
+        handleBackendUnavailable(result.error);
+        setLoading(false);
+        return false;
+      }
       setProfileError(result.error);
       setLoading(false);
       return false;
@@ -243,12 +337,49 @@ function App() {
     setLoading(false);
   };
 
-  const handleLoadMore = () => {
-    if (loadingMore || !hasNextPage || !userToken) {
+  const handleLoadMore = async () => {
+    if (loadingMore || !userToken) {
       return;
     }
 
-    loadPlants(page + 1);
+    setGardenNotice('');
+    let nextLocalCount = 0;
+
+    let stillHasLocalPages = hasNextPage;
+
+    if (hasNextPage) {
+      const localResult = await loadPlants(page + 1);
+      if (localResult?.unauthorized) {
+        return;
+      }
+      if (localResult?.networkDown) {
+        handleBackendUnavailable(localResult.error);
+        return;
+      }
+      nextLocalCount = (localResult?.data || []).length;
+      stillHasLocalPages = Boolean(localResult?.hasNext);
+    }
+
+    if (!stillHasLocalPages || nextLocalCount < 4) {
+      const discoveryResult = await api.discoverPlants(Math.max(4, 6 - nextLocalCount));
+
+      if (discoveryResult.unauthorized) {
+        handleBackendUnavailable('Session expired. Please sign in again.');
+        return;
+      }
+
+      if (discoveryResult.error) {
+        if (discoveryResult.networkDown) {
+          handleBackendUnavailable(discoveryResult.error);
+          return;
+        }
+        setGardenError(discoveryResult.error);
+        return;
+      }
+
+      mergePlants(discoveryResult.data || []);
+      setGardenNotice(discoveryResult.message || '');
+    }
   };
 
   if (!authChecked) {
@@ -327,6 +458,7 @@ function App() {
 
           <main className="discovery-container">
             {gardenError ? <p className="form-message error garden-message">{gardenError}</p> : null}
+            {!gardenError && gardenNotice ? <p className="form-message info-message garden-message">{gardenNotice}</p> : null}
 
             <section className="plant-stack">
               {filteredPlants.map((plant) => (
@@ -340,9 +472,9 @@ function App() {
               </div>
             ) : null}
 
-            {hasNextPage ? (
+            {(hasNextPage || userToken) ? (
               <button className="secondary-button" type="button" onClick={handleLoadMore} disabled={loadingMore}>
-                {loadingMore ? 'Loading...' : 'Load more plants'}
+                {loadingMore ? 'Loading...' : hasNextPage ? 'Load more plants' : 'Discover random plants'}
               </button>
             ) : null}
           </main>

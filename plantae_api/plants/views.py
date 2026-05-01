@@ -1,6 +1,8 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
+from django.db.models import Q
 from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, permissions, serializers, status
@@ -14,6 +16,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from plantae_api.pagination import PlantaePagination
 
 from .models import Plant
+from .perenual import PerenualError, enrich_plant, import_random_species as import_random_perenual_species
+from .plantnet import PlantNetError, import_random_species as import_random_plantnet_species
 from .serializers import PlantCreateSerializer, PlantSerializer, PlantSummarySerializer
 
 
@@ -48,6 +52,16 @@ class RegisterSerializer(serializers.Serializer):
     def validate_username(self, value):
         if User.objects.filter(username=value).exists():
             raise serializers.ValidationError("Username already taken.")
+        return value
+
+    def validate_email(self, value):
+        normalized = value.strip().lower()
+        if User.objects.filter(email__iexact=normalized).exists():
+            raise serializers.ValidationError("Email already taken.")
+        return normalized
+
+    def validate_password(self, value):
+        validate_password(value)
         return value
 
 
@@ -125,22 +139,27 @@ def register_view(request):
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
 def login_view(request):
-    username_or_email = request.data.get("username")
+    username_or_email = (request.data.get("username") or "").strip()
     password = request.data.get("password")
 
     if not username_or_email or not password:
         return error_response("Missing username and password.", status.HTTP_400_BAD_REQUEST)
 
-    user = None
     try:
-        user = User.objects.get(email=username_or_email)
+        matched_user = User.objects.get(
+            Q(email__iexact=username_or_email) | Q(username__iexact=username_or_email)
+        )
     except User.DoesNotExist:
-        try:
-            user = User.objects.get(username=username_or_email)
-        except User.DoesNotExist:
-            user = None
+        matched_user = None
+    except User.MultipleObjectsReturned:
+        matched_user = User.objects.filter(email__iexact=username_or_email).order_by("id").first()
 
-    if user is None or not user.check_password(password):
+    if matched_user is None:
+        return error_response("Invalid credentials.", status.HTTP_401_UNAUTHORIZED)
+
+    user = authenticate(request, username=matched_user.username, password=password)
+
+    if user is None or not user.is_active:
         return error_response("Invalid credentials.", status.HTTP_401_UNAUTHORIZED)
 
     refresh = RefreshToken.for_user(user)
@@ -154,18 +173,18 @@ def login_view(request):
 
 
 @swagger_auto_schema(
-    method="get",
+    methods=["get"],
     operation_summary="Get current user profile",
     responses={200: ProfileSerializer, 401: error_schema},
 )
 @swagger_auto_schema(
-    method="patch",
+    methods=["patch"],
     operation_summary="Update current user profile",
     request_body=ProfileSerializer,
     responses={200: ProfileSerializer, 400: error_schema, 401: error_schema},
 )
 @swagger_auto_schema(
-    method="delete",
+    methods=["delete"],
     operation_summary="Delete current user account",
     responses={204: "No Content", 401: error_schema},
 )
@@ -224,7 +243,6 @@ def api_root_view(request):
     )
 
 
-@method_decorator(cache_page(300), name="dispatch")
 class PlantListCreateView(generics.ListCreateAPIView):
     queryset = Plant.objects.all().order_by("name")
     permission_classes = [permissions.IsAuthenticated]
@@ -250,7 +268,8 @@ class PlantListCreateView(generics.ListCreateAPIView):
             openapi.Parameter("light", openapi.IN_QUERY, type=openapi.TYPE_STRING),
             openapi.Parameter("water", openapi.IN_QUERY, type=openapi.TYPE_STRING),
         ],
-        responses={200: PlantSerializer(many=True), 401: error_schema},
+        # FIXED: Changed from PlantSerializer(many=True) to just PlantSerializer
+        responses={200: PlantSerializer, 401: error_schema},
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -310,7 +329,8 @@ class PlantRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         openapi.Parameter("page", openapi.IN_QUERY, type=openapi.TYPE_INTEGER),
         openapi.Parameter("limit", openapi.IN_QUERY, type=openapi.TYPE_INTEGER),
     ],
-    responses={200: PlantSummarySerializer(many=True)},
+    # FIXED: Changed from PlantSummarySerializer(many=True) to just PlantSummarySerializer
+    responses={200: PlantSummarySerializer},
 )
 @api_view(["GET"])
 @permission_classes([permissions.AllowAny])
@@ -321,3 +341,111 @@ def plant_summary_view(request):
     page = paginator.paginate_queryset(queryset, request)
     serializer = PlantSummarySerializer(page, many=True)
     return paginator.get_paginated_response(serializer.data)
+
+
+@swagger_auto_schema(
+    method="post",
+    operation_summary="Enrich plant data from Perenual API",
+    operation_description="Fetches detailed care info/light/water data for plant ID",
+    responses={200: PlantSerializer, 400: error_schema, 401: error_schema, 404: error_schema},
+)
+@api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
+def enrich_plant_view(request, pk):
+    try:
+        plant = Plant.objects.get(pk=pk)
+    except Plant.DoesNotExist:
+        return error_response("Plant not found.", status.HTTP_404_NOT_FOUND)
+
+    try:
+        enrich_plant(plant)
+        plant.save()
+    except PerenualError as exc:
+        return error_response(str(exc), status.HTTP_400_BAD_REQUEST)
+
+    return Response(PlantSerializer(plant).data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    method="post",
+    operation_summary="Discover new plants from external APIs",
+    operation_description="Fetches random plants from Perenual + PlantNet (1-8 count)",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            "count": openapi.Schema(type=openapi.TYPE_INTEGER, description="Number of plants (1-8)", default=4)
+        }
+    ),
+    responses={
+        200: openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                # FIXED: Results is defined as an array of objects for JSON serialization
+                "results": openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_OBJECT)),
+                "providers": openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_STRING)),
+                "message": openapi.Schema(type=openapi.TYPE_STRING)
+            }
+        ),
+        400: error_schema,
+        401: error_schema
+    }
+)
+@api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
+def discover_plants_view(request):
+    try:
+        count = int(request.data.get("count", 4))
+    except (TypeError, ValueError):
+        count = 4
+
+    count = max(1, min(count, 8))
+
+    providers = []
+    notices = []
+    plants = []
+    seen_ids = set()
+
+    try:
+        perenual_plants = import_random_perenual_species(count=count)
+        providers.append("perenual")
+        for plant in perenual_plants:
+            if plant.id in seen_ids:
+                continue
+            plants.append(plant)
+            seen_ids.add(plant.id)
+    except PerenualError as exc:
+        notices.append(str(exc))
+
+    remaining = max(0, count - len(plants))
+    if remaining > 0:
+        try:
+            plantnet_plants = import_random_plantnet_species(count=remaining)
+            if plantnet_plants:
+                providers.append("plantnet")
+            for plant in plantnet_plants:
+                if plant.id in seen_ids:
+                    continue
+                plants.append(plant)
+                seen_ids.add(plant.id)
+        except PlantNetError as exc:
+            notices.append(str(exc))
+
+    if not plants:
+        details = {"providersTried": ["perenual", "plantnet"], "notices": notices}
+        return error_response("Unable to discover more plants right now.", status.HTTP_400_BAD_REQUEST, details)
+
+    serializer = PlantSerializer(plants, many=True)
+    response_message = ""
+    if "plantnet" in providers and "perenual" not in providers:
+        response_message = "Showing fresh plants from Pl@ntNet while Perenual is unavailable."
+    elif "plantnet" in providers and "perenual" in providers:
+        response_message = "Blended results from Perenual and Pl@ntNet."
+
+    return Response(
+        {
+            "results": serializer.data,
+            "providers": providers,
+            "message": response_message,
+        },
+        status=status.HTTP_200_OK,
+    )

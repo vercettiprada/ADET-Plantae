@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { api } from '../api';
 import CareFact from './CareFact';
 
 const PlantModal = ({ plant, onClose, onSave, saving }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedPlant, setEditedPlant] = useState(plant || {});
+  const [imageSrc, setImageSrc] = useState(plant?.imageUrl || api.imageFallback);
 
   useEffect(() => {
     setEditedPlant(plant || {});
+    setImageSrc(plant?.imageUrl || api.imageFallback);
     setIsEditing(false);
   }, [plant]);
 
@@ -25,6 +28,10 @@ const PlantModal = ({ plant, onClose, onSave, saving }) => {
     setEditedPlant((prev) => ({ ...prev, [field]: value }));
   };
 
+  const hardinessRange = editedPlant.hardinessMin && editedPlant.hardinessMax
+    ? `${editedPlant.hardinessMin} - ${editedPlant.hardinessMax}`
+    : '';
+
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="expanded-square-card" onClick={(event) => event.stopPropagation()}>
@@ -42,7 +49,13 @@ const PlantModal = ({ plant, onClose, onSave, saving }) => {
 
         <div className="card-content">
           <div className="card-image-side">
-            <img src={editedPlant.imageUrl} alt={editedPlant.name} />
+            <img
+              src={imageSrc}
+              alt={editedPlant.name}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              onError={() => setImageSrc(api.imageFallback)}
+            />
           </div>
 
           <div className="card-info-side">
@@ -71,8 +84,19 @@ const PlantModal = ({ plant, onClose, onSave, saving }) => {
               <div className="care-facts-grid">
                 <CareFact label="Light" value={editedPlant.light} />
                 <CareFact label="Water" value={editedPlant.water} />
+                <CareFact label="Cycle" value={editedPlant.cycle || 'Not available'} />
+                <CareFact label="Maintenance" value={editedPlant.maintenance || 'Not available'} />
+                <CareFact label="Growth Rate" value={editedPlant.growthRate || 'Not available'} />
+                <CareFact label="Hardiness" value={hardinessRange || 'Not available'} />
               </div>
             </div>
+
+            {editedPlant.description ? (
+              <div className="secret-fact-box">
+                <h4>Description</h4>
+                <p>{editedPlant.description}</p>
+              </div>
+            ) : null}
 
             <div className="secret-fact-box">
               <h4>Secret Fact</h4>
@@ -86,6 +110,17 @@ const PlantModal = ({ plant, onClose, onSave, saving }) => {
                 <p>{editedPlant.secretfact}</p>
               )}
             </div>
+
+            {editedPlant.careGuides?.length ? (
+              <div className="secret-fact-box">
+                <h4>Care Guides</h4>
+                {editedPlant.careGuides.slice(0, 4).map((guide) => (
+                  <p key={guide.id || `${guide.type}-${guide.section || ''}`}>
+                    <strong>{guide.type || 'Guide'}:</strong> {guide.description || guide.summary || 'No details available.'}
+                  </p>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

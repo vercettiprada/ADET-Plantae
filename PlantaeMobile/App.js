@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, StatusBar, Alert } from 'react-native';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -25,7 +25,7 @@ const Drawer = createDrawerNavigator();
 
 function DrawerLayer({
   allPlants,
-  setSelectedPlant,
+  onPlantClick,
   isDarkMode,
   setIsDarkMode,
   theme,
@@ -61,7 +61,7 @@ function DrawerLayer({
             theme={theme}
             loadingMore={loadingMore}
             loadMorePlants={loadMorePlants}
-            onPlantClick={(plant) => setSelectedPlant(plant)}
+            onPlantClick={onPlantClick}
           />
         )}
       </Drawer.Screen>
@@ -77,10 +77,12 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [allPlants, setAllPlants] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
+  const [plantModalLoading, setPlantModalLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [profile, setProfile] = useState({ username: '', email: '', firstName: '' });
+  const plantRequestRef = useRef(0);
 
   const clearSession = useCallback(async () => {
     await AsyncStorage.removeItem('userToken');
@@ -127,13 +129,21 @@ export default function App() {
       return;
     }
 
+    const sessionResult = await api.verifySession(storedToken);
+
+    if (!sessionResult.valid) {
+      await clearSession();
+      setAuthChecked(true);
+      return;
+    }
+
     setUserToken(storedToken);
     const [plantsResult, profileResult] = await Promise.all([
       api.getPlants(1),
       api.getProfile(),
     ]);
 
-    if (plantsResult.unauthorized || profileResult.unauthorized) {
+    if (plantsResult.unauthorized || profileResult.unauthorized || plantsResult.error || profileResult.error) {
       await clearSession();
     } else {
       setAllPlants(plantsResult.data);
@@ -179,6 +189,15 @@ export default function App() {
     const result = await api.login(credentials);
 
     if (result.token) {
+      const sessionResult = await api.verifySession(result.token);
+
+      if (!sessionResult.valid) {
+        await clearSession();
+        Alert.alert('Login Failed', sessionResult.error || 'Please try again.');
+        setLoading(false);
+        return;
+      }
+
       setUserToken(result.token);
       setProfile((prev) => ({ ...prev, username: result.username || prev.username }));
       const profileResult = await api.getProfile();
@@ -186,8 +205,12 @@ export default function App() {
         setProfile(profileResult.data);
       }
       const plantsResult = await loadPlants(1);
-      if (plantsResult.unauthorized) {
-        Alert.alert('Session Expired', 'Please log in again.');
+      if (plantsResult.unauthorized || profileResult.unauthorized || plantsResult.error || profileResult.error) {
+        await clearSession();
+        Alert.alert(
+          'Login Failed',
+          plantsResult.error || profileResult.error || 'Please log in again.',
+        );
       }
     } else {
       Alert.alert('Login Failed', result.error || 'Invalid credentials.');
@@ -290,6 +313,51 @@ export default function App() {
     return true;
   }, [clearSession]);
 
+  const handlePlantClick = useCallback(async (plant) => {
+    if (!plant?.id) {
+      return;
+    }
+
+    const requestId = plantRequestRef.current + 1;
+    plantRequestRef.current = requestId;
+    setSelectedPlant(plant);
+    setPlantModalLoading(true);
+
+    const result = await api.getPlant(plant.id);
+
+    if (plantRequestRef.current !== requestId) {
+      return;
+    }
+
+    if (result.unauthorized) {
+      setPlantModalLoading(false);
+      await clearSession();
+      Alert.alert('Session Expired', 'Please log in again.');
+      return;
+    }
+
+    if (result.error) {
+      setPlantModalLoading(false);
+      Alert.alert('Plant Details', result.error);
+      return;
+    }
+
+    if (result.data) {
+      setSelectedPlant(result.data);
+      setAllPlants((prev) => prev.map((item) => (
+        item.id === result.data.id ? { ...item, ...result.data } : item
+      )));
+    }
+
+    setPlantModalLoading(false);
+  }, [clearSession]);
+
+  const handleClosePlantModal = useCallback(() => {
+    plantRequestRef.current += 1;
+    setPlantModalLoading(false);
+    setSelectedPlant(null);
+  }, []);
+
   if (!fontsLoaded || !authChecked) return null;
 
   const theme = {
@@ -321,7 +389,7 @@ export default function App() {
             {() => (
               <DrawerLayer
                 allPlants={allPlants}
-                setSelectedPlant={setSelectedPlant}
+                onPlantClick={handlePlantClick}
                 isDarkMode={isDarkMode}
                 setIsDarkMode={setIsDarkMode}
                 theme={theme}
@@ -358,8 +426,9 @@ export default function App() {
         {selectedPlant && (
           <PlantModal
             plant={selectedPlant}
+            loading={plantModalLoading}
             isDarkMode={isDarkMode}
-            onClose={() => setSelectedPlant(null)}
+            onClose={handleClosePlantModal}
             onSave={handleSavePlant}
           />
         )}

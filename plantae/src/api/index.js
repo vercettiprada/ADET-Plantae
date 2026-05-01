@@ -1,5 +1,6 @@
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=900&q=80';
 const TOKEN_KEY = 'plantaeUserToken';
+const REQUEST_TIMEOUT_MS = 10000;
 
 const flattenDetails = (details) => {
   if (!details) {
@@ -51,38 +52,163 @@ const resolveBaseUrl = () => {
     return configured.replace(/\/$/, '');
   }
 
-  const { protocol, hostname } = window.location;
-  return `${protocol}//${hostname}:8000/api`;
+  const { protocol, hostname, port } = window.location;
+
+  if ((hostname === 'localhost' || hostname === '127.0.0.1') && port !== '8000') {
+    return 'http://127.0.0.1:8000/api';
+  }
+
+  if (hostname === '0.0.0.0') {
+    return 'http://127.0.0.1:8000/api';
+  }
+
+  if (port === '8000') {
+    return `${protocol}//${hostname}:8000/api`;
+  }
+
+  return '/api';
 };
 
 const API_BASE = resolveBaseUrl();
+const IMAGE_FALLBACK = FALLBACK_IMAGE;
+
+const pickImageUrl = (...candidates) => {
+  for (const candidate of candidates) {
+    if (!candidate) {
+      continue;
+    }
+
+    const normalizedCandidate = String(candidate).trim();
+    if (!normalizedCandidate || normalizedCandidate.includes('upgrade_access')) {
+      continue;
+    }
+
+    return normalizedCandidate;
+  }
+
+  return IMAGE_FALLBACK;
+};
+
+const resolvePlantImage = (plant = {}) => {
+  const defaultImage = plant.default_image || plant.defaultImage || plant.perenualData?.default_image || {};
+
+  return pickImageUrl(
+    plant.imageUrl,
+    plant.image_url,
+    defaultImage.regular_url,
+    defaultImage.medium_url,
+    defaultImage.original_url,
+    defaultImage.thumbnail,
+    plant.thumbnail,
+  );
+};
 
 const mapPlant = (plant) => ({
   id: String(plant.id),
   name: plant.name || 'Unknown Plant',
   species: plant.species || 'Unknown Species',
-  imageUrl: plant.imageUrl || FALLBACK_IMAGE,
+  imageUrl: resolvePlantImage(plant),
   light: plant.light || 'Bright, indirect light',
   water: plant.water || 'Water when the soil feels dry',
   secretfact: plant.secretfact || plant.secret_fact || 'A beautiful plant.',
+  description: plant.description || '',
+  cycle: plant.cycle || '',
+  maintenance: plant.maintenance || '',
+  growthRate: plant.growthRate || plant.growth_rate || '',
+  hardinessMin: plant.hardinessMin || plant.hardiness_min || '',
+  hardinessMax: plant.hardinessMax || plant.hardiness_max || '',
+  perenualId: plant.perenualId || plant.perenual_id || null,
+  perenualData: plant.perenualData || plant.perenual_payload || {},
+  careGuides: Array.isArray(plant.careGuides) ? plant.careGuides : (plant.care_guides || []),
+});
+
+const buildNetworkError = () => ({
+  networkDown: true,
+  error: `Network error. Start Django and make sure ${API_BASE} is reachable from this browser.`,
 });
 
 const request = async (path, options = {}) => {
-  const response = await fetch(`${API_BASE}${path}`, options);
-  const contentType = response.headers.get('content-type') || '';
-  const payload = contentType.includes('application/json') ? await response.json() : null;
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
-  return { response, payload };
+  try {
+    const response = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      cache: 'no-store',
+      credentials: 'omit',
+      signal: controller.signal,
+    });
+    const contentType = response.headers.get('content-type') || '';
+    const payload = contentType.includes('application/json') ? await response.json() : null;
+
+    return { response, payload };
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
 };
 
-const getStoredToken = () => window.localStorage.getItem(TOKEN_KEY);
-const storeToken = (token) => window.localStorage.setItem(TOKEN_KEY, token);
-const clearStoredToken = () => window.localStorage.removeItem(TOKEN_KEY);
+const readSessionToken = () => window.sessionStorage.getItem(TOKEN_KEY);
+const readLegacyToken = () => window.localStorage.getItem(TOKEN_KEY);
+
+const getStoredToken = () => {
+  const sessionToken = readSessionToken();
+  if (sessionToken) {
+    return sessionToken;
+  }
+
+  const legacyToken = readLegacyToken();
+  if (legacyToken) {
+    window.sessionStorage.setItem(TOKEN_KEY, legacyToken);
+    window.localStorage.removeItem(TOKEN_KEY);
+    return legacyToken;
+  }
+
+  return null;
+};
+
+const storeToken = (token) => {
+  window.sessionStorage.setItem(TOKEN_KEY, token);
+  window.localStorage.removeItem(TOKEN_KEY);
+};
+
+const clearStoredToken = () => {
+  window.sessionStorage.removeItem(TOKEN_KEY);
+  window.localStorage.removeItem(TOKEN_KEY);
+};
 
 export const api = {
   baseUrl: API_BASE,
+  imageFallback: IMAGE_FALLBACK,
   getStoredToken,
   clearStoredToken,
+
+  verifySession: async (tokenOverride) => {
+    const token = tokenOverride || getStoredToken();
+
+    if (!token) {
+      return { valid: false, unauthorized: true };
+    }
+
+    try {
+      const { response, payload } = await request('/token/verify/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+
+      if (!response.ok) {
+        return {
+          valid: false,
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Your session is no longer valid. Please sign in again.'),
+        };
+      }
+
+      return { valid: true };
+    } catch {
+      return { valid: false, ...buildNetworkError() };
+    }
+  },
 
   register: async (userData) => {
     try {
@@ -102,9 +228,7 @@ export const api = {
 
       return payload || { error: 'Could not create account.' };
     } catch {
-      return {
-        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this browser.`,
-      };
+      return buildNetworkError();
     }
   },
 
@@ -127,9 +251,7 @@ export const api = {
 
       return { error: 'Login failed. The backend did not return an access token.' };
     } catch {
-      return {
-        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this browser.`,
-      };
+      return buildNetworkError();
     }
   },
 
@@ -160,16 +282,48 @@ export const api = {
       const results = Array.isArray(payload) ? payload : payload?.results || [];
       return {
         data: results.map(mapPlant),
-        hasNext: Boolean(payload?.next),
+        hasNext: Boolean(payload?.pagination?.next),
         unauthorized: false,
       };
     } catch {
+      return { data: [], hasNext: false, unauthorized: false, ...buildNetworkError() };
+    }
+  },
+
+  discoverPlants: async (count = 4) => {
+    try {
+      const token = getStoredToken();
+
+      if (!token) {
+        return { data: [], unauthorized: true };
+      }
+
+      const { response, payload } = await request('/v1/plants/discover/', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ count }),
+      });
+
+      if (!response.ok) {
+        return {
+          data: [],
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to discover more plants.'),
+        };
+      }
+
+      const results = Array.isArray(payload?.results) ? payload.results : [];
       return {
-        data: [],
-        hasNext: false,
+        data: results.map(mapPlant),
         unauthorized: false,
-        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this browser.`,
+        providers: Array.isArray(payload?.providers) ? payload.providers : [],
+        message: payload?.message || '',
       };
+    } catch {
+      return { data: [], unauthorized: false, ...buildNetworkError() };
     }
   },
 
@@ -206,10 +360,7 @@ export const api = {
 
       return { data: mapPlant(payload), unauthorized: false };
     } catch {
-      return {
-        unauthorized: false,
-        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this browser.`,
-      };
+      return { unauthorized: false, ...buildNetworkError() };
     }
   },
 
@@ -244,10 +395,7 @@ export const api = {
         unauthorized: false,
       };
     } catch {
-      return {
-        unauthorized: false,
-        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this browser.`,
-      };
+      return { unauthorized: false, ...buildNetworkError() };
     }
   },
 
@@ -287,10 +435,7 @@ export const api = {
         unauthorized: false,
       };
     } catch {
-      return {
-        unauthorized: false,
-        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this browser.`,
-      };
+      return { unauthorized: false, ...buildNetworkError() };
     }
   },
 
@@ -320,10 +465,7 @@ export const api = {
       clearStoredToken();
       return { success: true, unauthorized: false };
     } catch {
-      return {
-        unauthorized: false,
-        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this browser.`,
-      };
+      return { unauthorized: false, ...buildNetworkError() };
     }
   },
 };

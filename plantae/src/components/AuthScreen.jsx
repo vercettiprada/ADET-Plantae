@@ -6,6 +6,27 @@ const AuthScreen = ({ loading, error, onLogin, onRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const validateRegistration = () => {
+    if (username.trim().length < 3) {
+      return 'Username must be at least 3 characters.';
+    }
+
+    if (!email.trim()) {
+      return 'Email is required.';
+    }
+
+    const emailPattern = /\S+@\S+\.\S+/;
+    if (!emailPattern.test(email.trim())) {
+      return 'Enter a valid email address.';
+    }
+
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters.';
+    }
+
+    return '';
+  };
+
   const resetForm = () => {
     setUsername('');
     setEmail('');
@@ -30,6 +51,14 @@ const AuthScreen = ({ loading, error, onLogin, onRegister }) => {
     }
 
     if (!username.trim() || !email.trim() || !password.trim()) {
+      return;
+    }
+
+    const validationError = validateRegistration();
+    if (validationError) {
+      onRegister({
+        error: validationError,
+      });
       return;
     }
 

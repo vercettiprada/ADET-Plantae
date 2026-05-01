@@ -4,16 +4,44 @@ Implements all Module checklist w the following requirements:
 - REST API Design, Authentication, Pagination, Versioning, Logging, etc.
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'plantae-dev-secret-key-change-in-production'
 
-DEBUG = True
+def load_dotenv(path):
+    if not path.exists():
+        return
 
-ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1']
+    for raw_line in path.read_text(encoding='utf-8').splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith('#') or '=' not in line:
+            continue
+
+        key, value = line.split('=', 1)
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+load_dotenv(BASE_DIR / '.env')
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'plantae-dev-secret-key-change-in-production')
+
+DEBUG = os.environ.get('DJANGO_DEBUG', 'true').lower() == 'true'
+IS_PRODUCTION = not DEBUG
+
+
+def csv_env(name, default):
+    raw = os.environ.get(name)
+    if not raw:
+        return list(default)
+    return [item.strip() for item in raw.split(',') if item.strip()]
+
+
+ALLOWED_HOSTS = csv_env('DJANGO_ALLOWED_HOSTS', ['localhost', '127.0.0.1','192.168.1.5'])
+
+
 
 # ─── Apps ────────────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
@@ -99,8 +127,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     # Stateless — no sessions (Checklist num2)
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
     ),
     # JSON as default renderer (Checklist num3)
     'DEFAULT_RENDERER_CLASSES': (
@@ -125,13 +153,21 @@ REST_FRAMEWORK = {
     'VERSION_PARAM': 'version',
     # Error handling (Checklist num6)
     'EXCEPTION_HANDLER': 'plantae_api.exceptions.custom_exception_handler',
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '30/minute',
+        'user': '120/minute',
+    },
 }
 
 # ─── JWT Configuration ────────────────────────────────────────────────────────
 # Checklist num5: Token generation, expiry, refresh
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=12),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
@@ -140,6 +176,7 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
     'USER_ID_FIELD': 'id',
+    'JTI_CLAIM': 'jti',
     'USER_ID_CLAIM': 'user_id',
 }
 
@@ -209,15 +246,25 @@ LOGGING = {
 }
 
 # ─── HTTPS (Checklist num5 — secure communication) ─────────────────────────────
-# In production, enable these:
-# SECURE_SSL_REDIRECT = True
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SECURE = IS_PRODUCTION
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SECURE = IS_PRODUCTION
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = 'same-origin'
+X_FRAME_OPTIONS = 'DENY'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# CORS - allow mobile app to reach Django
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = csv_env(
+    'DJANGO_CORS_ALLOWED_ORIGINS',
+    [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'http://localhost:19006',
+        'http://127.0.0.1:19006',
+    ],
+)
 
 REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
     'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -234,3 +281,8 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+PERENUAL_API_BASE_URL = os.environ.get('PERENUAL_API_BASE_URL', 'https://perenual.com/api')
+PERENUAL_API_KEY = os.environ.get('PERENUAL_API_KEY', '')
+PLANTNET_API_BASE_URL = os.environ.get('PLANTNET_API_BASE_URL', 'https://my-api.plantnet.org')
+PLANTNET_API_KEY = os.environ.get('PLANTNET_API_KEY', '')

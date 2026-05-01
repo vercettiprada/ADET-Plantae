@@ -9,7 +9,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from plants.views import api_root_view
+from plants.views import api_root_view, login_view, profile_view, register_view
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -27,6 +27,9 @@ urlpatterns = [
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path("api/auth/login/", login_view, name="legacy-login"),
+    path("api/auth/register/", register_view, name="legacy-register"),
+    path("api/auth/profile/", profile_view, name="legacy-profile"),
     path("api/v1/", include("plants.urls")),
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
