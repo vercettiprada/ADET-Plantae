@@ -10,8 +10,9 @@ import SettingsSidebar from './components/SettingsSidebar';
 
 function App() {
   const [authChecked, setAuthChecked] = useState(false);
-  const [userToken, setUserToken] = useState(api.getStoredToken());
+  const [userToken, setUserToken] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [plantSaving, setPlantSaving] = useState(false);
   const [allPlants, setAllPlants] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [page, setPage] = useState(1);
@@ -27,6 +28,18 @@ function App() {
   const [gardenError, setGardenError] = useState('');
   const [gardenNotice, setGardenNotice] = useState('');
   const [profileError, setProfileError] = useState('');
+
+  const createPlantDraft = () => ({
+    id: null,
+    name: '',
+    species: '',
+    imageUrl: '',
+    light: '',
+    water: '',
+    secretfact: '',
+    description: '',
+    isNew: true,
+  });
 
   const mergePlants = useCallback((incomingPlants) => {
     setAllPlants((prev) => {
@@ -184,6 +197,7 @@ function App() {
   const handleLogin = async (credentials) => {
     setLoading(true);
     setAuthError('');
+    clearSession();
     const result = await api.login(credentials);
 
     if (result.token) {
@@ -196,7 +210,6 @@ function App() {
         return;
       }
 
-      setUserToken(result.token);
       const [profileResult, plantsResult] = await Promise.all([
         api.getProfile(),
         loadPlants(1),
@@ -214,8 +227,11 @@ function App() {
           profileResult.error ||
           'Session expired. Please sign in again.',
         );
+      } else {
+        setUserToken(result.token);
       }
     } else {
+      api.clearStoredToken();
       setAuthError(result.error || 'Invalid credentials.');
     }
 
@@ -235,14 +251,36 @@ function App() {
     const result = await api.register(userData);
 
     if (result.access) {
-      setUserToken(result.access);
-      setProfile({
-        username: result.username || userData.username,
-        email: userData.email,
-        firstName: '',
-      });
-      await loadPlants(1);
+      const sessionResult = await api.verifySession(result.access);
+
+      if (!sessionResult.valid) {
+        handleBackendUnavailable(sessionResult.error || 'Registration succeeded, but the backend is no longer reachable.');
+        setLoading(false);
+        setAuthChecked(true);
+        return;
+      }
+
+      const [profileResult, plantsResult] = await Promise.all([
+        api.getProfile(),
+        loadPlants(1),
+      ]);
+
+      if (plantsResult?.unauthorized || profileResult.unauthorized || plantsResult?.error || profileResult.error) {
+        handleBackendUnavailable(
+          plantsResult?.error ||
+          profileResult.error ||
+          'Session expired. Please sign in again.',
+        );
+      } else {
+        setUserToken(result.access);
+        setProfile(profileResult.data || {
+          username: result.username || userData.username,
+          email: userData.email,
+          firstName: '',
+        });
+      }
     } else {
+      api.clearStoredToken();
       setAuthError(result.error || 'Could not create account.');
     }
 
@@ -259,28 +297,103 @@ function App() {
 
   const handleSavePlant = async (updatedPlant) => {
     setGardenError('');
-    const result = await api.updatePlant(updatedPlant.id, updatedPlant);
+    setPlantSaving(true);
+    const result = updatedPlant.id
+      ? await api.updatePlant(updatedPlant.id, updatedPlant)
+      : await api.createPlant(updatedPlant);
 
     if (result.unauthorized) {
       handleBackendUnavailable('Session expired. Please sign in again.');
+      setPlantSaving(false);
       return false;
     }
 
     if (result.error) {
       if (result.networkDown) {
         handleBackendUnavailable(result.error);
+        setPlantSaving(false);
         return false;
       }
       setGardenError(result.error);
+      setPlantSaving(false);
       return false;
     }
 
     if (result.data) {
       mergePlants([result.data]);
       setSelectedPlant(result.data);
+      setGardenNotice(updatedPlant.id ? 'Plant updated.' : 'Plant added to your garden.');
     }
 
+    setPlantSaving(false);
     return true;
+  };
+
+  const handleDeletePlant = async (plantId) => {
+    if (!plantId) {
+      setSelectedPlant(null);
+      return true;
+    }
+
+    const confirmed = window.confirm('Delete this plant from your garden?');
+
+    if (!confirmed) {
+      return false;
+    }
+
+    setGardenError('');
+    setPlantSaving(true);
+    const result = await api.deletePlant(plantId);
+
+    if (result.unauthorized) {
+      handleBackendUnavailable('Session expired. Please sign in again.');
+      setPlantSaving(false);
+      return false;
+    }
+
+    if (result.error) {
+      if (result.networkDown) {
+        handleBackendUnavailable(result.error);
+        setPlantSaving(false);
+        return false;
+      }
+      setGardenError(result.error);
+      setPlantSaving(false);
+      return false;
+    }
+
+    setAllPlants((prev) => prev.filter((plant) => plant.id !== String(plantId)));
+    setSelectedPlant(null);
+    setGardenNotice('Plant deleted.');
+    setPlantSaving(false);
+    return true;
+  };
+
+  const handleOpenPlant = async (plant) => {
+    setGardenError('');
+    setGardenNotice('');
+    setSelectedPlant(plant);
+
+    const result = await api.getPlant(plant.id);
+
+    if (result.unauthorized) {
+      handleBackendUnavailable('Session expired. Please sign in again.');
+      return;
+    }
+
+    if (result.error) {
+      if (result.networkDown) {
+        handleBackendUnavailable(result.error);
+        return;
+      }
+      setGardenError(result.error);
+      return;
+    }
+
+    if (result.data) {
+      mergePlants([result.data]);
+      setSelectedPlant(result.data);
+    }
   };
 
   const handleSaveProfile = async (updates) => {
@@ -453,6 +566,19 @@ function App() {
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
               />
+              <button
+                className="add-plant-button"
+                type="button"
+                aria-label="Add plant"
+                onClick={() => {
+                  setGardenError('');
+                  setGardenNotice('');
+                  setSelectedPlant(createPlantDraft());
+                }}
+              >
+                <span className="add-plant-icon">+</span>
+                <span>Add plant</span>
+              </button>
             </div>
           </header>
 
@@ -462,7 +588,11 @@ function App() {
 
             <section className="plant-stack">
               {filteredPlants.map((plant) => (
-                <PlantCard key={plant.id} plant={plant} onCardClick={setSelectedPlant} />
+                <PlantCard
+                  key={plant.id}
+                  plant={plant}
+                  onCardClick={handleOpenPlant}
+                />
               ))}
             </section>
 
@@ -483,7 +613,9 @@ function App() {
             plant={selectedPlant}
             onClose={() => setSelectedPlant(null)}
             onSave={handleSavePlant}
-            saving={loading}
+            onDelete={handleDeletePlant}
+            saving={plantSaving}
+            error={gardenError}
           />
         </>
       ) : (

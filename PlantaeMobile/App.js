@@ -32,6 +32,7 @@ function DrawerLayer({
   onLogout,
   loadingMore,
   loadMorePlants,
+  onAddPlant,
   profile,
 }) {
   return (
@@ -62,6 +63,7 @@ function DrawerLayer({
             loadingMore={loadingMore}
             loadMorePlants={loadMorePlants}
             onPlantClick={onPlantClick}
+            onAddPlant={onAddPlant}
           />
         )}
       </Drawer.Screen>
@@ -83,6 +85,18 @@ export default function App() {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [profile, setProfile] = useState({ username: '', email: '', firstName: '' });
   const plantRequestRef = useRef(0);
+
+  const createPlantDraft = () => ({
+    id: null,
+    name: '',
+    species: '',
+    imageUrl: '',
+    light: '',
+    water: '',
+    secretfact: '',
+    description: '',
+    isNew: true,
+  });
 
   const clearSession = useCallback(async () => {
     await AsyncStorage.removeItem('userToken');
@@ -137,7 +151,6 @@ export default function App() {
       return;
     }
 
-    setUserToken(storedToken);
     const [plantsResult, profileResult] = await Promise.all([
       api.getPlants(1),
       api.getProfile(),
@@ -146,6 +159,7 @@ export default function App() {
     if (plantsResult.unauthorized || profileResult.unauthorized || plantsResult.error || profileResult.error) {
       await clearSession();
     } else {
+      setUserToken(storedToken);
       setAllPlants(plantsResult.data);
       setPage(1);
       setHasNextPage(plantsResult.hasNext);
@@ -186,6 +200,7 @@ export default function App() {
 
   const handleLogin = async (credentials) => {
     setLoading(true);
+    await clearSession();
     const result = await api.login(credentials);
 
     if (result.token) {
@@ -198,19 +213,23 @@ export default function App() {
         return;
       }
 
-      setUserToken(result.token);
-      setProfile((prev) => ({ ...prev, username: result.username || prev.username }));
-      const profileResult = await api.getProfile();
-      if (profileResult.data) {
-        setProfile(profileResult.data);
-      }
-      const plantsResult = await loadPlants(1);
+      const [profileResult, plantsResult] = await Promise.all([
+        api.getProfile(),
+        api.getPlants(1),
+      ]);
+
       if (plantsResult.unauthorized || profileResult.unauthorized || plantsResult.error || profileResult.error) {
         await clearSession();
         Alert.alert(
           'Login Failed',
           plantsResult.error || profileResult.error || 'Please log in again.',
         );
+      } else {
+        setUserToken(result.token);
+        setProfile(profileResult.data || { username: result.username || '', email: '', firstName: '' });
+        setAllPlants(plantsResult.data);
+        setPage(1);
+        setHasNextPage(plantsResult.hasNext);
       }
     } else {
       Alert.alert('Login Failed', result.error || 'Invalid credentials.');
@@ -224,13 +243,37 @@ export default function App() {
     const result = await api.register(userData);
 
     if (result.access) {
-      setUserToken(result.access);
-      setProfile({
-        username: result.username || '',
-        email: userData.email,
-        firstName: '',
-      });
-      await loadPlants(1);
+      const sessionResult = await api.verifySession(result.access);
+
+      if (!sessionResult.valid) {
+        await clearSession();
+        Alert.alert('Registration Failed', sessionResult.error || 'Please try again.');
+        setLoading(false);
+        return;
+      }
+
+      const [profileResult, plantsResult] = await Promise.all([
+        api.getProfile(),
+        api.getPlants(1),
+      ]);
+
+      if (plantsResult.unauthorized || profileResult.unauthorized || plantsResult.error || profileResult.error) {
+        await clearSession();
+        Alert.alert(
+          'Registration Failed',
+          plantsResult.error || profileResult.error || 'Please log in again.',
+        );
+      } else {
+        setUserToken(result.access);
+        setProfile(profileResult.data || {
+          username: result.username || '',
+          email: userData.email,
+          firstName: '',
+        });
+        setAllPlants(plantsResult.data);
+        setPage(1);
+        setHasNextPage(plantsResult.hasNext);
+      }
     } else {
       Alert.alert('Registration Failed', result.error || 'Could not create account.');
     }
@@ -289,8 +332,16 @@ export default function App() {
     loadPlants(page + 1);
   }, [hasNextPage, loadPlants, loadingMore, page, userToken]);
 
+  const handleAddPlant = useCallback(() => {
+    plantRequestRef.current += 1;
+    setPlantModalLoading(false);
+    setSelectedPlant(createPlantDraft());
+  }, []);
+
   const handleSavePlant = useCallback(async (updatedPlant) => {
-    const result = await api.updatePlant(updatedPlant.id, updatedPlant);
+    const result = updatedPlant.id
+      ? await api.updatePlant(updatedPlant.id, updatedPlant)
+      : await api.createPlant(updatedPlant);
 
     if (result.unauthorized) {
       await clearSession();
@@ -304,14 +355,60 @@ export default function App() {
     }
 
     if (result.data) {
-      setAllPlants((prev) => prev.map((plant) => (
-        plant.id === result.data.id ? result.data : plant
-      )));
+      setAllPlants((prev) => {
+        const exists = prev.some((plant) => plant.id === result.data.id);
+        if (!exists) {
+          return [result.data, ...prev];
+        }
+
+        return prev.map((plant) => (
+          plant.id === result.data.id ? result.data : plant
+        ));
+      });
       setSelectedPlant(result.data);
     }
 
     return true;
   }, [clearSession]);
+
+  const handleDeletePlant = useCallback((plantId) => new Promise((resolve) => {
+    if (!plantId) {
+      resolve(false);
+      return;
+    }
+
+    Alert.alert(
+      'Delete Plant',
+      'Delete this plant from your garden?',
+      [
+        { text: 'Cancel', style: 'cancel', onPress: () => resolve(false) },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            const result = await api.deletePlant(plantId);
+
+            if (result.unauthorized) {
+              await clearSession();
+              Alert.alert('Session Expired', 'Please log in again.');
+              resolve(false);
+              return;
+            }
+
+            if (result.error) {
+              Alert.alert('Delete Failed', result.error);
+              resolve(false);
+              return;
+            }
+
+            setAllPlants((prev) => prev.filter((plant) => plant.id !== String(plantId)));
+            setSelectedPlant(null);
+            resolve(true);
+          },
+        },
+      ],
+    );
+  }), [clearSession]);
 
   const handlePlantClick = useCallback(async (plant) => {
     if (!plant?.id) {
@@ -396,6 +493,7 @@ export default function App() {
                 onLogout={handleLogout}
                 loadingMore={loadingMore}
                 loadMorePlants={handleLoadMorePlants}
+                onAddPlant={handleAddPlant}
                 profile={profile}
               />
             )}
@@ -430,6 +528,7 @@ export default function App() {
             isDarkMode={isDarkMode}
             onClose={handleClosePlantModal}
             onSave={handleSavePlant}
+            onDelete={handleDeletePlant}
           />
         )}
       </NavigationContainer>

@@ -1,6 +1,7 @@
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=900&q=80';
 const TOKEN_KEY = 'plantaeUserToken';
 const REQUEST_TIMEOUT_MS = 10000;
+const DISCOVER_TIMEOUT_MS = 60000;
 
 const flattenDetails = (details) => {
   if (!details) {
@@ -79,7 +80,11 @@ const pickImageUrl = (...candidates) => {
     }
 
     const normalizedCandidate = String(candidate).trim();
-    if (!normalizedCandidate || normalizedCandidate.includes('upgrade_access')) {
+    if (
+      !normalizedCandidate ||
+      normalizedCandidate.includes('upgrade_access') ||
+      normalizedCandidate.includes('placehold.co')
+    ) {
       continue;
     }
 
@@ -129,11 +134,12 @@ const buildNetworkError = () => ({
 
 const request = async (path, options = {}) => {
   const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const { timeoutMs = REQUEST_TIMEOUT_MS, ...fetchOptions } = options;
+  const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const response = await fetch(`${API_BASE}${path}`, {
-      ...options,
+      ...fetchOptions,
       cache: 'no-store',
       credentials: 'omit',
       signal: controller.signal,
@@ -176,6 +182,29 @@ const clearStoredToken = () => {
   window.localStorage.removeItem(TOKEN_KEY);
 };
 
+const buildPlantPayload = (plantData = {}) => ({
+  name: plantData.name,
+  species: plantData.species,
+  imageUrl: plantData.imageUrl,
+  light: plantData.light,
+  water: plantData.water,
+  secretfact: plantData.secretfact,
+  description: plantData.description,
+  cycle: plantData.cycle,
+  maintenance: plantData.maintenance,
+  growthRate: plantData.growthRate,
+  hardinessMin: plantData.hardinessMin,
+  hardinessMax: plantData.hardinessMax,
+  perenualId: plantData.perenualId,
+  perenualData: plantData.perenualData,
+  careGuides: plantData.careGuides,
+});
+
+const buildAuthHeaders = (token) => ({
+  Authorization: `Bearer ${token}`,
+  'Content-Type': 'application/json',
+});
+
 export const api = {
   baseUrl: API_BASE,
   imageFallback: IMAGE_FALLBACK,
@@ -197,6 +226,7 @@ export const api = {
       });
 
       if (!response.ok) {
+        clearStoredToken();
         return {
           valid: false,
           unauthorized: response.status === 401 || response.status === 403,
@@ -206,6 +236,7 @@ export const api = {
 
       return { valid: true };
     } catch {
+      clearStoredToken();
       return { valid: false, ...buildNetworkError() };
     }
   },
@@ -219,6 +250,7 @@ export const api = {
       });
 
       if (!response.ok) {
+        clearStoredToken();
         return { error: normalizeError(payload, 'Could not create account.') };
       }
 
@@ -228,6 +260,7 @@ export const api = {
 
       return payload || { error: 'Could not create account.' };
     } catch {
+      clearStoredToken();
       return buildNetworkError();
     }
   },
@@ -241,6 +274,7 @@ export const api = {
       });
 
       if (!response.ok) {
+        clearStoredToken();
         return { error: normalizeError(payload, 'Login failed. Check your credentials.') };
       }
 
@@ -251,6 +285,7 @@ export const api = {
 
       return { error: 'Login failed. The backend did not return an access token.' };
     } catch {
+      clearStoredToken();
       return buildNetworkError();
     }
   },
@@ -264,10 +299,7 @@ export const api = {
       }
 
       const { response, payload } = await request(`/v1/plants/?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: buildAuthHeaders(token),
       });
 
       if (!response.ok) {
@@ -290,6 +322,31 @@ export const api = {
     }
   },
 
+  getPlant: async (plantId) => {
+    try {
+      const token = getStoredToken();
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request(`/v1/plants/${plantId}/`, {
+        headers: buildAuthHeaders(token),
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to load plant details.'),
+        };
+      }
+
+      return { data: mapPlant(payload), unauthorized: false };
+    } catch {
+      return { unauthorized: false, ...buildNetworkError() };
+    }
+  },
+
   discoverPlants: async (count = 4) => {
     try {
       const token = getStoredToken();
@@ -300,11 +357,9 @@ export const api = {
 
       const { response, payload } = await request('/v1/plants/discover/', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: buildAuthHeaders(token),
         body: JSON.stringify({ count }),
+        timeoutMs: DISCOVER_TIMEOUT_MS,
       });
 
       if (!response.ok) {
@@ -327,6 +382,33 @@ export const api = {
     }
   },
 
+  createPlant: async (plantData) => {
+    try {
+      const token = getStoredToken();
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request('/v1/plants/', {
+        method: 'POST',
+        headers: buildAuthHeaders(token),
+        body: JSON.stringify(buildPlantPayload(plantData)),
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to create plant.'),
+        };
+      }
+
+      return { data: mapPlant(payload), unauthorized: false };
+    } catch {
+      return { unauthorized: false, ...buildNetworkError() };
+    }
+  },
+
   updatePlant: async (plantId, updates) => {
     try {
       const token = getStoredToken();
@@ -337,18 +419,8 @@ export const api = {
 
       const { response, payload } = await request(`/v1/plants/${plantId}/`, {
         method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: updates.name,
-          species: updates.species,
-          imageUrl: updates.imageUrl,
-          light: updates.light,
-          water: updates.water,
-          secretfact: updates.secretfact,
-        }),
+        headers: buildAuthHeaders(token),
+        body: JSON.stringify(buildPlantPayload(updates)),
       });
 
       if (!response.ok) {
@@ -359,6 +431,32 @@ export const api = {
       }
 
       return { data: mapPlant(payload), unauthorized: false };
+    } catch {
+      return { unauthorized: false, ...buildNetworkError() };
+    }
+  },
+
+  deletePlant: async (plantId) => {
+    try {
+      const token = getStoredToken();
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request(`/v1/plants/${plantId}/`, {
+        method: 'DELETE',
+        headers: buildAuthHeaders(token),
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to delete plant.'),
+        };
+      }
+
+      return { success: true, unauthorized: false };
     } catch {
       return { unauthorized: false, ...buildNetworkError() };
     }

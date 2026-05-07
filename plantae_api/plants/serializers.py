@@ -5,14 +5,14 @@ class PlantSerializer(serializers.ModelSerializer):
     imageUrl = serializers.URLField(source='image_url', required=False, allow_blank=True)
     secretfact = serializers.CharField(source='secret_fact', required=False, allow_blank=True)
     description = serializers.CharField(required=False, allow_blank=True)
-    #cycle = serializers.CharField(required=False, allow_blank=True)
-    #maintenance = serializers.CharField(required=False, allow_blank=True)
-    #growthRate = serializers.CharField(source='growth_rate', required=False, allow_blank=True)
-    #hardinessMin = serializers.CharField(source='hardiness_min', required=False, allow_blank=True)
-    #hardinessMax = serializers.CharField(source='hardiness_max', required=False, allow_blank=True)
-    #perenualId = serializers.IntegerField(source='perenual_id', required=False, allow_null=True)
-    #perenualData = serializers.JSONField(source='perenual_payload', required=False)
-    #careGuides = serializers.JSONField(source='care_guides', required=False)
+    cycle = serializers.CharField(required=False, allow_blank=True)
+    maintenance = serializers.CharField(required=False, allow_blank=True)
+    growthRate = serializers.CharField(source='growth_rate', required=False, allow_blank=True)
+    hardinessMin = serializers.CharField(source='hardiness_min', required=False, allow_blank=True)
+    hardinessMax = serializers.CharField(source='hardiness_max', required=False, allow_blank=True)
+    perenualId = serializers.IntegerField(source='perenual_id', required=False, allow_null=True)
+    perenualData = serializers.JSONField(source='perenual_payload', required=False)
+    careGuides = serializers.JSONField(source='care_guides', required=False)
 
     class Meta:
         model = Plant
@@ -25,16 +25,16 @@ class PlantSerializer(serializers.ModelSerializer):
             'description',
             'light',
             'water',
-            #'cycle',
-            #'maintenance',
-            #'growthRate',
-            #'hardinessMin',
-            #'hardinessMax',
-            #'perenualId',
-            #'perenualData',
-            #'careGuides',
-            #'created_at',
-            #'updated_at',
+            'cycle',
+            'maintenance',
+            'growthRate',
+            'hardinessMin',
+            'hardinessMax',
+            'perenualId',
+            'perenualData',
+            'careGuides',
+            'created_at',
+            'updated_at',
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 
@@ -66,21 +66,21 @@ class PlantCreateSerializer(PlantSerializer):
 
     water = serializers.CharField(required=False, allow_blank=True, default='')
 
-    #cycle = serializers.CharField(required=False, allow_blank=True, default='')
+    cycle = serializers.CharField(required=False, allow_blank=True, default='')
 
-    #maintenance = serializers.CharField(required=False, allow_blank=True, default='')
+    maintenance = serializers.CharField(required=False, allow_blank=True, default='')
 
-    #growthRate = serializers.CharField(source='growth_rate', required=False, allow_blank=True, default='')
+    growthRate = serializers.CharField(source='growth_rate', required=False, allow_blank=True, default='')
 
-    #hardinessMin = serializers.CharField(source='hardiness_min', required=False, allow_blank=True, default='')
+    hardinessMin = serializers.CharField(source='hardiness_min', required=False, allow_blank=True, default='')
 
-    #hardinessMax = serializers.CharField(source='hardiness_max', required=False, allow_blank=True, default='')
+    hardinessMax = serializers.CharField(source='hardiness_max', required=False, allow_blank=True, default='')
 
-    #perenualId = serializers.IntegerField(source='perenual_id', required=False, allow_null=True)
+    perenualId = serializers.IntegerField(source='perenual_id', required=False, allow_null=True)
 
-    #perenualData = serializers.JSONField(source='perenual_payload', required=False, default=dict)
+    perenualData = serializers.JSONField(source='perenual_payload', required=False, default=dict)
 
-    #careGuides = serializers.JSONField(source='care_guides', required=False, default=list)
+    careGuides = serializers.JSONField(source='care_guides', required=False, default=list)
 
 class PlantSummarySerializer(serializers.ModelSerializer):
     imageUrl = serializers.URLField(source='image_url')

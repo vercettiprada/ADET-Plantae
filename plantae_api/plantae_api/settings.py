@@ -5,6 +5,7 @@ Implements all Module checklist w the following requirements:
 """
 
 import os
+import socket
 from pathlib import Path
 from datetime import timedelta
 
@@ -39,7 +40,25 @@ def csv_env(name, default):
     return [item.strip() for item in raw.split(',') if item.strip()]
 
 
-ALLOWED_HOSTS = csv_env('DJANGO_ALLOWED_HOSTS', ['localhost', '127.0.0.1','192.168.1.5'])
+ALLOWED_HOSTS = csv_env(
+    'DJANGO_ALLOWED_HOSTS',
+    [
+        'localhost',
+        '127.0.0.1',
+        '0.0.0.0',
+        '10.0.2.2',
+        '192.168.1.5',
+        '192.168.1.7',
+    ],
+)
+
+if DEBUG:
+    try:
+        ALLOWED_HOSTS.extend(socket.gethostbyname_ex(socket.gethostname())[2])
+    except OSError:
+        pass
+
+    ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
 
 
 
@@ -263,12 +282,16 @@ CORS_ALLOWED_ORIGINS = csv_env(
         'http://127.0.0.1:3000',
         'http://localhost:19006',
         'http://127.0.0.1:19006',
+        'http://192.168.1.7:3000',
+        'http://192.168.1.7:8081',
+        'http://192.168.1.7:19006',
     ],
 )
 
 REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
     'rest_framework_simplejwt.authentication.JWTAuthentication',
 ]
+
 
 SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,

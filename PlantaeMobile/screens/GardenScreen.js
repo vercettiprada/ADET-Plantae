@@ -11,7 +11,16 @@ import {
   SEARCH_HEIGHT,
 } from '../styles/screens/GardenScreen.styles';
 
-export default function GardenScreen({ plants = [], onPlantClick, loadingMore, loadMorePlants, navigation, theme, isDarkMode }) {
+export default function GardenScreen({
+  plants = [],
+  onPlantClick,
+  onAddPlant,
+  loadingMore,
+  loadMorePlants,
+  navigation,
+  theme,
+  isDarkMode,
+}) {
   const [searchQuery, setSearchQuery] = useState('');
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -107,13 +116,24 @@ export default function GardenScreen({ plants = [], onPlantClick, loadingMore, l
           ]}
           pointerEvents="box-none"
         >
-          <TextInput
-            style={[styles.search, { backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#e0e0e0' : '#333' }]}
-            placeholder="search species..."
-            placeholderTextColor={isDarkMode ? '#666' : '#aaa'}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
+          <View style={styles.searchRow}>
+            <TextInput
+              style={[styles.search, { backgroundColor: isDarkMode ? '#1e1e1e' : '#fff', color: isDarkMode ? '#e0e0e0' : '#333' }]}
+              placeholder="search species..."
+              placeholderTextColor={isDarkMode ? '#666' : '#aaa'}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+            <TouchableOpacity
+              onPress={onAddPlant}
+              style={[styles.addPlantButton, { backgroundColor: isDarkMode ? '#7fb07b' : '#2d5a27' }]}
+              activeOpacity={0.86}
+              accessibilityRole="button"
+              accessibilityLabel="Add plant"
+            >
+              <Text style={styles.addPlantIcon}>+</Text>
+            </TouchableOpacity>
+          </View>
         </Animated.View>
       </Animated.View>
 

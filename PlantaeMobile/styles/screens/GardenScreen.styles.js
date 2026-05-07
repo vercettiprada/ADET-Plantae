@@ -35,7 +35,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: 4,
   },
+  searchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   search: {
+    flex: 1,
     height: SEARCH_HEIGHT,
     paddingHorizontal: 16,
     paddingVertical: 0,
@@ -48,6 +54,24 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 2,
+  },
+  addPlantButton: {
+    width: SEARCH_HEIGHT,
+    height: SEARCH_HEIGHT,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  addPlantIcon: {
+    color: '#fff',
+    fontSize: 28,
+    fontWeight: '700',
+    lineHeight: 30,
   },
   listContent: {
     paddingTop: EXPANDED_HEADER_HEIGHT + 16,

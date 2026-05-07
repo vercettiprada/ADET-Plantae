@@ -276,8 +276,38 @@ textarea {
 }
 
 .search-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
   max-width: 1180px;
   margin: 32px auto 0;
+}
+
+.add-plant-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  border: 0;
+  border-radius: 12px;
+  padding: 0 22px;
+  background: var(--green);
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+  white-space: nowrap;
+}
+
+.add-plant-icon {
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 999px;
+  font-size: 1.15rem;
+  line-height: 1;
 }
 
 .discovery-container {
@@ -288,6 +318,11 @@ textarea {
 
 .garden-message {
   margin-bottom: 20px;
+}
+
+.modal-message {
+  margin-bottom: 12px;
+  color: #ffd8d8;
 }
 
 .plant-stack {
@@ -304,11 +339,13 @@ textarea {
   box-shadow: var(--shadow);
   cursor: pointer;
   background: var(--surface-strong);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+  will-change: transform;
 }
 
 .plant-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px) scale(1.01);
+  filter: saturate(1.04);
 }
 
 .plant-image {
@@ -386,6 +423,7 @@ textarea {
   padding: 24px;
   backdrop-filter: blur(8px);
   z-index: 50;
+  animation: modalBackdropIn 0.26s ease forwards;
 }
 
 .expanded-square-card {
@@ -401,6 +439,9 @@ textarea {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
+  transform-origin: center;
+  animation: plantModalIn 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: opacity, transform;
 }
 
 .modal-top-controls {
@@ -412,7 +453,8 @@ textarea {
 }
 
 .edit-toggle-btn,
-.close-x {
+.close-x,
+.modal-action-btn {
   min-width: 42px;
   height: 42px;
   border-radius: 999px;
@@ -426,12 +468,23 @@ textarea {
   background: var(--green);
 }
 
+.modal-action-btn.ghost {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.modal-action-btn.danger {
+  background: rgba(229, 57, 53, 0.18);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+}
+
 .card-content {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.1fr);
   gap: 24px;
   height: 100%;
   min-height: 0;
+  animation: modalContentIn 0.3s ease 0.08s both;
 }
 
 .card-image-side {
@@ -444,15 +497,83 @@ textarea {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.035);
+  animation: modalImageIn 0.42s ease 0.06s forwards;
 }
 
 .card-info-side {
   display: flex;
   flex-direction: column;
-  padding-top: 30px;
+  padding-top: 60px;
   min-height: 0;
   overflow: visible;
   padding-right: 10px;
+  animation: modalInfoIn 0.34s ease 0.12s both;
+}
+
+@keyframes modalBackdropIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+
+  to {
+    opacity: 1;
+    backdrop-filter: blur(8px);
+  }
+}
+
+@keyframes plantModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.965);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalContentIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalImageIn {
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes modalInfoIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plant-card,
+  .modal-backdrop,
+  .expanded-square-card,
+  .card-content,
+  .card-image-side img,
+  .card-info-side {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
 }
 
 .card-info-side h1 {
@@ -530,6 +651,23 @@ textarea {
   min-height: 120px;
   padding: 14px 16px;
   resize: vertical;
+}
+
+.edit-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.edit-field-grid label {
+  display: grid;
+  gap: 8px;
+}
+
+.edit-field-grid span {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .side-settings,
@@ -742,6 +880,11 @@ textarea {
   }
 
   .plant-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .search-wrap,
+  .edit-field-grid {
     grid-template-columns: 1fr;
   }
 

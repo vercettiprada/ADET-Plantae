@@ -7,21 +7,25 @@ import {
 import { BlurView } from 'expo-blur';
 import { styles } from '../styles/components/PlantModal.styles';
 
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8';
+
 const displayValue = (value, fallback = 'Not available') => {
   const normalized = typeof value === 'string' ? value.trim() : value;
   return normalized ? normalized : fallback;
 };
 
-export default function PlantModal({ plant, onClose, onSave, loading = false }) {
+export default function PlantModal({ plant, onClose, onSave, onDelete, loading = false }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedPlant, setEditedPlant] = useState(plant);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (plant) {
       setEditedPlant(plant);
-      setIsEditing(false);
+      setIsEditing(Boolean(plant.isNew));
       setIsSaving(false);
+      setIsDeleting(false);
     }
   }, [plant]);
 
@@ -41,9 +45,39 @@ export default function PlantModal({ plant, onClose, onSave, loading = false }) 
     setIsSaving(false);
   };
 
+  const handleCancel = () => {
+    if (plant?.isNew) {
+      onClose();
+      return;
+    }
+
+    setEditedPlant(plant);
+    setIsEditing(false);
+  };
+
+  const handleDelete = async () => {
+    if (!onDelete || !plant?.id || isDeleting) {
+      return;
+    }
+
+    setIsDeleting(true);
+    const deleted = await onDelete(plant.id);
+
+    if (deleted) {
+      onClose();
+    }
+
+    setIsDeleting(false);
+  };
+
+  const updateField = (field, value) => {
+    setEditedPlant((prev) => ({ ...prev, [field]: value }));
+  };
+
   const hardinessRange = plant?.hardinessMin && plant?.hardinessMax
     ? `${plant.hardinessMin} - ${plant.hardinessMax}`
     : '';
+  const imageUrl = editedPlant?.imageUrl || plant?.imageUrl || FALLBACK_IMAGE;
 
   return (
     <Modal animationType="slide" transparent={true} visible={!!plant}>
@@ -58,14 +92,28 @@ export default function PlantModal({ plant, onClose, onSave, loading = false }) 
                 <TouchableOpacity onPress={onClose}>
                   <Text style={styles.headerText}>Close</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={isEditing ? handleSave : () => setIsEditing(true)}
-                  disabled={isSaving}
-                >
-                  <Text style={[styles.headerText, { color: '#4f9a44' }]}>
-                    {isEditing ? (isSaving ? 'Saving...' : 'Save') : 'Edit'}
-                  </Text>
-                </TouchableOpacity>
+                <View style={styles.headerActions}>
+                  {isEditing ? (
+                    <TouchableOpacity onPress={handleCancel} disabled={isSaving || isDeleting}>
+                      <Text style={styles.headerText}>Cancel</Text>
+                    </TouchableOpacity>
+                  ) : null}
+                  {!plant?.isNew && !isEditing ? (
+                    <TouchableOpacity onPress={handleDelete} disabled={isDeleting || isSaving}>
+                      <Text style={[styles.headerText, styles.deleteText]}>
+                        {isDeleting ? 'Deleting...' : 'Delete'}
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null}
+                  <TouchableOpacity
+                    onPress={isEditing ? handleSave : () => setIsEditing(true)}
+                    disabled={isSaving || isDeleting}
+                  >
+                    <Text style={[styles.headerText, { color: '#4f9a44' }]}>
+                      {isEditing ? (isSaving ? 'Saving...' : plant?.isNew ? 'Create' : 'Save') : 'Edit'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
 
               <ScrollView
@@ -76,11 +124,40 @@ export default function PlantModal({ plant, onClose, onSave, loading = false }) 
               >
                 {plant && (
                   <>
-                    <Image source={{ uri: plant.imageUrl }} style={styles.heroImage} />
+                    <Image source={{ uri: imageUrl }} style={styles.heroImage} />
 
                     <View style={styles.infoPadding}>
-                      <Text style={styles.species}>{plant.species}</Text>
-                      <Text style={styles.name}>{plant.name}</Text>
+                      {isEditing ? (
+                        <View style={styles.titleForm}>
+                          <TextInput
+                            style={styles.editTitle}
+                            value={editedPlant?.name || ''}
+                            onChangeText={(val) => updateField('name', val)}
+                            placeholder="Plant name"
+                            placeholderTextColor="rgba(255,255,255,0.35)"
+                          />
+                          <TextInput
+                            style={styles.editSpecies}
+                            value={editedPlant?.species || ''}
+                            onChangeText={(val) => updateField('species', val)}
+                            placeholder="Species"
+                            placeholderTextColor="rgba(255,255,255,0.35)"
+                          />
+                          <TextInput
+                            style={styles.editSpecies}
+                            value={editedPlant?.imageUrl || ''}
+                            onChangeText={(val) => updateField('imageUrl', val)}
+                            placeholder="Image URL"
+                            placeholderTextColor="rgba(255,255,255,0.35)"
+                            autoCapitalize="none"
+                          />
+                        </View>
+                      ) : (
+                        <>
+                          <Text style={styles.species}>{plant.species}</Text>
+                          <Text style={styles.name}>{plant.name}</Text>
+                        </>
+                      )}
 
                       <View>
                         <Text style={styles.sectionHeader}>Plant Care & Info</Text>
@@ -90,8 +167,8 @@ export default function PlantModal({ plant, onClose, onSave, loading = false }) 
                             {isEditing ? (
                               <TextInput
                                 style={styles.editInput}
-                                value={editedPlant.light}
-                                onChangeText={(val) => setEditedPlant({ ...editedPlant, light: val })}
+                                value={editedPlant?.light || ''}
+                                onChangeText={(val) => updateField('light', val)}
                                 placeholderTextColor="rgba(255,255,255,0.3)"
                               />
                             ) : (
@@ -104,8 +181,8 @@ export default function PlantModal({ plant, onClose, onSave, loading = false }) 
                             {isEditing ? (
                               <TextInput
                                 style={styles.editInput}
-                                value={editedPlant.water}
-                                onChangeText={(val) => setEditedPlant({ ...editedPlant, water: val })}
+                                value={editedPlant?.water || ''}
+                                onChangeText={(val) => updateField('water', val)}
                                 placeholderTextColor="rgba(255,255,255,0.3)"
                               />
                             ) : (
@@ -137,7 +214,17 @@ export default function PlantModal({ plant, onClose, onSave, loading = false }) 
 
                       <View style={styles.secretBox}>
                         <Text style={styles.secretTitle}>Description</Text>
-                        {loading ? (
+                        {isEditing ? (
+                          <TextInput
+                            multiline
+                            style={styles.editArea}
+                            value={editedPlant?.description || ''}
+                            onChangeText={(val) => updateField('description', val)}
+                            placeholder="Short plant description"
+                            placeholderTextColor="rgba(255,255,255,0.3)"
+                            blurOnSubmit={false}
+                          />
+                        ) : loading ? (
                           <View style={styles.loadingRow}>
                             <ActivityIndicator size="small" color="#4f9a44" />
                             <Text style={styles.secretText}>Fetching full plant details...</Text>
@@ -153,8 +240,9 @@ export default function PlantModal({ plant, onClose, onSave, loading = false }) 
                           <TextInput
                             multiline
                             style={styles.editArea}
-                            value={editedPlant.secretfact}
-                            onChangeText={(val) => setEditedPlant({ ...editedPlant, secretfact: val })}
+                            value={editedPlant?.secretfact || ''}
+                            onChangeText={(val) => updateField('secretfact', val)}
+                            placeholder="A memorable care note or fact"
                             placeholderTextColor="rgba(255,255,255,0.3)"
                             blurOnSubmit={false}
                           />

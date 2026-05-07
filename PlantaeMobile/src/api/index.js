@@ -131,6 +131,29 @@ const request = async (path, options = {}) => {
   return { response, payload };
 };
 
+const buildAuthHeaders = (token) => ({
+  Authorization: `Bearer ${token}`,
+  'Content-Type': 'application/json',
+});
+
+const buildPlantPayload = (plantData = {}) => ({
+  name: plantData.name,
+  species: plantData.species,
+  imageUrl: plantData.imageUrl,
+  light: plantData.light,
+  water: plantData.water,
+  secretfact: plantData.secretfact,
+  description: plantData.description,
+  cycle: plantData.cycle,
+  maintenance: plantData.maintenance,
+  growthRate: plantData.growthRate,
+  hardinessMin: plantData.hardinessMin,
+  hardinessMax: plantData.hardinessMax,
+  perenualId: plantData.perenualId,
+  perenualData: plantData.perenualData,
+  careGuides: plantData.careGuides,
+});
+
 export const api = {
   baseUrl: API_BASE,
 
@@ -149,6 +172,7 @@ export const api = {
       });
 
       if (!response.ok) {
+        await AsyncStorage.removeItem('userToken');
         return {
           valid: false,
           unauthorized: response.status === 401 || response.status === 403,
@@ -158,6 +182,7 @@ export const api = {
 
       return { valid: true };
     } catch {
+      await AsyncStorage.removeItem('userToken');
       return {
         valid: false,
         error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
@@ -174,6 +199,7 @@ export const api = {
       });
 
       if (!response.ok) {
+        await AsyncStorage.removeItem('userToken');
         return { error: normalizeError(payload, 'Could not create account.') };
       }
 
@@ -183,6 +209,7 @@ export const api = {
 
       return payload || { error: 'Could not create account.' };
     } catch {
+      await AsyncStorage.removeItem('userToken');
       return {
         error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
       };
@@ -198,6 +225,7 @@ export const api = {
       });
 
       if (!response.ok) {
+        await AsyncStorage.removeItem('userToken');
         return { error: normalizeError(payload, 'Login failed. Check your credentials.') };
       }
 
@@ -208,6 +236,7 @@ export const api = {
 
       return { error: 'Login failed. The backend did not return an access token.' };
     } catch {
+      await AsyncStorage.removeItem('userToken');
       return {
         error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
       };
@@ -223,10 +252,7 @@ export const api = {
       }
 
       const { response, payload } = await request(`/v1/plants/?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: buildAuthHeaders(token),
       });
 
       if (!response.ok) {
@@ -263,16 +289,43 @@ export const api = {
       }
 
       const { response, payload } = await request(`/v1/plants/${plantId}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: buildAuthHeaders(token),
       });
 
       if (!response.ok) {
         return {
           unauthorized: response.status === 401 || response.status === 403,
           error: normalizeError(payload, 'Unable to load plant details.'),
+        };
+      }
+
+      return { data: mapPlant(payload), unauthorized: false };
+    } catch {
+      return {
+        unauthorized: false,
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
+    }
+  },
+
+  createPlant: async (plantData) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request('/v1/plants/', {
+        method: 'POST',
+        headers: buildAuthHeaders(token),
+        body: JSON.stringify(buildPlantPayload(plantData)),
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to create plant.'),
         };
       }
 
@@ -295,18 +348,8 @@ export const api = {
 
       const { response, payload } = await request(`/v1/plants/${plantId}/`, {
         method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: updates.name,
-          species: updates.species,
-          imageUrl: updates.imageUrl,
-          light: updates.light,
-          water: updates.water,
-          secretfact: updates.secretfact,
-        }),
+        headers: buildAuthHeaders(token),
+        body: JSON.stringify(buildPlantPayload(updates)),
       });
 
       if (!response.ok) {
@@ -325,6 +368,35 @@ export const api = {
     }
   },
 
+  deletePlant: async (plantId) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+
+      if (!token) {
+        return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
+      }
+
+      const { response, payload } = await request(`/v1/plants/${plantId}/`, {
+        method: 'DELETE',
+        headers: buildAuthHeaders(token),
+      });
+
+      if (!response.ok) {
+        return {
+          unauthorized: response.status === 401 || response.status === 403,
+          error: normalizeError(payload, 'Unable to delete plant.'),
+        };
+      }
+
+      return { success: true, unauthorized: false };
+    } catch {
+      return {
+        unauthorized: false,
+        error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
+      };
+    }
+  },
+
   getProfile: async () => {
     try {
       const token = await AsyncStorage.getItem('userToken');
@@ -334,10 +406,7 @@ export const api = {
       }
 
       const { response, payload } = await request('/v1/auth/profile/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: buildAuthHeaders(token),
       });
 
       if (!response.ok) {

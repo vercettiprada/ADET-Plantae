@@ -42,6 +42,9 @@
     ],
     "experiments": {
       "reactCompiler": true
+    },
+    "extra": {
+      "apiHost": "192.168.1.7"
     }
   }
 }

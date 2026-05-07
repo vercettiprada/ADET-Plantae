@@ -37,13 +37,6 @@ class Plant(models.Model):
                 if api_image:
                     self.image_url = api_image
         
-        # 2. DYNAMIC FALLBACK
-        if not self.image_url:
-            # Fallback string just in case name is empty or None
-            safe_name = self.name if self.name else "Unknown Plant"
-            clean_name = safe_name.replace(" ", "+")
-            self.image_url = f"https://placehold.co/600x400/2e4d32/white?text={clean_name}"
-
         super().save(*args, **kwargs)
 
      
