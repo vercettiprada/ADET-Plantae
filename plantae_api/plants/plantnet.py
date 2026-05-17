@@ -8,6 +8,8 @@ from urllib.request import urlopen
 import certifi
 from django.conf import settings
 
+from .images import is_usable_image_url
+
 
 class PlantNetError(Exception):
     pass
@@ -48,8 +50,8 @@ def _usable_image_url(images):
     for image in images or []:
         for key in ("o", "m", "s"):
             candidate = (image or {}).get(key)
-            if candidate:
-                return candidate
+            if is_usable_image_url(candidate):
+                return candidate.strip()
     return ""
 
 

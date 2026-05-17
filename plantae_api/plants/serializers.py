@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Plant
+from .images import resolve_plant_image_url
 
 class PlantSerializer(serializers.ModelSerializer):
     imageUrl = serializers.URLField(source='image_url', required=False, allow_blank=True)
@@ -50,6 +51,21 @@ class PlantSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Species name must be at least 2 characters.")
         return value
 
+    def validate_imageUrl(self, value):
+        return (value or "").strip()
+
+    def ensure_auto_image(self, instance):
+        resolved = resolve_plant_image_url(
+            instance.name,
+            instance.species,
+            current_url=instance.image_url,
+            payload=instance.perenual_payload,
+        )
+        if resolved and resolved != instance.image_url:
+            instance.image_url = resolved
+            instance.save(update_fields=["image_url", "updated_at"])
+        return instance
+
 class PlantCreateSerializer(PlantSerializer):
 
     name = serializers.CharField(required=True, max_length=200)
@@ -81,6 +97,12 @@ class PlantCreateSerializer(PlantSerializer):
     perenualData = serializers.JSONField(source='perenual_payload', required=False, default=dict)
 
     careGuides = serializers.JSONField(source='care_guides', required=False, default=list)
+
+    def create(self, validated_data):
+        return self.ensure_auto_image(super().create(validated_data))
+
+    def update(self, instance, validated_data):
+        return self.ensure_auto_image(super().update(instance, validated_data))
 
 class PlantSummarySerializer(serializers.ModelSerializer):
     imageUrl = serializers.URLField(source='image_url')

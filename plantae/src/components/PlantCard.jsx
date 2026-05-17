@@ -3,11 +3,11 @@ import { api } from '../api';
 
 const PlantCard = ({ plant, onCardClick }) => {
   // Update state if the plant prop changes (e.g., after the POST/GET cycle)
-  const [imageSrc, setImageSrc] = useState(plant.imageUrl || api.imageFallback);
+  const [imageSrc, setImageSrc] = useState(plant.imageUrl || api.getFallbackPlantImage(plant));
 
   useEffect(() => {
-    setImageSrc(plant.imageUrl || api.imageFallback);
-  }, [plant.imageUrl]);
+    setImageSrc(plant.imageUrl || api.getFallbackPlantImage(plant));
+  }, [plant]);
 
   return (
     <article className="plant-card" onClick={() => onCardClick(plant)}>
@@ -17,7 +17,7 @@ const PlantCard = ({ plant, onCardClick }) => {
         className="plant-image"
         loading="lazy"
         referrerPolicy="no-referrer"
-        onError={() => setImageSrc(api.imageFallback)}
+        onError={() => setImageSrc(api.getFallbackPlantImage(plant))}
       />
       <div className="card-overlay">
         <h2 className="clickable-name">{plant.name}</h2>

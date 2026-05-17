@@ -35,7 +35,7 @@ Swagger UI:     **http://127.0.0.1:8000/swagger/**
 | # | Checklist Item | Implementation |
 |---|----------------|----------------|
 | 1 | Local server running | `python manage.py runserver` → Django homepage |
-| 1 | API base URL accessible | `http://127.0.0.1:8000/api/v1/` |
+| 1 | API base URL accessible | `localhost:8000/api/v1/plants` |
 | 2 | Resources clearly defined | `/api/v1/plants/` (plural, no verbs) |
 | 2 | Proper HTTP methods | GET, POST, PUT, PATCH, DELETE all implemented |
 | 2 | Endpoint naming conventions | `/plants/` not `/getPlants/` |

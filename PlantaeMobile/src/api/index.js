@@ -2,7 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8';
+const FALLBACK_IMAGES = [
+  'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1483794344563-d27a8d18014e?auto=format&fit=crop&w=900&q=80',
+];
 
 const flattenDetails = (details) => {
   if (!details) {
@@ -72,22 +79,44 @@ const resolveHost = () => {
 };
 
 const API_BASE = `http://${resolveHost()}:8000/api`;
+const WS_BASE = `ws://${resolveHost()}:8000`;
+
+const hashText = (value = '') => (
+  Array.from(String(value)).reduce((hash, character) => (
+    ((hash << 5) - hash) + character.charCodeAt(0)
+  ), 0)
+);
+
+const getFallbackPlantImage = (plant = {}) => {
+  const seed = `${plant.id || ''}|${plant.name || ''}|${plant.species || ''}`;
+  const index = Math.abs(hashText(seed)) % FALLBACK_IMAGES.length;
+  return FALLBACK_IMAGES[index];
+};
+
+const isUsableImageUrl = (url) => {
+  const normalizedCandidate = String(url || '').trim();
+  const lowered = normalizedCandidate.toLowerCase();
+
+  return Boolean(
+    normalizedCandidate &&
+    lowered.startsWith('http') &&
+    !lowered.includes('upgrade_access') &&
+    !lowered.includes('placehold.co') &&
+    !lowered.includes('example.com') &&
+    !lowered.includes('x-amz-signature') &&
+    !lowered.includes('x-amz-expires') &&
+    !lowered.includes('photo-1463936575829-25148e1db1b8')
+  );
+};
 
 const pickImageUrl = (...candidates) => {
   for (const candidate of candidates) {
-    if (!candidate) {
-      continue;
+    if (isUsableImageUrl(candidate)) {
+      return String(candidate).trim();
     }
-
-    const normalizedCandidate = String(candidate).trim();
-    if (!normalizedCandidate || normalizedCandidate.includes('upgrade_access')) {
-      continue;
-    }
-
-    return normalizedCandidate;
   }
 
-  return FALLBACK_IMAGE;
+  return '';
 };
 
 const resolvePlantImage = (plant = {}) => {
@@ -101,7 +130,7 @@ const resolvePlantImage = (plant = {}) => {
     defaultImage.original_url,
     defaultImage.thumbnail,
     plant.thumbnail,
-  );
+  ) || getFallbackPlantImage(plant);
 };
 
 const mapPlant = (plant) => ({
@@ -156,6 +185,9 @@ const buildPlantPayload = (plantData = {}) => ({
 
 export const api = {
   baseUrl: API_BASE,
+  webSocketUrl: WS_BASE,
+  imageFallback: FALLBACK_IMAGES[0],
+  getFallbackPlantImage,
 
   verifySession: async (tokenOverride) => {
     const token = tokenOverride || await AsyncStorage.getItem('userToken');
@@ -506,5 +538,38 @@ export const api = {
         error: `Network error. Start Django and make sure ${API_BASE} is reachable from this device.`,
       };
     }
+  },
+
+  connectTelemetry: async ({ onMessage, onError } = {}) => {
+    const token = await AsyncStorage.getItem('userToken');
+
+    if (!token) {
+      return null;
+    }
+
+    const socket = new WebSocket(`${WS_BASE}/ws/iot/telemetry/?token=${encodeURIComponent(token)}`);
+
+    socket.onopen = () => {
+      socket.send(JSON.stringify({
+        deviceId: 'mobile-demo-sensor-01',
+        temperature: 30,
+        humidity: 60,
+        soilMoisture: 45,
+      }));
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        onMessage?.(JSON.parse(event.data));
+      } catch {
+        onError?.('Telemetry returned an unreadable message.');
+      }
+    };
+
+    socket.onerror = () => {
+      onError?.('Telemetry WebSocket is offline.');
+    };
+
+    return socket;
   },
 };

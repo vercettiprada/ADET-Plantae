@@ -20,7 +20,7 @@
               "const json = pm.response.json();",
               "if (json.access) {",
               "  pm.collectionVariables.set('access_token', json.access);",
-              "  pm.test('Token obtained ✅', () => pm.response.to.have.status(200));",
+              "  pm.test('Token obtained ', () => pm.response.to.have.status(200));",
               "}"
             ]
           }
@@ -43,7 +43,7 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Returns 401 Unauthorized ✅', () => pm.response.to.have.status(401));"
+              "pm.test('Returns 401 Unauthorized ', () => pm.response.to.have.status(401));"
             ]
           }
         }
@@ -61,8 +61,8 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status 200 ✅', () => pm.response.to.have.status(200));",
-              "pm.test('Has pagination object ✅', () => {",
+              "pm.test('Status 200 ', () => pm.response.to.have.status(200));",
+              "pm.test('Has pagination object ', () => {",
               "  const json = pm.response.json();",
               "  pm.expect(json).to.have.property('pagination');",
               "  pm.expect(json).to.have.property('results');",
@@ -90,8 +90,8 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status 200 ✅', () => pm.response.to.have.status(200));",
-              "pm.test('Has plant fields ✅', () => {",
+              "pm.test('Status 200 ', () => pm.response.to.have.status(200));",
+              "pm.test('Has plant fields ', () => {",
               "  const json = pm.response.json();",
               "  pm.expect(json).to.have.property('name');",
               "  pm.expect(json).to.have.property('species');",
@@ -114,8 +114,8 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Returns 404 ✅', () => pm.response.to.have.status(404));",
-              "pm.test('JSON error structure ✅', () => {",
+              "pm.test('Returns 404 ', () => pm.response.to.have.status(404));",
+              "pm.test('JSON error structure ', () => {",
               "  const json = pm.response.json();",
               "  pm.expect(json).to.have.property('error');",
               "});"
@@ -136,7 +136,7 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status 201 Created ✅', () => pm.response.to.have.status(201));",
+              "pm.test('Status 201 Created ', () => pm.response.to.have.status(201));",
               "const json = pm.response.json();",
               "if (json.id) pm.collectionVariables.set('plant_id', json.id);"
             ]
@@ -163,8 +163,8 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Returns 400 Bad Request ✅', () => pm.response.to.have.status(400));",
-              "pm.test('Has error details ✅', () => {",
+              "pm.test('Returns 400 Bad Request ', () => pm.response.to.have.status(400));",
+              "pm.test('Has error details ', () => {",
               "  const json = pm.response.json();",
               "  pm.expect(json.error).to.have.property('details');",
               "});"
@@ -192,7 +192,7 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status 200 ✅', () => pm.response.to.have.status(200));"
+              "pm.test('Status 200 ', () => pm.response.to.have.status(200));"
             ]
           }
         }
@@ -217,7 +217,7 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status 200 ✅', () => pm.response.to.have.status(200));"
+              "pm.test('Status 200 ', () => pm.response.to.have.status(200));"
             ]
           }
         }
@@ -242,7 +242,7 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status 204 No Content ✅', () => pm.response.to.have.status(204));"
+              "pm.test('Status 204 No Content ', () => pm.response.to.have.status(204));"
             ]
           }
         }
@@ -285,7 +285,7 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Swagger UI accessible ✅', () => pm.response.to.have.status(200));"
+              "pm.test('Swagger UI accessible ', () => pm.response.to.have.status(200));"
             ]
           }
         }

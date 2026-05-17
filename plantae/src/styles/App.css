@@ -320,6 +320,56 @@ textarea {
   margin-bottom: 20px;
 }
 
+.telemetry-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--green);
+  border-radius: 12px;
+  background: var(--surface-strong);
+  box-shadow: var(--shadow);
+}
+
+.telemetry-strip.warning {
+  border-left-color: #b7791f;
+}
+
+.telemetry-strip.critical {
+  border-left-color: #c62828;
+}
+
+.telemetry-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.telemetry-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.telemetry-values span {
+  min-height: 30px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--green);
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .modal-message {
   margin-bottom: 12px;
   color: #ffd8d8;
@@ -884,8 +934,18 @@ textarea {
   }
 
   .search-wrap,
-  .edit-field-grid {
+  .edit-field-grid,
+  .telemetry-strip {
     grid-template-columns: 1fr;
+  }
+
+  .telemetry-strip {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .telemetry-values {
+    justify-content: flex-start;
   }
 
   .auth-panel,

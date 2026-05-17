@@ -1,0 +1,9 @@
+django
+djangorestframework
+djangorestframework-simplejwt
+django-filter
+django-cors-headers
+drf-yasg
+channels[daphne]
+argon2-cffi
+bcrypt

@@ -5,11 +5,11 @@ import CareFact from './CareFact';
 const PlantModal = ({ plant, onClose, onSave, onDelete, saving, error }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedPlant, setEditedPlant] = useState(plant || {});
-  const [imageSrc, setImageSrc] = useState(plant?.imageUrl || api.imageFallback);
+  const [imageSrc, setImageSrc] = useState(plant ? (plant.imageUrl || api.getFallbackPlantImage(plant)) : '');
 
   useEffect(() => {
     setEditedPlant(plant || {});
-    setImageSrc(plant?.imageUrl || api.imageFallback);
+    setImageSrc(plant ? (plant.imageUrl || api.getFallbackPlantImage(plant)) : '');
     setIsEditing(Boolean(plant?.isNew));
   }, [plant]);
 
@@ -31,7 +31,7 @@ const PlantModal = ({ plant, onClose, onSave, onDelete, saving, error }) => {
     }
 
     setEditedPlant(plant);
-    setImageSrc(plant.imageUrl || api.imageFallback);
+    setImageSrc(plant.imageUrl || api.getFallbackPlantImage(plant));
     setIsEditing(false);
   };
 
@@ -66,14 +66,14 @@ const PlantModal = ({ plant, onClose, onSave, onDelete, saving, error }) => {
             {isEditing ? (saving ? 'Saving...' : plant.isNew ? 'Create' : 'Save') : 'Edit'}
           </button>
           {!plant.isNew ? (
-            <button
-              className="modal-action-btn danger"
-              type="button"
-              onClick={() => onDelete(plant.id)}
-              disabled={saving}
-            >
-              Delete
-            </button>
+              <button
+            			className="modal-action-btn danger"
+            			type="button"
+            			onClick={() => onDelete?.(plant?.id)}
+            			disabled={saving || !plant?.id}
+            		>
+            			Delete
+            		</button>
           ) : null}
           <button className="close-x" type="button" onClick={onClose}>x</button>
         </div>
@@ -85,7 +85,7 @@ const PlantModal = ({ plant, onClose, onSave, onDelete, saving, error }) => {
               alt={editedPlant.name}
               loading="lazy"
               referrerPolicy="no-referrer"
-              onError={() => setImageSrc(api.imageFallback)}
+              onError={() => setImageSrc(api.getFallbackPlantImage(editedPlant))}
             />
           </div>
 
@@ -111,7 +111,7 @@ const PlantModal = ({ plant, onClose, onSave, onDelete, saving, error }) => {
                   placeholder="Image URL"
                   onChange={(event) => {
                     handleChange('imageUrl', event.target.value);
-                    setImageSrc(event.target.value || api.imageFallback);
+                    setImageSrc(event.target.value || api.getFallbackPlantImage(editedPlant));
                   }}
                 />
               </>

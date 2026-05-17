@@ -1,6 +1,23 @@
 import logging
 import time
 
+# ─── Security Headers Middleware (Checklist #16/#17 — Vulnerabilities & Best Practices)
+# ─────────────────────────────────────────────────────────────────────────────────────
+# This middleware layer addresses the following OWASP API Security Top 10 threats:
+#
+#   [A2] Broken Authentication   → JWT verification enforced at view level (simplejwt)
+#   [A3] Excessive Data Exposure → Cache-Control: no-store prevents response caching
+#   [A4] Lack of Rate Limiting   → Handled by DRF throttling (anon: 30/min, user: 120/min)
+#   [A6] Mass Assignment         → DRF serializers use explicit field declarations
+#   [A7] Security Misconfiguration → Headers: X-Content-Type-Options, Referrer-Policy set here
+#   [A8] Injection              → DRF validators + Django ORM (parameterized queries)
+#
+# Mitigations implemented in this file:
+#   - X-Content-Type-Options: nosniff  → prevents MIME-sniffing attacks
+#   - Referrer-Policy: same-origin     → limits referrer header leakage
+#   - Cache-Control: no-store          → prevents sensitive API responses from being cached
+#   - Vary: Authorization, Origin      → ensures proxy caches respect auth/CORS headers
+
 # 1. Define the logger
 logger = logging.getLogger('plantae_api')
 

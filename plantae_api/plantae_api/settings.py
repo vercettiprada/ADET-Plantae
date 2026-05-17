@@ -6,6 +6,7 @@ Implements all Module checklist w the following requirements:
 
 import os
 import socket
+from importlib.util import find_spec
 from pathlib import Path
 from datetime import timedelta
 
@@ -28,6 +29,14 @@ def load_dotenv(path):
 load_dotenv(BASE_DIR / '.env')
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'plantae-dev-secret-key-change-in-production')
+
+# ─── Password Hashing (Module 4 §4.3 — Argon2 > PBKDF2, bcrypt fallback) ────
+# Checklist #15: Strong hashing algorithms (Argon2id preferred, bcrypt fallback)
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',   # Argon2id — modern, memory-hard
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',  # bcrypt fallback
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',   # legacy compat
+]
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'true').lower() == 'true'
 IS_PRODUCTION = not DEBUG
@@ -52,13 +61,17 @@ ALLOWED_HOSTS = csv_env(
     ],
 )
 
+# In local/dev setups, allow common development hosts reliably.
 if DEBUG:
-    try:
-        ALLOWED_HOSTS.extend(socket.gethostbyname_ex(socket.gethostname())[2])
-    except OSError:
-        pass
+    # In dev, accept any host so local LAN/port setups don't break Django.
+    ALLOWED_HOSTS = ['*']
 
-    ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
+# If running behind a reverse proxy (e.g. docker/traefik/nginx), these help Django
+# correctly identify the original host/scheme.
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
 
 
 
@@ -80,6 +93,10 @@ INSTALLED_APPS = [
     'plants',
     'corsheaders',
 ]
+
+if find_spec('channels') and find_spec('daphne'):
+    INSTALLED_APPS.insert(0, 'daphne')
+    INSTALLED_APPS.append('channels')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -112,6 +129,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'plantae_api.wsgi.application'
+ASGI_APPLICATION = 'plantae_api.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 # ─── Database ─────────────────────────────────────────────────────────────────
 DATABASES = {
@@ -273,8 +297,23 @@ CSRF_COOKIE_SECURE = IS_PRODUCTION
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = 'same-origin'
 X_FRAME_OPTIONS = 'DENY'
+
+# ─── HSTS (Checklist #15/#17 — force HTTPS in production) ────────────────────
+# Tells browsers to only connect via HTTPS for 1 year, including subdomains
+SECURE_HSTS_SECONDS = 31536000 if IS_PRODUCTION else 0       # 1 year in production
+SECURE_HSTS_INCLUDE_SUBDOMAINS = IS_PRODUCTION
+SECURE_HSTS_PRELOAD = IS_PRODUCTION
+SECURE_SSL_REDIRECT = IS_PRODUCTION                           # Redirect HTTP → HTTPS
+
+# ─── Additional Security Headers (Checklist #17) ──────────────────────────────
+SECURE_BROWSER_XSS_FILTER = True                              # Legacy IE XSS filter header
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# ─── CORS Configuration (Checklist #17 — restrict cross-origin access) ──────
+# SECURITY: Credentials (cookies/auth headers) are never sent cross-origin
+# This prevents CSRF abuse via cross-origin requests
+CORS_ALLOW_CREDENTIALS = False                                # Do NOT expose auth to other origins
+CORS_ALLOW_ALL_ORIGINS = os.environ.get('DJANGO_CORS_ALLOW_ALL_ORIGINS', 'false').lower() == 'true'
 CORS_ALLOWED_ORIGINS = csv_env(
     'DJANGO_CORS_ALLOWED_ORIGINS',
     [
@@ -282,11 +321,9 @@ CORS_ALLOWED_ORIGINS = csv_env(
         'http://127.0.0.1:3000',
         'http://localhost:19006',
         'http://127.0.0.1:19006',
-        'http://192.168.1.7:3000',
-        'http://192.168.1.7:8081',
-        'http://192.168.1.7:19006',
     ],
 )
+
 
 REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
     'rest_framework_simplejwt.authentication.JWTAuthentication',

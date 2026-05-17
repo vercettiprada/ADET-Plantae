@@ -1,5 +1,7 @@
 from django.db import models
 
+from .images import fallback_image_url, image_from_payload, is_usable_image_url
+
 class Plant(models.Model):
     name = models.CharField(max_length=200)
     species = models.CharField(max_length=200)
@@ -26,16 +28,8 @@ class Plant(models.Model):
         return f"{self.name} ({self.species})"
 
     def save(self, *args, **kwargs):
-        # 1. Check if we need an image and if payload is a valid dictionary
-        if not self.image_url and self.perenual_payload and isinstance(self.perenual_payload, dict):
-            # Safely grab the default_image block (it might be None/null)
-            default_image = self.perenual_payload.get('default_image')
-            
-            # ONLY try to get 'original_url' if default_image is actually a dictionary
-            if isinstance(default_image, dict):
-                api_image = default_image.get('original_url')
-                if api_image:
-                    self.image_url = api_image
+        if not is_usable_image_url(self.image_url):
+            self.image_url = image_from_payload(self.perenual_payload) or fallback_image_url(self.name, self.species)
         
         super().save(*args, **kwargs)
 

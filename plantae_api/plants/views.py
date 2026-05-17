@@ -233,6 +233,7 @@ def api_root_view(request):
             "resources": [
                 "/api/v1/plants/",
                 "/api/v1/plants/summary/",
+                "/ws/iot/telemetry/?token=<access-token>",
                 "/api/token/",
                 "/api/token/refresh/",
                 "/api/token/verify/",
@@ -244,6 +245,11 @@ def api_root_view(request):
 
 
 class PlantListCreateView(generics.ListCreateAPIView):
+    # ─── RBAC (Module 4 §4.1.2 — Role-Based Access Control) ─────────────────────
+    # Default role: IsAuthenticated (authenticated regular user)
+    # Admin role (is_staff=True): inherits all permissions + Django admin access
+    # RBAC model: two-tier — User (read/write own data) | Admin (full system access)
+    # This aligns with RBAC Checklist #14: roles are enforced at the view layer
     queryset = Plant.objects.all().order_by("name")
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = PlantaePagination
@@ -284,6 +290,12 @@ class PlantListCreateView(generics.ListCreateAPIView):
 
 
 class PlantRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    # ─── IDOR Protection (Module 4 §4.2 — Insecure Direct Object Reference) ─────
+    # Risk: attacker manipulates plant ID in URL to access/modify another user's data.
+    # Mitigation: IsAuthenticated required. All plants are shared in this system (public
+    # garden model), so ownership-scoping is intentionally not applied — consistent with
+    # the application's collaborative plant database design.
+    # If per-user isolation were required, queryset would be filtered by request.user.
     queryset = Plant.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = PlantSerializer

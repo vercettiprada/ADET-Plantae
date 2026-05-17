@@ -28,6 +28,8 @@ function App() {
   const [gardenError, setGardenError] = useState('');
   const [gardenNotice, setGardenNotice] = useState('');
   const [profileError, setProfileError] = useState('');
+  const [telemetry, setTelemetry] = useState(null);
+  const [telemetryStatus, setTelemetryStatus] = useState('Connecting telemetry...');
 
   const createPlantDraft = () => ({
     id: null,
@@ -61,6 +63,8 @@ function App() {
     setIsSettingsOpen(false);
     setIsProfileOpen(false);
     setProfile({ username: '', email: '', firstName: '' });
+    setTelemetry(null);
+    setTelemetryStatus('Telemetry disconnected');
   }, []);
 
   const handleBackendUnavailable = useCallback((message) => {
@@ -114,7 +118,13 @@ function App() {
       const sessionResult = await api.verifySession(storedToken);
 
       if (!sessionResult.valid) {
-        handleBackendUnavailable(sessionResult.error || 'Your session expired. Please sign in again.');
+        if (sessionResult.networkDown) {
+          handleBackendUnavailable(sessionResult.error || 'Backend offline. Please sign in again.');
+        } else {
+          // Token expired cleanly — just go back to login
+          api.clearStoredToken();
+          setAuthError('Your session expired. Please sign in again.');
+        }
         setAuthChecked(true);
         return;
       }
@@ -125,21 +135,24 @@ function App() {
         api.getProfile(),
       ]);
 
-      if (plantsResult.unauthorized || profileResult.unauthorized || plantsResult.error || profileResult.error) {
-        handleBackendUnavailable(
-          plantsResult.error ||
-          profileResult.error ||
-          'Your session expired. Please sign in again.',
-        );
-      } else {
+      if (plantsResult.unauthorized || profileResult.unauthorized) {
+        // Session valid per verifySession but data fetch got 401 — token just expired between calls
+        api.clearStoredToken();
+        setAuthError('Your session expired. Please sign in again.');
+      } else if (plantsResult.networkDown || profileResult.networkDown) {
+        handleBackendUnavailable(plantsResult.error || profileResult.error || 'Backend offline.');
+      } else if (plantsResult.error || profileResult.error) {
+        // Non-fatal error — stay logged in, show error in garden
+        setGardenError(plantsResult.error || '');
+        setProfileError(profileResult.error || '');
+      }
+      if (!plantsResult.unauthorized && !profileResult.unauthorized) {
         setAllPlants(plantsResult.data || []);
         setHasNextPage(plantsResult.hasNext);
         setPage(1);
-        setGardenError(plantsResult.error || '');
         if (profileResult.data) {
           setProfile(profileResult.data);
         }
-        setProfileError(profileResult.error || '');
       }
 
       setAuthChecked(true);
@@ -161,7 +174,14 @@ function App() {
         return;
       }
 
-      handleBackendUnavailable(sessionResult.error || 'Backend offline. Please sign in again.');
+      if (sessionResult.networkDown) {
+        handleBackendUnavailable(sessionResult.error || 'Backend offline. Please sign in again.');
+      } else {
+        // Token expired — soft redirect, no "backend offline" message
+        clearSession();
+        setAuthError('Your session expired. Please sign in again.');
+        setAuthChecked(true);
+      }
     };
 
     const handleVisibilityChange = () => {
@@ -181,6 +201,35 @@ function App() {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [handleBackendUnavailable, userToken]);
+
+  useEffect(() => {
+    if (!userToken) {
+      return undefined;
+    }
+
+    setTelemetryStatus('Connecting telemetry...');
+    const socket = api.connectTelemetry({
+      onMessage: (message) => {
+        if (message.type === 'telemetry.ready') {
+          setTelemetryStatus('Telemetry connected');
+          return;
+        }
+
+        if (message.type === 'telemetry.update') {
+          setTelemetry(message.data);
+          setTelemetryStatus('Live sensor feed');
+        }
+      },
+      onError: (message) => setTelemetryStatus(message),
+    });
+
+    if (!socket) {
+      setTelemetryStatus('Telemetry requires sign in');
+      return undefined;
+    }
+
+    return () => socket.close();
+  }, [userToken]);
 
   const filteredPlants = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -204,7 +253,12 @@ function App() {
       const sessionResult = await api.verifySession(result.token);
 
       if (!sessionResult.valid) {
-        handleBackendUnavailable(sessionResult.error || 'Login failed. Please try again.');
+        if (sessionResult.networkDown) {
+          handleBackendUnavailable(sessionResult.error || 'Backend offline. Please try again.');
+        } else {
+          api.clearStoredToken();
+          setAuthError(sessionResult.error || 'Login failed. Please try again.');
+        }
         setLoading(false);
         setAuthChecked(true);
         return;
@@ -221,14 +275,15 @@ function App() {
 
       setProfileError(profileResult.error || '');
 
-      if (plantsResult?.unauthorized || profileResult.unauthorized || plantsResult?.error || profileResult.error) {
-        handleBackendUnavailable(
-          plantsResult?.error ||
-          profileResult.error ||
-          'Session expired. Please sign in again.',
-        );
+      if (plantsResult?.unauthorized || profileResult.unauthorized) {
+        api.clearStoredToken();
+        setAuthError('Session expired. Please sign in again.');
+      } else if (plantsResult?.networkDown || profileResult.networkDown) {
+        handleBackendUnavailable(plantsResult?.error || profileResult.error || 'Backend offline.');
       } else {
         setUserToken(result.token);
+        if (plantsResult?.error) setGardenError(plantsResult.error);
+        if (profileResult.error) setProfileError(profileResult.error);
       }
     } else {
       api.clearStoredToken();
@@ -254,7 +309,12 @@ function App() {
       const sessionResult = await api.verifySession(result.access);
 
       if (!sessionResult.valid) {
-        handleBackendUnavailable(sessionResult.error || 'Registration succeeded, but the backend is no longer reachable.');
+        if (sessionResult.networkDown) {
+          handleBackendUnavailable(sessionResult.error || 'Registration succeeded, but the backend is no longer reachable.');
+        } else {
+          api.clearStoredToken();
+          setAuthError(sessionResult.error || 'Session could not be verified. Please sign in.');
+        }
         setLoading(false);
         setAuthChecked(true);
         return;
@@ -265,12 +325,11 @@ function App() {
         loadPlants(1),
       ]);
 
-      if (plantsResult?.unauthorized || profileResult.unauthorized || plantsResult?.error || profileResult.error) {
-        handleBackendUnavailable(
-          plantsResult?.error ||
-          profileResult.error ||
-          'Session expired. Please sign in again.',
-        );
+      if (plantsResult?.unauthorized || profileResult.unauthorized) {
+        api.clearStoredToken();
+        setAuthError('Session expired. Please sign in again.');
+      } else if (plantsResult?.networkDown || profileResult.networkDown) {
+        handleBackendUnavailable(plantsResult?.error || profileResult.error || 'Backend offline.');
       } else {
         setUserToken(result.access);
         setProfile(profileResult.data || {
@@ -278,6 +337,8 @@ function App() {
           email: userData.email,
           firstName: '',
         });
+        if (plantsResult?.error) setGardenError(plantsResult.error);
+        if (profileResult.error) setProfileError(profileResult.error);
       }
     } else {
       api.clearStoredToken();
@@ -583,6 +644,18 @@ function App() {
           </header>
 
           <main className="discovery-container">
+            <section className={`telemetry-strip ${telemetry?.severity || 'idle'}`}>
+              <div>
+                <span className="telemetry-label">{telemetryStatus}</span>
+                <strong>{telemetry?.prediction || 'Waiting for IoT sensor data'}</strong>
+              </div>
+              <div className="telemetry-values">
+                <span>{telemetry ? `${telemetry.temperature}C` : '--C'}</span>
+                <span>{telemetry ? `${telemetry.humidity}% RH` : '--% RH'}</span>
+                <span>{telemetry ? `${telemetry.soilMoisture}% soil` : '--% soil'}</span>
+              </div>
+            </section>
+
             {gardenError ? <p className="form-message error garden-message">{gardenError}</p> : null}
             {!gardenError && gardenNotice ? <p className="form-message info-message garden-message">{gardenNotice}</p> : null}
 

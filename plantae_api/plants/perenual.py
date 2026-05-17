@@ -8,6 +8,8 @@ from urllib.request import urlopen
 import certifi
 from django.conf import settings
 
+from .images import is_usable_image_url
+
 
 class PerenualError(Exception):
     pass
@@ -19,8 +21,8 @@ def _normalize(value):
 
 def _usable_image_url(*candidates):
     for candidate in candidates:
-        if candidate and "upgrade_access" not in candidate:
-            return candidate
+        if is_usable_image_url(candidate):
+            return candidate.strip()
     return ""
 
 

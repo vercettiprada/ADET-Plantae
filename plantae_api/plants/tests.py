@@ -7,6 +7,8 @@ from rest_framework.test import APITestCase
 
 from .models import Plant
 from .perenual import PerenualError
+from .realtime import analyze_telemetry
+from .images import fallback_image_url, is_usable_image_url
 
 
 class PlantApiTests(APITestCase):
@@ -91,7 +93,9 @@ class PlantApiTests(APITestCase):
         self.assertEqual(response.data["id"], self.plant.id)
         self.assertEqual(response.data["name"], self.plant.name)
 
-    def test_create_plant(self):
+    @patch("plants.serializers.resolve_plant_image_url")
+    def test_create_plant(self, resolve_plant_image_url_mock):
+        resolve_plant_image_url_mock.return_value = "https://images.unsplash.com/photo-1416879595882-3373a0480b5b"
         payload = {
             "name": "Snake Plant",
             "species": "Sansevieria trifasciata",
@@ -104,7 +108,9 @@ class PlantApiTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["name"], payload["name"])
 
-    def test_patch_plant(self):
+    @patch("plants.serializers.resolve_plant_image_url")
+    def test_patch_plant(self, resolve_plant_image_url_mock):
+        resolve_plant_image_url_mock.return_value = "https://images.unsplash.com/photo-1416879595882-3373a0480b5b"
         response = self.client.patch(
             f"/api/v1/plants/{self.plant.id}/",
             {"water": "Every 14 days"},
@@ -194,3 +200,35 @@ class PlantApiTests(APITestCase):
         response = self.client.delete("/api/v1/auth/profile/", **self.auth_headers)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(User.objects.filter(username=self.user.username).exists())
+
+    def test_analyze_telemetry_marks_stressed_plant(self):
+        telemetry = analyze_telemetry(
+            {
+                "deviceId": "sensor-1",
+                "temperature": 36,
+                "humidity": 30,
+                "soilMoisture": 22,
+            }
+        )
+
+        self.assertEqual(telemetry["severity"], "critical")
+        self.assertEqual(telemetry["prediction"], "Plant stress likely")
+        self.assertIn("High temperature", telemetry["alerts"])
+        self.assertIn("Low humidity", telemetry["alerts"])
+        self.assertIn("Dry soil", telemetry["alerts"])
+
+    def test_image_resolver_rejects_perenual_upgrade_and_signed_urls(self):
+        self.assertFalse(is_usable_image_url("https://perenual.test/image/upgrade_access.jpg"))
+        self.assertFalse(is_usable_image_url("https://s3.test/photo.jpg?X-Amz-Signature=abc"))
+        self.assertFalse(is_usable_image_url("https://example.com/plant.jpg"))
+
+    def test_image_fallback_is_unique_per_plant(self):
+        images = {
+            fallback_image_url("Snake Plant", "Dracaena trifasciata"),
+            fallback_image_url("Peace Lily", "Spathiphyllum"),
+            fallback_image_url("Jade Plant", "Crassula ovata"),
+        }
+
+        self.assertGreater(len(images), 1)
+        for image in images:
+            self.assertTrue(image.startswith("https://images.unsplash.com/"))

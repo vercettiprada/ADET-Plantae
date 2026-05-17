@@ -1,4 +1,11 @@
-const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=900&q=80';
+const FALLBACK_IMAGES = [
+  'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1483794344563-d27a8d18014e?auto=format&fit=crop&w=900&q=80',
+];
 const TOKEN_KEY = 'plantaeUserToken';
 const REQUEST_TIMEOUT_MS = 10000;
 const DISCOVER_TIMEOUT_MS = 60000;
@@ -50,48 +57,86 @@ const resolveBaseUrl = () => {
   const configured = process.env.REACT_APP_API_BASE_URL?.trim();
 
   if (configured) {
+    // Normalize to: <host>:<port>/api (with trailing slash)
+    return configured.replace(/\/$/, '').replace(/\/api\/?$/, '/api/');
+  }
+
+  const { protocol, hostname } = window.location;
+
+  // If developing locally (localhost, 127.0.0.1, or LAN IP 192.168.x.x)
+  const isLocal =
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname.startsWith('192.168.') ||
+    hostname.startsWith('10.') ||
+    hostname.startsWith('172.');
+
+  if (isLocal) {
+    // Dynamically use the current hostname but point to the Django port (8000)
+    return `${protocol}//${hostname}:8000/api/`;
+  }
+
+  // Fallback for production builds
+  return '/api/';
+};
+
+const normalizePath = (path = '') => String(path);
+
+const API_BASE = resolveBaseUrl();
+const IMAGE_FALLBACK = FALLBACK_IMAGES[0];
+
+const resolveWebSocketBaseUrl = () => {
+  const configured = process.env.REACT_APP_WS_BASE_URL?.trim();
+
+  if (configured) {
     return configured.replace(/\/$/, '');
   }
 
-  const { protocol, hostname, port } = window.location;
-
-  if ((hostname === 'localhost' || hostname === '127.0.0.1') && port !== '8000') {
-    return 'http://127.0.0.1:8000/api';
-  }
-
-  if (hostname === '0.0.0.0') {
-    return 'http://127.0.0.1:8000/api';
-  }
-
-  if (port === '8000') {
-    return `${protocol}//${hostname}:8000/api`;
-  }
-
-  return '/api';
+  // API_BASE is normalized to .../api/
+  return API_BASE
+    .replace(/^https:/, 'wss:')
+    .replace(/^http:/, 'ws:')
+    .replace(/\/api\/$/, '');
 };
 
-const API_BASE = resolveBaseUrl();
-const IMAGE_FALLBACK = FALLBACK_IMAGE;
+const WS_BASE = resolveWebSocketBaseUrl();
+
+const hashText = (value = '') => (
+  Array.from(String(value)).reduce((hash, character) => (
+    ((hash << 5) - hash) + character.charCodeAt(0)
+  ), 0)
+);
+
+const getFallbackPlantImage = (plant = {}) => {
+  const seed = `${plant.id || ''}|${plant.name || ''}|${plant.species || ''}`;
+  const index = Math.abs(hashText(seed)) % FALLBACK_IMAGES.length;
+  return FALLBACK_IMAGES[index];
+};
+
+const isUsableImageUrl = (url) => {
+  const normalizedCandidate = String(url || '').trim();
+  const lowered = normalizedCandidate.toLowerCase();
+
+  return Boolean(
+    normalizedCandidate &&
+    lowered.startsWith('http') &&
+    !lowered.includes('upgrade_access') &&
+    !lowered.includes('placehold.co') &&
+    !lowered.includes('example.com') &&
+    !lowered.includes('x-amz-signature') &&
+    !lowered.includes('x-amz-expires') &&
+    !lowered.includes('photo-1463936575829-25148e1db1b8')
+  );
+};
 
 const pickImageUrl = (...candidates) => {
   for (const candidate of candidates) {
-    if (!candidate) {
-      continue;
+    if (isUsableImageUrl(candidate)) {
+      return String(candidate).trim();
     }
-
-    const normalizedCandidate = String(candidate).trim();
-    if (
-      !normalizedCandidate ||
-      normalizedCandidate.includes('upgrade_access') ||
-      normalizedCandidate.includes('placehold.co')
-    ) {
-      continue;
-    }
-
-    return normalizedCandidate;
   }
 
-  return IMAGE_FALLBACK;
+  return '';
 };
 
 const resolvePlantImage = (plant = {}) => {
@@ -105,7 +150,7 @@ const resolvePlantImage = (plant = {}) => {
     defaultImage.original_url,
     defaultImage.thumbnail,
     plant.thumbnail,
-  );
+  ) || getFallbackPlantImage(plant);
 };
 
 const mapPlant = (plant) => ({
@@ -138,7 +183,16 @@ const request = async (path, options = {}) => {
   const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const response = await fetch(`${API_BASE}${path}`, {
+    // Strip leading slash from path — API_BASE already ends with '/'
+    // e.g. API_BASE='http://host/api/' + '/auth/login/' → strips to 'auth/login/'
+    // Without this: 'http://host/api/' + '/auth/login/' = 'http://host/api//auth/login/' → 404
+    const normalizedPath = normalizePath(path).replace(/^\/+/, '');
+
+    // Belt-and-suspenders: collapse any remaining double slashes anywhere in the URL
+    const rawUrl = `${API_BASE}${normalizedPath}`;
+    const url = rawUrl.replace(/([^:])\/{2,}/g, '$1/');
+
+    const response = await fetch(url, {
       ...fetchOptions,
       cache: 'no-store',
       credentials: 'omit',
@@ -207,7 +261,9 @@ const buildAuthHeaders = (token) => ({
 
 export const api = {
   baseUrl: API_BASE,
+  webSocketUrl: WS_BASE,
   imageFallback: IMAGE_FALLBACK,
+  getFallbackPlantImage,
   getStoredToken,
   clearStoredToken,
 
@@ -243,7 +299,7 @@ export const api = {
 
   register: async (userData) => {
     try {
-      const { response, payload } = await request('/v1/auth/register/', {
+      const { response, payload } = await request('/auth/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
@@ -267,7 +323,7 @@ export const api = {
 
   login: async (credentials) => {
     try {
-      const { response, payload } = await request('/v1/auth/login/', {
+      const { response, payload } = await request('/auth/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -470,7 +526,7 @@ export const api = {
         return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
       }
 
-      const { response, payload } = await request('/v1/auth/profile/', {
+      const { response, payload } = await request('/auth/profile/', {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -505,7 +561,7 @@ export const api = {
         return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
       }
 
-      const { response, payload } = await request('/v1/auth/profile/', {
+      const { response, payload } = await request('/auth/profile/', {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -545,7 +601,7 @@ export const api = {
         return { unauthorized: true, error: 'Your session expired. Please sign in again.' };
       }
 
-      const { response, payload } = await request('/v1/auth/profile/', {
+      const { response, payload } = await request('/auth/profile/', {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -565,5 +621,38 @@ export const api = {
     } catch {
       return { unauthorized: false, ...buildNetworkError() };
     }
+  },
+
+  connectTelemetry: ({ onMessage, onError } = {}) => {
+    const token = getStoredToken();
+
+    if (!token) {
+      return null;
+    }
+
+    const socket = new WebSocket(`${WS_BASE}/ws/iot/telemetry/?token=${encodeURIComponent(token)}`);
+
+    socket.onopen = () => {
+      socket.send(JSON.stringify({
+        deviceId: 'demo-sensor-01',
+        temperature: 31,
+        humidity: 58,
+        soilMoisture: 42,
+      }));
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        onMessage?.(JSON.parse(event.data));
+      } catch {
+        onError?.('Telemetry returned an unreadable message.');
+      }
+    };
+
+    socket.onerror = () => {
+      onError?.('Telemetry WebSocket is offline.');
+    };
+
+    return socket;
   },
 };

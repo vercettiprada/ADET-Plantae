@@ -6,8 +6,7 @@ import {
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { styles } from '../styles/components/PlantModal.styles';
-
-const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8';
+import { api } from '../src/api';
 
 const displayValue = (value, fallback = 'Not available') => {
   const normalized = typeof value === 'string' ? value.trim() : value;
@@ -19,6 +18,7 @@ export default function PlantModal({ plant, onClose, onSave, onDelete, loading =
   const [editedPlant, setEditedPlant] = useState(plant);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [imageLoadFailed, setImageLoadFailed] = useState(false);
 
   useEffect(() => {
     if (plant) {
@@ -26,6 +26,7 @@ export default function PlantModal({ plant, onClose, onSave, onDelete, loading =
       setIsEditing(Boolean(plant.isNew));
       setIsSaving(false);
       setIsDeleting(false);
+      setImageLoadFailed(false);
     }
   }, [plant]);
 
@@ -77,7 +78,8 @@ export default function PlantModal({ plant, onClose, onSave, onDelete, loading =
   const hardinessRange = plant?.hardinessMin && plant?.hardinessMax
     ? `${plant.hardinessMin} - ${plant.hardinessMax}`
     : '';
-  const imageUrl = editedPlant?.imageUrl || plant?.imageUrl || FALLBACK_IMAGE;
+  const fallbackImage = api.getFallbackPlantImage(editedPlant || plant);
+  const imageUrl = imageLoadFailed ? fallbackImage : (editedPlant?.imageUrl || plant?.imageUrl || fallbackImage);
 
   return (
     <Modal animationType="slide" transparent={true} visible={!!plant}>
@@ -124,7 +126,7 @@ export default function PlantModal({ plant, onClose, onSave, onDelete, loading =
               >
                 {plant && (
                   <>
-                    <Image source={{ uri: imageUrl }} style={styles.heroImage} />
+                    <Image source={{ uri: imageUrl }} style={styles.heroImage} onError={() => setImageLoadFailed(true)} />
 
                     <View style={styles.infoPadding}>
                       {isEditing ? (
