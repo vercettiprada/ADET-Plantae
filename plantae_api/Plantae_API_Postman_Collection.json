@@ -1,0 +1,308 @@
+{
+  "info": {
+    "name": "Plantae API — Module 3 Checklist",
+    "description": "Complete Postman collection for testing all checklist requirements.\n\nHow to use:\n1. Import this file into Postman\n2. Set the `base_url` variable to http://127.0.0.1:8000\n3. Run 'Login' first — token is auto-saved\n4. All other requests use the saved token automatically",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000" },
+    { "key": "access_token", "value": "" },
+    { "key": "plant_id", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "§5 AUTH — Obtain Token (POST /api/token/)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.access) {",
+              "  pm.collectionVariables.set('access_token', json.access);",
+              "  pm.test('Token obtained ', () => pm.response.to.have.status(200));",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/token/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"plantae123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "§5 AUTH — Access Without Token (should return 401)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Returns 401 Unauthorized ', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/api/v1/plants/"
+      }
+    },
+    {
+      "name": "§10 GET — List All Plants (paginated)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200 ', () => pm.response.to.have.status(200));",
+              "pm.test('Has pagination object ', () => {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json).to.have.property('pagination');",
+              "  pm.expect(json).to.have.property('results');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+        "url": {
+          "raw": "{{base_url}}/api/v1/plants/?page=1&limit=10",
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "§10 GET — Retrieve Single Plant",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200 ', () => pm.response.to.have.status(200));",
+              "pm.test('Has plant fields ', () => {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json).to.have.property('name');",
+              "  pm.expect(json).to.have.property('species');",
+              "  pm.expect(json).to.have.property('imageUrl');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+        "url": "{{base_url}}/api/v1/plants/{{plant_id}}/"
+      }
+    },
+    {
+      "name": "§10 GET — 404 Not Found",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Returns 404 ', () => pm.response.to.have.status(404));",
+              "pm.test('JSON error structure ', () => {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json).to.have.property('error');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+        "url": "{{base_url}}/api/v1/plants/9999/"
+      }
+    },
+    {
+      "name": "§10 POST — Create Plant",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201 Created ', () => pm.response.to.have.status(201));",
+              "const json = pm.response.json();",
+              "if (json.id) pm.collectionVariables.set('plant_id', json.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{base_url}}/api/v1/plants/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Pothos\",\n  \"species\": \"Epipremnum aureum\",\n  \"imageUrl\": \"https://example.com/pothos.jpg\",\n  \"secretfact\": \"One of the easiest houseplants to grow.\",\n  \"light\": \"Low to Bright\",\n  \"water\": \"Every 1-2 weeks\"\n}"
+        }
+      }
+    },
+    {
+      "name": "§5 POST — Validation Error (missing required field)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Returns 400 Bad Request ', () => pm.response.to.have.status(400));",
+              "pm.test('Has error details ', () => {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json.error).to.have.property('details');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{base_url}}/api/v1/plants/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"light\": \"Full Sun\"\n}"
+        }
+      }
+    },
+    {
+      "name": "§10 PUT — Full Update Plant",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200 ', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{base_url}}/api/v1/plants/{{plant_id}}/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Pothos (Updated)\",\n  \"species\": \"Epipremnum aureum\",\n  \"imageUrl\": \"https://example.com/pothos-updated.jpg\",\n  \"secretfact\": \"Updated fact here.\",\n  \"light\": \"Low\",\n  \"water\": \"Weekly\"\n}"
+        }
+      }
+    },
+    {
+      "name": "§10 PATCH — Partial Update Plant",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200 ', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{base_url}}/api/v1/plants/{{plant_id}}/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"water\": \"Every 10 days\"\n}"
+        }
+      }
+    },
+    {
+      "name": "§10 DELETE — Delete Plant",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 204 No Content ', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+        "url": "{{base_url}}/api/v1/plants/{{plant_id}}/"
+      }
+    },
+    {
+      "name": "§4 GET — Pagination (?page=1&limit=3)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+        "url": {
+          "raw": "{{base_url}}/api/v1/plants/?page=1&limit=3",
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "3" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "§4 GET — Search (?search=monstera)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+        "url": {
+          "raw": "{{base_url}}/api/v1/plants/?search=monstera",
+          "query": [{ "key": "search", "value": "monstera" }]
+        }
+      }
+    },
+    {
+      "name": "§7 GET — Swagger Documentation",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Swagger UI accessible ', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/swagger/"
+      }
+    },
+    {
+      "name": "§2 GET — Public Summary (no auth)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/api/v1/plants/summary/"
+      }
+    }
+  ]
+}

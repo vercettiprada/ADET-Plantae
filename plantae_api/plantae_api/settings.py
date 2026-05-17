@@ -1,0 +1,348 @@
+"""
+Plantae API - Django Settings
+Implements all Module checklist w the following requirements:
+- REST API Design, Authentication, Pagination, Versioning, Logging, etc.
+"""
+
+import os
+import socket
+from importlib.util import find_spec
+from pathlib import Path
+from datetime import timedelta
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def load_dotenv(path):
+    if not path.exists():
+        return
+
+    for raw_line in path.read_text(encoding='utf-8').splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith('#') or '=' not in line:
+            continue
+
+        key, value = line.split('=', 1)
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+load_dotenv(BASE_DIR / '.env')
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'plantae-dev-secret-key-change-in-production')
+
+# ─── Password Hashing (Module 4 §4.3 — Argon2 > PBKDF2, bcrypt fallback) ────
+# Checklist #15: Strong hashing algorithms (Argon2id preferred, bcrypt fallback)
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',   # Argon2id — modern, memory-hard
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',  # bcrypt fallback
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',   # legacy compat
+]
+
+DEBUG = os.environ.get('DJANGO_DEBUG', 'true').lower() == 'true'
+IS_PRODUCTION = not DEBUG
+
+
+def csv_env(name, default):
+    raw = os.environ.get(name)
+    if not raw:
+        return list(default)
+    return [item.strip() for item in raw.split(',') if item.strip()]
+
+
+ALLOWED_HOSTS = csv_env(
+    'DJANGO_ALLOWED_HOSTS',
+    [
+        'localhost',
+        '127.0.0.1',
+        '0.0.0.0',
+        '10.0.2.2',
+        '192.168.1.5',
+        '192.168.1.7',
+    ],
+)
+
+# In local/dev setups, allow common development hosts reliably.
+if DEBUG:
+    # In dev, accept any host so local LAN/port setups don't break Django.
+    ALLOWED_HOSTS = ['*']
+
+# If running behind a reverse proxy (e.g. docker/traefik/nginx), these help Django
+# correctly identify the original host/scheme.
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+
+
+
+# ─── Apps ────────────────────────────────────────────────────────────────────
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # Third-party
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
+    'django_filters',
+    # Local
+    'plants',
+    'corsheaders',
+]
+
+if find_spec('channels') and find_spec('daphne'):
+    INSTALLED_APPS.insert(0, 'daphne')
+    INSTALLED_APPS.append('channels')
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Must be before CommonMiddleware
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'plantae_api.middleware.RequestLoggingMiddleware',
+]
+
+ROOT_URLCONF = 'plantae_api.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'plantae_api.wsgi.application'
+ASGI_APPLICATION = 'plantae_api.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
+# ─── Database ─────────────────────────────────────────────────────────────────
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# ─── Auth ─────────────────────────────────────────────────────────────────────
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
+
+# ─── Internationalization ──────────────────────────────────────────────────────
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = 'static/'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ─── Django REST Framework ────────────────────────────────────────────────────
+# Checklist: Authentication (JWT), Stateless, JSON format
+REST_FRAMEWORK = {
+    # Authentication: JWT tokens (Checklist num5)
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    # Stateless — no sessions (Checklist num2)
+'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    # JSON as default renderer (Checklist num3)
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    ),
+    # Pagination (Checklist num4)
+    'DEFAULT_PAGINATION_CLASS': 'plantae_api.pagination.PlantaePagination',
+    'PAGE_SIZE': 10,
+    # Filtering
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+    # API versioning (Checklist num4)
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_VERSION': 'v1',
+    'ALLOWED_VERSIONS': ['v1'],
+    'VERSION_PARAM': 'version',
+    # Error handling (Checklist num6)
+    'EXCEPTION_HANDLER': 'plantae_api.exceptions.custom_exception_handler',
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '30/minute',
+        'user': '120/minute',
+    },
+}
+
+# ─── JWT Configuration ────────────────────────────────────────────────────────
+# Checklist num5: Token generation, expiry, refresh
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=12),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'JTI_CLAIM': 'jti',
+    'USER_ID_CLAIM': 'user_id',
+}
+
+# ─── Caching (Checklist num4) ───────────────────────────────────────────────────
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'plantae-cache',
+        'TIMEOUT': 300,  # 5 minutes
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+
+CACHE_MIDDLEWARE_SECONDS = 300
+CACHE_MIDDLEWARE_KEY_PREFIX = 'plantae'
+
+# ─── Logging (Checklist num9) ───────────────────────────────────────────────────
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname}: {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/plantae.log',
+            'formatter': 'verbose',
+        },
+        'error_file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/errors.log',
+            'formatter': 'verbose',
+            'level': 'ERROR',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'plants': {
+            'handlers': ['console', 'file', 'error_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'plantae_api': {
+            'handlers': ['console', 'file', 'error_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+
+# ─── HTTPS (Checklist num5 — secure communication) ─────────────────────────────
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SECURE = IS_PRODUCTION
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SECURE = IS_PRODUCTION
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = 'same-origin'
+X_FRAME_OPTIONS = 'DENY'
+
+# ─── HSTS (Checklist #15/#17 — force HTTPS in production) ────────────────────
+# Tells browsers to only connect via HTTPS for 1 year, including subdomains
+SECURE_HSTS_SECONDS = 31536000 if IS_PRODUCTION else 0       # 1 year in production
+SECURE_HSTS_INCLUDE_SUBDOMAINS = IS_PRODUCTION
+SECURE_HSTS_PRELOAD = IS_PRODUCTION
+SECURE_SSL_REDIRECT = IS_PRODUCTION                           # Redirect HTTP → HTTPS
+
+# ─── Additional Security Headers (Checklist #17) ──────────────────────────────
+SECURE_BROWSER_XSS_FILTER = True                              # Legacy IE XSS filter header
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# ─── CORS Configuration (Checklist #17 — restrict cross-origin access) ──────
+# SECURITY: Credentials (cookies/auth headers) are never sent cross-origin
+# This prevents CSRF abuse via cross-origin requests
+CORS_ALLOW_CREDENTIALS = False                                # Do NOT expose auth to other origins
+CORS_ALLOW_ALL_ORIGINS = os.environ.get('DJANGO_CORS_ALLOW_ALL_ORIGINS', 'false').lower() == 'true'
+CORS_ALLOWED_ORIGINS = csv_env(
+    'DJANGO_CORS_ALLOWED_ORIGINS',
+    [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'http://localhost:19006',
+        'http://127.0.0.1:19006',
+    ],
+)
+
+
+REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = [
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+]
+
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Authorization header using the Bearer scheme. Example: "Bearer <token>"',
+        }
+    },
+}
+
+PERENUAL_API_BASE_URL = os.environ.get('PERENUAL_API_BASE_URL', 'https://perenual.com/api')
+PERENUAL_API_KEY = os.environ.get('PERENUAL_API_KEY', '')
+PLANTNET_API_BASE_URL = os.environ.get('PLANTNET_API_BASE_URL', 'https://my-api.plantnet.org')
+PLANTNET_API_KEY = os.environ.get('PLANTNET_API_KEY', '')

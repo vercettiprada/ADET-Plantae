@@ -1,46 +1,39 @@
 import React from 'react';
-// Fixed the dot-slash path here:
-import './styles/About.css'; 
+import './styles/About.css';
 
-const About = ({ onBack }) => {
-  return (
-    <div className="about-page">
-      <div className="about-container">
-        <button className="back-btn" onClick={onBack}> Back to Garden</button>
-        
-        <header className="about-header">
-          <h1 className="brand-title">About Plantae</h1>
-          <p className="subtitle">Cultivating Digital Serenity</p>
-        </header>
+const About = ({ onBack }) => (
+  <div className="about-page">
+    <div className="about-container">
+      <button className="back-btn" type="button" onClick={onBack}>Back to Garden</button>
 
-        <section className="about-content">
-          <div className="glass-card about-card">
-            <h3>Our Mission</h3>
-            <p>
-              Plantae was born from a desire to bridge the gap between technology and nature. 
-              We believe that tracking your green companions should be as beautiful as the 
-              plants themselves.
-            </p>
+      <header className="about-header">
+        <h1 className="brand-title">About Plantae</h1>
+        <p className="subtitle">Cultivating Digital Serenity</p>
+      </header>
+
+      <section className="about-content">
+        <div className="about-card">
+          <h3>Our Mission</h3>
+          <p>
+            Plantae was born from a desire to bridge the gap between technology and nature.
+            We believe that tracking your green companions should be as beautiful as the plants
+            themselves.
+          </p>
+        </div>
+
+        <div className="about-grid">
+          <div className="about-mini-card">
+            <h4>Minimalist Design</h4>
+            <p>Inspired by Apple-like calm, soft surfaces, and the organic curves of nature.</p>
           </div>
-
-          <div className="about-grid">
-            <div className="glass-card">
-              <h4>Minimalist Design</h4>
-              <p>Inspired by Apple's clean aesthetics and the organic curves of nature.</p>
-            </div>
-            <div className="glass-card">
-              <h4>Smart Care</h4>
-              <p>Tailored watering and light schedules for every unique species.</p>
-            </div>
+          <div className="about-mini-card">
+            <h4>Smart Care</h4>
+            <p>Tailored watering and light details for every species in your sanctuary.</p>
           </div>
-
-          <footer className="main-footer">
-        <p>© 2026 Plantae Discovery System</p>
-      </footer>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
-  );
-};
+  </div>
+);
 
 export default About;
