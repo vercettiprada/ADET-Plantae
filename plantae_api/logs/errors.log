@@ -2915,3 +2915,6 @@
 [2026-05-17 11:00:42,523] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: TokenVerifyView | Path: /api/token/verify/
 [2026-05-17 11:38:16,518] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: TokenVerifyView | Path: /api/token/verify/
 [2026-05-17 12:04:04,165] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: TokenVerifyView | Path: /api/token/verify/
+[2026-05-17 13:27:19,356] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: TokenVerifyView | Path: /api/token/verify/
+[2026-05-17 17:51:49,599] ERROR plantae_api HTTP 400 | BAD_REQUEST | View: PlantRetrieveUpdateDestroyView | Path: /api/v1/plants/150/
+[2026-05-17 17:51:50,353] ERROR plantae_api HTTP 400 | BAD_REQUEST | View: PlantRetrieveUpdateDestroyView | Path: /api/v1/plants/150/

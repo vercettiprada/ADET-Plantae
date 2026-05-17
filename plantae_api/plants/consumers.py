@@ -6,26 +6,14 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from .realtime import analyze_telemetry
 
 
-# ─── WebSocket Security (Module 4 §4.1 + Module 5 — Token-Auth over WS) ──────
-# WebSocket connections cannot use HTTP Authorization headers after the handshake.
-# Mitigation: JWT access token is passed as a query parameter (?token=<access>).
-# The token is validated on connect(); invalid/missing token → close code 4401.
-# This follows Module 5 guidance on IoT/WebSocket integration with authentication.
-#
-# Vulnerabilities addressed:
-#   - Unauthenticated WS access: blocked via _has_valid_token() on connect
-#   - Token replay: access token has 15-min lifetime (SIMPLE_JWT settings)
-#   - Message injection: JSON parsed with try/except, malformed payloads rejected
-#
-# Scalability: uses Django Channels InMemoryChannelLayer for group broadcasting.
-# In production, replace with RedisChannelLayer for horizontal scaling.
+
 class TelemetryConsumer(AsyncWebsocketConsumer):
     group_name = "plantae.telemetry"
 
     async def connect(self):
-        # SECURITY: Reject connection immediately if JWT is absent or expired
+        
         if not await self._has_valid_token():
-            await self.close(code=4401)  # 4401 = custom WS close code for unauthorized
+            await self.close(code=4401)  
             return
 
         await self.channel_layer.group_add(self.group_name, self.channel_name)
@@ -63,8 +51,7 @@ class TelemetryConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(content))
 
     async def _has_valid_token(self):
-        # Extract JWT from WS query string: ws://host/ws/iot/telemetry/?token=<jwt>
-        # Module 4 §4.1: Token-Based Authentication — token verified using simplejwt
+
         query_string = self.scope.get("query_string", b"").decode()
         token = ""
         for part in query_string.split("&"):

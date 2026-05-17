@@ -43602,3 +43602,1143 @@ RuntimeError: You called this URL via PATCH, but the URL doesn't end in a slash 
 [2026-05-17 12:04:04,166] WARNING django.request Unauthorized: /api/token/verify/
 [2026-05-17 12:04:04,166] WARNING django.channels.server [31;1mHTTP POST /api/token/verify/ 401 [0.00, 127.0.0.1:51893][0m
 [2026-05-17 12:04:04,177] INFO django.channels.server WebSocket DISCONNECT /ws/iot/telemetry/ [127.0.0.1:57349]
+[2026-05-17 13:12:14,981] INFO django.channels.server [mHTTP OPTIONS /api/auth/login/ 200 [0.03, 127.0.0.1:49625][0m
+[2026-05-17 13:12:14,988] INFO plantae_api >> POST /api/auth/login/
+[2026-05-17 13:12:15,358] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 369ms
+[2026-05-17 13:12:15,359] INFO django.channels.server [mHTTP POST /api/auth/login/ 200 [0.37, 127.0.0.1:49625][0m
+[2026-05-17 13:12:15,364] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49625][0m
+[2026-05-17 13:12:15,367] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:12:15,372] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 5ms
+[2026-05-17 13:12:15,373] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49625][0m
+[2026-05-17 13:12:15,380] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.00, 127.0.0.1:49625][0m
+[2026-05-17 13:12:15,382] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:15,384] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 13:12:15,384] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 13:12:15,391] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 7ms
+[2026-05-17 13:12:15,392] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.01, 127.0.0.1:49625][0m
+[2026-05-17 13:12:15,397] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 12ms
+[2026-05-17 13:12:15,397] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:12:15,424] INFO django.channels.server WebSocket HANDSHAKING /ws/iot/telemetry/ [127.0.0.1:49627]
+[2026-05-17 13:12:15,426] INFO django.channels.server WebSocket CONNECT /ws/iot/telemetry/ [127.0.0.1:49627]
+[2026-05-17 13:12:19,466] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=2 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:19,468] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 13:12:19,475] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 6ms
+[2026-05-17 13:12:19,475] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=2 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:12:20,469] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:20,471] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:12:20,473] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:12:20,474] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:20,960] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=3 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:20,962] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 13:12:20,968] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 6ms
+[2026-05-17 13:12:20,968] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=3 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:12:25,497] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/149/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:25,501] INFO plantae_api >> GET /api/v1/plants/149/
+[2026-05-17 13:12:25,506] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49625][0m
+[2026-05-17 13:12:25,507] INFO plantae_api << GET /api/v1/plants/149/ | Status: 200 | Duration: 5ms
+[2026-05-17 13:12:25,508] INFO django.channels.server [mHTTP GET /api/v1/plants/149/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:12:25,510] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:12:25,513] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:12:25,514] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49625][0m
+[2026-05-17 13:12:28,732] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=4 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:28,735] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 13:12:28,741] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 13:12:28,741] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=4 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:12:30,504] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:30,505] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:12:30,507] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:12:30,508] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:35,511] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:35,515] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:12:35,517] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:12:35,518] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:40,968] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:40,970] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:12:40,972] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:12:40,972] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:45,972] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:45,974] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:12:45,977] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:12:45,977] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:51,059] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:51,061] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:12:51,064] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:12:51,064] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:56,042] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:12:56,045] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:12:56,047] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:12:56,047] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:00,977] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:00,979] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:00,982] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:13:00,983] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:05,979] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:05,983] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:05,985] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:13:05,985] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:10,980] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:10,982] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:10,984] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:13:10,985] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:16,057] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:16,058] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:16,061] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:13:16,062] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:21,057] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:21,059] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:21,061] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:13:21,061] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:26,119] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:26,121] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:26,122] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:13:26,123] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:31,059] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:31,063] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:31,065] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:13:31,066] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:36,060] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:36,062] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:36,064] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:13:36,064] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:41,061] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:41,063] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:41,066] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:13:41,066] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:46,062] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:46,065] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:46,067] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:13:46,067] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:51,149] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:51,151] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:51,153] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:13:51,153] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:56,062] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:13:56,064] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:13:56,067] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:13:56,067] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:01,148] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:01,150] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:01,152] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:14:01,153] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:06,064] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:06,067] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:06,069] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:14:06,069] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:11,064] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:11,067] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:11,069] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:14:11,070] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:16,274] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:16,276] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:16,280] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:14:16,280] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:21,273] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:21,275] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:21,279] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:14:21,279] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:26,273] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:26,276] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:26,278] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:14:26,278] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:31,274] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:31,276] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:31,279] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:14:31,280] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:36,278] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:36,281] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:36,283] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:14:36,283] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:41,724] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:41,726] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:41,728] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:14:41,729] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:47,030] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:47,033] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:47,035] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:14:47,036] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:52,032] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:52,035] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:52,038] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:14:52,038] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:57,034] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:14:57,036] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:14:57,037] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:14:57,039] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:02,038] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:02,041] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:02,045] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:15:02,046] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:15:07,041] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:07,044] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:07,046] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:15:07,047] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:12,043] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:12,045] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:12,048] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:15:12,048] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:17,044] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:17,046] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:17,049] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:15:17,050] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:22,046] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:22,049] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:22,051] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:15:22,051] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:27,050] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:27,051] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:27,054] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:15:27,054] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:32,052] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:32,054] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:32,057] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:15:32,057] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:37,055] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:37,057] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:37,059] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:15:37,059] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:42,060] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:42,061] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:42,064] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:15:42,064] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:47,063] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:47,066] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:47,067] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:15:47,068] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:52,061] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:52,063] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:52,065] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:15:52,065] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:57,063] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:15:57,065] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:15:57,067] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:15:57,067] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:02,064] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:02,066] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:02,069] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:02,069] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:07,067] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:07,070] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:07,072] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:07,072] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:12,069] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:12,070] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:12,072] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:12,073] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:17,076] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:17,079] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:17,081] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:17,081] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:22,070] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:22,071] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:22,075] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:16:22,075] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:27,074] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:27,076] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:27,079] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:27,080] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:16:32,075] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:32,076] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:32,079] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:32,079] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:37,078] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:37,079] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:37,081] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:37,082] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:42,081] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:42,083] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:42,085] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:42,085] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:47,084] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:47,086] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:47,088] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:47,089] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:52,081] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:52,085] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:52,087] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:52,087] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:57,085] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:16:57,086] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:16:57,089] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:16:57,089] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:02,088] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:02,090] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:02,092] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:02,093] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:07,089] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:07,093] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:07,096] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:07,097] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:12,092] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:12,094] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:12,096] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:12,096] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:17,094] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:17,096] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:17,098] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:17,099] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:22,097] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:22,100] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:22,102] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:22,103] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:27,100] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:27,102] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:27,104] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:27,104] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:32,104] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:32,107] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:32,109] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:32,110] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:37,242] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:37,244] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:37,246] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:37,247] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:42,261] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:42,263] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:42,265] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:42,265] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:47,265] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:47,267] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:47,271] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:17:47,271] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:52,265] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:52,267] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:52,270] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:17:52,270] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:57,264] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:17:57,266] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:17:57,267] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:17:57,269] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:02,265] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:02,267] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:02,270] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:02,270] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:07,266] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:07,267] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:07,270] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:18:07,270] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:12,265] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:12,267] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:12,270] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:12,270] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:17,266] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:17,268] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:17,270] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:17,270] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:22,265] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:22,268] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:22,270] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:22,271] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:27,266] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:27,269] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:27,271] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:27,271] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:32,268] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:32,269] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:32,271] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:32,272] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:37,269] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:37,271] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:37,273] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:37,274] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:42,270] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:42,272] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:42,275] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:42,275] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:47,270] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:47,272] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:47,274] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:47,274] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:52,274] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:52,276] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:52,277] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:18:52,277] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:57,273] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:18:57,276] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:18:57,278] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:18:57,279] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:02,273] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:02,276] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:02,278] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:02,278] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:07,273] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:07,275] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:07,277] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:07,277] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:12,273] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:12,277] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:12,279] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:12,279] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:17,275] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:17,277] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:17,279] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:17,279] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:22,275] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:22,276] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:22,279] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:22,279] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:27,275] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:27,277] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:27,279] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:27,279] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:32,276] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:32,278] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:32,280] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:32,280] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:37,277] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:37,279] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:37,281] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:37,281] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:42,277] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:42,279] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:42,281] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:42,281] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:47,278] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:47,279] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:47,282] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:19:47,282] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:52,278] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:52,280] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:52,282] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:19:52,282] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:57,279] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:19:57,281] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:19:57,282] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:19:57,284] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:02,279] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:02,284] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:02,286] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:20:02,287] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:07,280] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:07,283] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:07,284] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:20:07,285] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:12,280] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:12,283] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:12,285] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:20:12,286] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:17,281] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:17,282] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:17,284] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:20:17,285] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:22,282] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:22,284] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:22,285] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:20:22,286] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:27,282] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:27,284] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:27,287] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:20:27,288] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:32,284] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:32,285] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:32,288] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:20:32,288] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:37,285] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:37,287] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:37,289] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:20:37,290] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:42,285] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:42,288] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:42,290] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:20:42,291] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:47,286] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:47,287] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:47,290] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:20:47,291] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:52,286] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:52,289] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:52,291] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:20:52,291] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:57,287] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:20:57,290] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:20:57,291] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:20:57,292] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:02,289] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:02,291] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:02,294] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:21:02,294] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:07,291] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:07,294] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:07,297] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:21:07,297] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:12,291] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:12,293] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:12,295] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:21:12,295] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:17,291] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:17,294] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:17,296] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:21:17,297] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:22,290] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:22,292] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:22,296] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:21:22,296] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:27,291] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:27,292] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:27,295] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:21:27,296] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:32,291] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:32,293] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:32,295] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:21:32,296] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:37,292] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:37,294] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:37,295] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:21:37,297] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:42,293] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:42,296] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:42,298] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:21:42,299] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:47,294] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:47,296] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:47,299] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:21:47,299] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:52,294] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:52,296] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:52,299] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:21:52,299] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:57,295] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:21:57,296] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:21:57,299] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:21:57,299] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:02,295] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:02,298] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:02,299] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:22:02,300] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:07,295] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:07,298] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:07,300] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:07,300] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:12,298] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:12,300] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:12,302] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:12,303] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:17,299] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:17,301] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:17,304] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:17,304] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:22,299] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:22,302] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:22,304] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:22,305] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:27,299] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:27,302] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:27,304] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:27,304] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:32,300] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:32,303] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:32,305] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:32,305] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:37,301] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:37,355] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:37,357] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:37,357] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:42,301] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:42,304] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:42,306] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:42,306] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:47,326] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:47,328] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:47,330] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:47,330] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:52,303] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:52,304] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:52,306] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:52,306] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:57,303] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:22:57,305] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:22:57,307] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:22:57,308] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:02,307] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:02,326] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:02,327] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:23:02,329] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:07,841] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:07,844] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:07,846] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:23:07,847] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:13,255] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:13,258] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:13,260] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:23:13,261] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:18,362] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:18,364] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:18,366] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:23:18,367] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:23,362] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:23,366] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:23,370] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:23:23,370] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:28,363] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:28,366] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:28,369] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:23:28,369] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:33,364] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:33,367] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:33,369] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:23:33,370] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:38,363] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:38,365] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:38,367] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:23:38,368] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:43,364] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:43,367] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:43,369] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:23:43,369] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:48,364] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:48,367] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:48,370] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:23:48,370] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:53,767] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:53,770] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:53,772] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:23:53,773] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:59,278] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:23:59,282] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:23:59,285] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:23:59,286] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:24:04,279] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:04,281] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:04,283] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:24:04,284] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:09,282] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:09,284] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:09,286] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:24:09,288] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:14,284] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:14,286] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:14,289] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:24:14,289] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:19,286] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:19,287] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:19,290] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:24:19,291] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:24,291] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:24,296] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:24,299] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:24:24,300] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:24:29,292] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:29,296] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:29,300] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:24:29,301] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:24:34,296] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:34,302] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:34,306] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 4ms
+[2026-05-17 13:24:34,307] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:24:39,297] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:39,303] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:39,308] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:24:39,309] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:24:44,297] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:44,302] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:44,306] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:24:44,307] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:24:49,302] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:49,306] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:49,310] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:24:49,311] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:24:54,304] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:54,308] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:54,315] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 6ms
+[2026-05-17 13:24:54,316] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:24:59,303] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:24:59,306] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:24:59,310] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:24:59,311] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:25:04,308] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:04,314] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:04,320] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 4ms
+[2026-05-17 13:25:04,321] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:25:09,306] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:09,311] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:09,316] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:25:09,316] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:25:14,311] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:14,316] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:14,320] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:25:14,320] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:25:19,312] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:19,316] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:19,320] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:25:19,320] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:24,312] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:24,315] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:24,316] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:25:24,317] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:29,320] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:29,325] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:29,329] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 4ms
+[2026-05-17 13:25:29,330] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:25:34,319] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:34,322] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:34,325] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:25:34,326] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:25:39,325] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:39,331] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:39,333] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:25:39,334] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:44,323] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:44,326] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:44,327] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:25:44,329] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:49,324] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:49,326] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:49,328] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:25:49,328] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:54,325] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:54,329] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:54,331] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:25:54,331] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:59,326] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:25:59,329] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:25:59,331] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:25:59,332] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:04,325] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:04,359] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:04,362] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:26:04,362] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:09,329] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:09,331] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:09,334] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:26:09,334] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:14,332] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:14,334] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:14,337] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:26:14,337] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:19,336] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:19,339] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:19,341] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:26:19,342] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:24,335] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:24,339] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:24,341] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:26:24,342] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:29,337] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:29,339] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:29,341] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:26:29,341] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:34,338] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:34,341] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:34,343] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:26:34,343] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:39,340] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:39,342] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:39,345] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:26:39,345] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:44,343] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:44,344] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:44,346] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:26:44,348] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:49,345] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:49,347] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:49,350] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:26:49,351] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:54,345] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:54,348] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:54,350] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:26:54,352] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:26:59,367] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:26:59,372] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:26:59,377] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 13:26:59,379] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:27:04,349] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:27:04,352] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:27:04,355] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:27:04,356] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:49626][0m
+[2026-05-17 13:27:09,352] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:27:09,355] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:27:09,357] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 13:27:09,358] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:27:14,351] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:27:14,355] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:27:14,357] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 13:27:14,358] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:27:19,353] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:49626][0m
+[2026-05-17 13:27:19,355] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 13:27:19,356] ERROR plantae_api HTTP 401 | UNAUTHORIZED | View: TokenVerifyView | Path: /api/token/verify/
+[2026-05-17 13:27:19,456] INFO plantae_api << POST /api/token/verify/ | Status: 401 | Duration: 100ms
+[2026-05-17 13:27:19,458] WARNING django.request Unauthorized: /api/token/verify/
+[2026-05-17 13:27:19,458] WARNING django.channels.server [31;1mHTTP POST /api/token/verify/ 401 [0.10, 127.0.0.1:49626][0m
+[2026-05-17 13:27:19,473] INFO django.channels.server WebSocket DISCONNECT /ws/iot/telemetry/ [127.0.0.1:49627]
+[2026-05-17 16:59:14,545] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-05-17 17:50:28,737] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2026-05-17 17:50:38,772] INFO django.channels.server [mHTTP OPTIONS /api/auth/login/ 200 [0.00, 127.0.0.1:53521][0m
+[2026-05-17 17:50:38,779] INFO plantae_api >> POST /api/auth/login/
+[2026-05-17 17:50:39,585] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 805ms
+[2026-05-17 17:50:39,586] INFO django.channels.server [mHTTP POST /api/auth/login/ 200 [0.81, 127.0.0.1:53521][0m
+[2026-05-17 17:50:39,594] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53521][0m
+[2026-05-17 17:50:39,598] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:50:39,603] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:50:39,604] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53521][0m
+[2026-05-17 17:50:39,613] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.00, 127.0.0.1:53521][0m
+[2026-05-17 17:50:39,614] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:39,619] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:50:39,619] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:50:39,624] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:50:39,626] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.01, 127.0.0.1:53521][0m
+[2026-05-17 17:50:39,639] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 20ms
+[2026-05-17 17:50:39,639] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.02, 127.0.0.1:53522][0m
+[2026-05-17 17:50:39,658] INFO django.channels.server WebSocket HANDSHAKING /ws/iot/telemetry/ [127.0.0.1:53523]
+[2026-05-17 17:50:39,660] INFO django.channels.server WebSocket CONNECT /ws/iot/telemetry/ [127.0.0.1:53523]
+[2026-05-17 17:50:40,641] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:40,644] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:50:40,647] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:50:40,647] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:44,659] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:44,663] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:50:44,665] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:50:44,665] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:46,102] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=2 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:46,104] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:50:46,110] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 6ms
+[2026-05-17 17:50:46,112] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=2 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:50:47,124] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=3 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:47,126] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:50:47,131] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:50:47,132] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=3 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:50:49,663] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:49,668] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:50:49,670] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 17:50:49,671] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:54,939] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:54,941] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:50:54,943] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:50:54,944] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:59,957] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:50:59,959] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:50:59,962] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:50:59,962] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:05,236] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:05,301] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:05,303] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:51:05,304] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:05,657] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:05,659] INFO plantae_api >> POST /api/v1/plants/
+[2026-05-17 17:51:07,102] INFO plantae_api << POST /api/v1/plants/ | Status: 201 | Duration: 1443ms
+[2026-05-17 17:51:07,103] INFO django.channels.server [mHTTP POST /api/v1/plants/ 201 [1.45, 127.0.0.1:53522][0m
+[2026-05-17 17:51:09,960] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:09,962] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:09,965] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:51:09,965] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:13,684] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/150/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:13,687] INFO plantae_api >> GET /api/v1/plants/150/
+[2026-05-17 17:51:13,690] INFO plantae_api << GET /api/v1/plants/150/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:51:13,691] INFO django.channels.server [mHTTP GET /api/v1/plants/150/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:14,960] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:14,963] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:14,966] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:51:14,967] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:15,732] INFO django.channels.server WebSocket DISCONNECT /ws/iot/telemetry/ [127.0.0.1:53523]
+[2026-05-17 17:51:15,866] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:15,866] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53521][0m
+[2026-05-17 17:51:15,869] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:15,870] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:15,873] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:51:15,873] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:51:15,874] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:15,874] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53521][0m
+[2026-05-17 17:51:15,882] INFO django.channels.server WebSocket HANDSHAKING /ws/iot/telemetry/ [127.0.0.1:53535]
+[2026-05-17 17:51:15,884] INFO django.channels.server WebSocket CONNECT /ws/iot/telemetry/ [127.0.0.1:53535]
+[2026-05-17 17:51:15,887] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:15,889] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.01, 127.0.0.1:53521][0m
+[2026-05-17 17:51:15,889] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:53536][0m
+[2026-05-17 17:51:15,890] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.00, 127.0.0.1:53537][0m
+[2026-05-17 17:51:15,893] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:15,894] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:51:15,894] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:15,895] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:51:15,902] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 7ms
+[2026-05-17 17:51:15,904] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.01, 127.0.0.1:53521][0m
+[2026-05-17 17:51:15,906] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 11ms
+[2026-05-17 17:51:15,907] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.02, 127.0.0.1:53537][0m
+[2026-05-17 17:51:15,907] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 12ms
+[2026-05-17 17:51:15,909] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.02, 127.0.0.1:53536][0m
+[2026-05-17 17:51:15,910] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 16ms
+[2026-05-17 17:51:15,911] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.02, 127.0.0.1:53522][0m
+[2026-05-17 17:51:18,309] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=2 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:18,311] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:18,319] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 6ms
+[2026-05-17 17:51:18,319] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=2 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:20,414] INFO django.channels.server WebSocket DISCONNECT /ws/iot/telemetry/ [127.0.0.1:53535]
+[2026-05-17 17:51:21,834] INFO django.channels.server [mHTTP OPTIONS /api/auth/login/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:21,836] INFO plantae_api >> POST /api/auth/login/
+[2026-05-17 17:51:22,000] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 164ms
+[2026-05-17 17:51:22,000] INFO django.channels.server [mHTTP POST /api/auth/login/ 200 [0.16, 127.0.0.1:53522][0m
+[2026-05-17 17:51:22,007] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:22,009] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:22,014] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 4ms
+[2026-05-17 17:51:22,014] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:22,023] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:22,023] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:53536][0m
+[2026-05-17 17:51:22,027] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:51:22,027] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:22,032] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:51:22,032] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:22,035] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 8ms
+[2026-05-17 17:51:22,035] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.01, 127.0.0.1:53536][0m
+[2026-05-17 17:51:22,046] INFO django.channels.server WebSocket HANDSHAKING /ws/iot/telemetry/ [127.0.0.1:53538]
+[2026-05-17 17:51:22,047] INFO django.channels.server WebSocket CONNECT /ws/iot/telemetry/ [127.0.0.1:53538]
+[2026-05-17 17:51:23,401] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=2 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:23,403] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:23,410] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 6ms
+[2026-05-17 17:51:23,410] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=2 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:26,250] INFO django.channels.server WebSocket DISCONNECT /ws/iot/telemetry/ [127.0.0.1:53538]
+[2026-05-17 17:51:26,365] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:26,365] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53536][0m
+[2026-05-17 17:51:26,370] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:26,371] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:26,374] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 4ms
+[2026-05-17 17:51:26,374] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:51:26,375] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:26,375] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53536][0m
+[2026-05-17 17:51:26,391] INFO django.channels.server WebSocket HANDSHAKING /ws/iot/telemetry/ [127.0.0.1:53541]
+[2026-05-17 17:51:26,392] INFO django.channels.server WebSocket CONNECT /ws/iot/telemetry/ [127.0.0.1:53541]
+[2026-05-17 17:51:26,400] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:26,400] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.00, 127.0.0.1:53536][0m
+[2026-05-17 17:51:26,401] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.01, 127.0.0.1:53521][0m
+[2026-05-17 17:51:26,401] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.00, 127.0.0.1:53537][0m
+[2026-05-17 17:51:26,409] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:26,409] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:51:26,409] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:26,410] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:51:26,419] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 9ms
+[2026-05-17 17:51:26,419] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 9ms
+[2026-05-17 17:51:26,420] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.01, 127.0.0.1:53536][0m
+[2026-05-17 17:51:26,423] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.02, 127.0.0.1:53537][0m
+[2026-05-17 17:51:26,425] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 14ms
+[2026-05-17 17:51:26,426] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 17ms
+[2026-05-17 17:51:26,426] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.02, 127.0.0.1:53521][0m
+[2026-05-17 17:51:26,427] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.02, 127.0.0.1:53522][0m
+[2026-05-17 17:51:31,469] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:31,471] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:31,474] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:51:31,474] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:32,300] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=2 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:32,302] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:32,307] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:51:32,307] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=2 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:33,749] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/150/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:33,751] INFO plantae_api >> GET /api/v1/plants/150/
+[2026-05-17 17:51:33,754] INFO plantae_api << GET /api/v1/plants/150/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:51:33,755] INFO django.channels.server [mHTTP GET /api/v1/plants/150/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:36,455] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:36,456] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:36,457] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 1ms
+[2026-05-17 17:51:36,457] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:41,455] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:41,456] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:41,459] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:51:41,460] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:42,773] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/150/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:42,775] INFO plantae_api >> PATCH /api/v1/plants/150/
+[2026-05-17 17:51:42,996] INFO plantae_api << PATCH /api/v1/plants/150/ | Status: 200 | Duration: 220ms
+[2026-05-17 17:51:42,996] INFO django.channels.server [mHTTP PATCH /api/v1/plants/150/ 200 [0.22, 127.0.0.1:53522][0m
+[2026-05-17 17:51:45,955] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/150/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:45,957] INFO plantae_api >> PATCH /api/v1/plants/150/
+[2026-05-17 17:51:46,130] INFO plantae_api << PATCH /api/v1/plants/150/ | Status: 200 | Duration: 172ms
+[2026-05-17 17:51:46,131] INFO django.channels.server [mHTTP PATCH /api/v1/plants/150/ 200 [0.17, 127.0.0.1:53522][0m
+[2026-05-17 17:51:46,455] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:46,457] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:46,460] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:51:46,461] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:49,573] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/150/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:49,575] INFO plantae_api >> PATCH /api/v1/plants/150/
+[2026-05-17 17:51:49,599] ERROR plantae_api HTTP 400 | BAD_REQUEST | View: PlantRetrieveUpdateDestroyView | Path: /api/v1/plants/150/
+[2026-05-17 17:51:49,600] INFO plantae_api << PATCH /api/v1/plants/150/ | Status: 400 | Duration: 23ms
+[2026-05-17 17:51:49,602] WARNING django.request Bad Request: /api/v1/plants/150/
+[2026-05-17 17:51:49,602] WARNING django.channels.server [31;1mHTTP PATCH /api/v1/plants/150/ 400 [0.03, 127.0.0.1:53522][0m
+[2026-05-17 17:51:50,348] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/150/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:50,350] INFO plantae_api >> PATCH /api/v1/plants/150/
+[2026-05-17 17:51:50,353] ERROR plantae_api HTTP 400 | BAD_REQUEST | View: PlantRetrieveUpdateDestroyView | Path: /api/v1/plants/150/
+[2026-05-17 17:51:50,354] INFO plantae_api << PATCH /api/v1/plants/150/ | Status: 400 | Duration: 4ms
+[2026-05-17 17:51:50,354] WARNING django.request Bad Request: /api/v1/plants/150/
+[2026-05-17 17:51:50,355] WARNING django.channels.server [31;1mHTTP PATCH /api/v1/plants/150/ 400 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:51,456] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:51,458] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:51,461] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:51:51,462] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:51,480] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/150/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:51,482] INFO plantae_api >> PATCH /api/v1/plants/150/
+[2026-05-17 17:51:51,892] INFO plantae_api << PATCH /api/v1/plants/150/ | Status: 200 | Duration: 409ms
+[2026-05-17 17:51:51,892] INFO django.channels.server [mHTTP PATCH /api/v1/plants/150/ 200 [0.41, 127.0.0.1:53522][0m
+[2026-05-17 17:51:55,029] INFO django.channels.server WebSocket DISCONNECT /ws/iot/telemetry/ [127.0.0.1:53541]
+[2026-05-17 17:51:55,131] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:55,131] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53536][0m
+[2026-05-17 17:51:55,135] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:55,135] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:51:55,141] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:51:55,142] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 6ms
+[2026-05-17 17:51:55,142] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53521][0m
+[2026-05-17 17:51:55,143] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:55,150] INFO django.channels.server WebSocket HANDSHAKING /ws/iot/telemetry/ [127.0.0.1:53544]
+[2026-05-17 17:51:55,155] INFO django.channels.server WebSocket CONNECT /ws/iot/telemetry/ [127.0.0.1:53544]
+[2026-05-17 17:51:55,155] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:55,156] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.01, 127.0.0.1:53536][0m
+[2026-05-17 17:51:55,156] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.01, 127.0.0.1:53537][0m
+[2026-05-17 17:51:55,156] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:53521][0m
+[2026-05-17 17:51:55,160] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:51:55,162] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:55,162] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:51:55,162] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:55,170] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 8ms
+[2026-05-17 17:51:55,171] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:55,172] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 9ms
+[2026-05-17 17:51:55,173] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.01, 127.0.0.1:53521][0m
+[2026-05-17 17:51:55,175] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 12ms
+[2026-05-17 17:51:55,177] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.02, 127.0.0.1:53536][0m
+[2026-05-17 17:51:55,178] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 16ms
+[2026-05-17 17:51:55,179] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.02, 127.0.0.1:53537][0m
+[2026-05-17 17:51:56,217] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=2 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:56,222] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:56,227] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:51:56,227] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=2 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:51:57,559] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=3 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:51:57,561] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:51:57,567] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 6ms
+[2026-05-17 17:51:57,567] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=3 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:00,260] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:00,262] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:00,265] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:52:00,265] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:00,357] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=4 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:00,359] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:52:00,364] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:52:00,365] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=4 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:01,529] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=5 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:01,532] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:52:01,537] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:52:01,537] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=5 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:05,273] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:05,275] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:05,277] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:52:05,277] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:10,151] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:10,153] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:10,155] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:52:10,156] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:10,900] INFO django.channels.server WebSocket DISCONNECT /ws/iot/telemetry/ [127.0.0.1:53544]
+[2026-05-17 17:52:24,461] INFO django.channels.server [mHTTP OPTIONS /api/auth/login/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:24,464] INFO plantae_api >> POST /api/auth/login/
+[2026-05-17 17:52:24,704] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 239ms
+[2026-05-17 17:52:24,704] INFO django.channels.server [mHTTP POST /api/auth/login/ 200 [0.24, 127.0.0.1:53522][0m
+[2026-05-17 17:52:24,707] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:24,712] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:24,715] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:52:24,715] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:24,722] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:24,722] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:53521][0m
+[2026-05-17 17:52:24,788] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:52:24,788] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:52:24,793] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:52:24,794] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:24,797] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 9ms
+[2026-05-17 17:52:24,797] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.01, 127.0.0.1:53536][0m
+[2026-05-17 17:52:24,813] INFO django.channels.server WebSocket HANDSHAKING /ws/iot/telemetry/ [127.0.0.1:53545]
+[2026-05-17 17:52:24,814] INFO django.channels.server WebSocket CONNECT /ws/iot/telemetry/ [127.0.0.1:53545]
+[2026-05-17 17:52:26,478] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:26,482] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:26,484] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:52:26,485] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:29,814] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:29,817] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:29,819] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:52:29,820] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:31,025] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/4/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:31,027] INFO plantae_api >> GET /api/v1/plants/4/
+[2026-05-17 17:52:31,031] INFO plantae_api << GET /api/v1/plants/4/ | Status: 200 | Duration: 4ms
+[2026-05-17 17:52:31,032] INFO django.channels.server [mHTTP GET /api/v1/plants/4/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:34,852] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:34,854] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:34,857] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:52:34,857] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:34,977] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=2 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:34,980] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:52:34,986] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:52:34,986] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=2 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:35,870] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=3 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:35,872] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:52:35,877] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 4ms
+[2026-05-17 17:52:35,878] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=3 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:36,893] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=4 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:36,895] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:52:36,901] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:52:36,901] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=4 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:37,997] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/150/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:37,999] INFO plantae_api >> GET /api/v1/plants/150/
+[2026-05-17 17:52:38,003] INFO plantae_api << GET /api/v1/plants/150/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:52:38,004] INFO django.channels.server [mHTTP GET /api/v1/plants/150/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:40,363] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/150/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:40,367] INFO plantae_api >> DELETE /api/v1/plants/150/
+[2026-05-17 17:52:40,367] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:40,367] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53521][0m
+[2026-05-17 17:52:40,373] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:40,374] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:40,481] INFO plantae_api << DELETE /api/v1/plants/150/ | Status: 204 | Duration: 113ms
+[2026-05-17 17:52:40,482] INFO django.channels.server [mHTTP DELETE /api/v1/plants/150/ 204 [0.12, 127.0.0.1:53537][0m
+[2026-05-17 17:52:40,484] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 110ms
+[2026-05-17 17:52:40,484] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.11, 127.0.0.1:53522][0m
+[2026-05-17 17:52:40,484] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 110ms
+[2026-05-17 17:52:40,485] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.11, 127.0.0.1:53536][0m
+[2026-05-17 17:52:43,907] INFO django.channels.server WebSocket DISCONNECT /ws/iot/telemetry/ [127.0.0.1:53545]
+[2026-05-17 17:52:45,768] INFO django.channels.server [mHTTP OPTIONS /api/auth/login/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:45,772] INFO plantae_api >> POST /api/auth/login/
+[2026-05-17 17:52:45,908] INFO plantae_api << POST /api/auth/login/ | Status: 200 | Duration: 136ms
+[2026-05-17 17:52:45,908] INFO django.channels.server [mHTTP POST /api/auth/login/ 200 [0.14, 127.0.0.1:53522][0m
+[2026-05-17 17:52:45,915] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:45,917] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:45,921] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 4ms
+[2026-05-17 17:52:45,922] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:45,930] INFO django.channels.server [mHTTP OPTIONS /api/auth/profile/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:45,932] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=1 200 [0.00, 127.0.0.1:53521][0m
+[2026-05-17 17:52:45,935] INFO plantae_api >> GET /api/auth/profile/
+[2026-05-17 17:52:45,935] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:52:45,940] INFO plantae_api << GET /api/auth/profile/ | Status: 200 | Duration: 4ms
+[2026-05-17 17:52:45,941] INFO django.channels.server [mHTTP GET /api/auth/profile/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:45,943] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 7ms
+[2026-05-17 17:52:45,943] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=1 200 [0.01, 127.0.0.1:53537][0m
+[2026-05-17 17:52:45,953] INFO django.channels.server WebSocket HANDSHAKING /ws/iot/telemetry/ [127.0.0.1:53547]
+[2026-05-17 17:52:45,954] INFO django.channels.server WebSocket CONNECT /ws/iot/telemetry/ [127.0.0.1:53547]
+[2026-05-17 17:52:51,356] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:51,358] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:51,360] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:52:51,361] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:55,237] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:55,240] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:55,243] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 3ms
+[2026-05-17 17:52:55,244] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:52:56,817] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:52:56,820] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:52:56,822] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:52:56,823] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:01,862] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:01,864] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:53:01,866] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:53:01,867] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:04,110] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=2 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:04,113] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:53:04,119] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:53:04,120] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=2 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:53:04,877] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=3 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:04,880] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:53:04,887] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:53:04,887] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=3 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:53:05,556] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=4 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:05,558] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:53:05,563] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 5ms
+[2026-05-17 17:53:05,564] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=4 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:53:06,499] INFO django.channels.server [mHTTP OPTIONS /api/v1/plants/?page=5 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:06,501] INFO plantae_api >> GET /api/v1/plants/
+[2026-05-17 17:53:06,508] INFO plantae_api << GET /api/v1/plants/ | Status: 200 | Duration: 6ms
+[2026-05-17 17:53:06,508] INFO django.channels.server [mHTTP GET /api/v1/plants/?page=5 200 [0.01, 127.0.0.1:53522][0m
+[2026-05-17 17:53:06,864] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:06,866] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:53:06,868] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:53:06,868] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:11,891] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:11,893] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:53:11,895] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:53:11,896] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:16,892] INFO django.channels.server [mHTTP OPTIONS /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:16,894] INFO plantae_api >> POST /api/token/verify/
+[2026-05-17 17:53:16,897] INFO plantae_api << POST /api/token/verify/ | Status: 200 | Duration: 2ms
+[2026-05-17 17:53:16,897] INFO django.channels.server [mHTTP POST /api/token/verify/ 200 [0.00, 127.0.0.1:53522][0m
+[2026-05-17 17:53:18,375] INFO django.channels.server WebSocket DISCONNECT /ws/iot/telemetry/ [127.0.0.1:53547]
